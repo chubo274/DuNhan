@@ -9,10 +9,10 @@
  */
 
 import React from 'react';
-import {Text} from 'react-native';
+import MainApp from './src/MainApp';
 
 const App = () => {
-  return <Text> TSX</Text>;
+  return <MainApp />;
 };
 
 export default App;
