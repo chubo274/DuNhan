@@ -15,8 +15,11 @@ const LoginScreen = () => {
   //! Render
   return (
     <View style={styles.container}>
-      <AppText> LoginScreen</AppText>
-      <AppButton text="Đăng nhập" onPress={onPress} />
+      <AppText style={styles.textWel}>Welcome to App Du Nhân</AppText>
+      <AppText>Đăng nhập để tiếp tục!</AppText>
+      <View style={styles.btnLogin}>
+        <AppButton text="Đăng nhập" onPress={onPress} />
+      </View>
     </View>
   );
 };

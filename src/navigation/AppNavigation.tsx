@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import LoginScreen from '../screen/LoginScreen';
-import SignUpScreen from '../screen/SignUpScreen';
-import ForgotPassScreen from '../screen/ForgotPassScreen';
+import LoginScreen from 'screen/LoginScreen';
+import SignUpScreen from 'screen/SignUpScreen';
+import ForgotPassScreen from 'screen/ForgotPassScreen';
 
 const AppNavigation = () => {
   //! State
