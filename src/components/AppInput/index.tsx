@@ -10,7 +10,7 @@ import {FORMAT_DATE} from 'helpers/constants';
 import AppTextInput from 'components/AppTextInput';
 interface AppInputProps {
   icon?: any;
-  text: string;
+  text?: string;
   iconTouchModal?: any;
   placeholder?: string;
   typeModal?: 'ModalPicker' | 'DatePicker' | '';

@@ -1,8 +1,7 @@
-import { DEVICE } from 'helpers/dimentions';
+import {DEVICE} from 'helpers/dimentions';
+import fontSize from 'helpers/fontSize';
+import padding from 'helpers/padding';
 import {StyleSheet} from 'react-native';
-import color from '../../helpers/color';
-import fontSize from '../../helpers/fontSize';
-import padding from '../../helpers/padding';
 
 export default StyleSheet.create({
   imgBg: {flex: 1, opacity: 0.8},
@@ -29,6 +28,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   touch: {
-    padding:padding.p4
+    padding: padding.p4,
   },
 });
