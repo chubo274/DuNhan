@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     borderRadius: padding.p16,
     justifyContent: 'center',
-    shadowRadius: 10,
   },
   text: {fontSize: fontSize.f18, textAlign: 'center'},
 });

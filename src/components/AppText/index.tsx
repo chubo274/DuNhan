@@ -1,8 +1,8 @@
+import color from 'helpers/color';
+import font from 'helpers/font';
+import fontSize from 'helpers/fontSize';
 import React from 'react';
 import {StyleSheet, Text, TextProps, TextStyle} from 'react-native';
-import color from '../../helpers/color';
-import fontSize from '../../helpers/fontSize';
-
 interface AppTextProps extends TextProps {
   children?: any;
   style?: TextStyle | any;
@@ -27,5 +27,6 @@ const styles = StyleSheet.create({
   defautlText: {
     color: color.black,
     fontSize: fontSize.f14,
+    fontFamily: font.VDBrevia_M
   },
 });
