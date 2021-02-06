@@ -26,7 +26,7 @@ const LoginScreen = () => {
     setPassword(data);
   };
 
-  const loginApp = (user: any, pass: any) => {
+  const loginApp = () => {
     // dispatch(userActions.loginRequest(param));
   };
   //! UseEffect
@@ -84,7 +84,7 @@ const LoginScreen = () => {
           <View style={styles.btnLogin}>
             <AppButton
               text="Đăng nhập"
-              onPress={() => loginApp(userName, password)}
+              onPress={loginApp}
               disabled={!_.isEmpty(error) || !_.isEmpty(errorPass)}
             />
           </View>
