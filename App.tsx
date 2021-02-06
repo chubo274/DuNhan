@@ -9,10 +9,18 @@
  */
 
 import React from 'react';
-import MainApp from './src/MainApp';
-
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import {store, persistor} from './store';
+import MainApp from 'MainApp';
 const App = () => {
-  return <MainApp />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <MainApp />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 export default App;

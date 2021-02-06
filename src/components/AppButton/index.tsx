@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import color from '../../helpers/color';
 import fontSize from '../../helpers/fontSize';
+import padding from '../../helpers/padding';
 import AppText from '../AppText';
 interface AppButtonI {
   text: string;
@@ -30,6 +31,13 @@ const AppButton = ({text, onPress, disabled = false, style}: AppButtonI) => {
 export default React.memo(AppButton);
 
 const styles = StyleSheet.create({
-  btn: {backgroundColor: color.primary},
+  btn: {
+    paddingVertical: padding.p6,
+    paddingHorizontal: padding.p16,
+    backgroundColor: color.primary,
+    borderRadius: padding.p16,
+    justifyContent: 'center',
+    shadowRadius: 10,
+  },
   text: {fontSize: fontSize.f18, textAlign: 'center'},
 });
