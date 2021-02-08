@@ -3,6 +3,7 @@ import React from 'react';
 import {SafeAreaView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import UnAuthNavigation from './navigation/UnAuthNavigation';
+import AppNavigation from 'navigation/AppNavigation';
 
 const MainApp = () => {
   //! State
@@ -13,7 +14,7 @@ const MainApp = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <NavigationContainer>
-        <UnAuthNavigation />
+        <AppNavigation />
       </NavigationContainer>
     </SafeAreaView>
   );
