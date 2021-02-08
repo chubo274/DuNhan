@@ -1,5 +1,6 @@
 export default {
   primary: '#55C940',
+  textPri: '#007F54',
   black: '#000000',
   white: '#ffffff',
   silver: '#CCCCCC',
