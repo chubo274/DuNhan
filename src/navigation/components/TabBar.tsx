@@ -1,3 +1,4 @@
+import AppText from 'components/AppText';
 import color from 'helpers/color';
 import padding from 'helpers/padding';
 import React from 'react';
@@ -11,10 +12,10 @@ const TabBar = (props: any) => {
   const {navigation, state} = props;
   const {routeNames, index} = state;
   const tab = [
-    {name: 'HomeScreen', icon: 'home'},
-    {name: 'SearchScreen', icon: 'search1'},
-    {name: 'TicketScreen', icon: 'tago'},
-    {name: 'ProfileScreen', icon: 'user'},
+    {name: 'Home', icon: 'home'},
+    {name: 'Search', icon: 'search1'},
+    {name: 'Ticket', icon: 'tago'},
+    {name: 'Profile', icon: 'user'},
   ];
 
   //! Function
@@ -26,12 +27,16 @@ const TabBar = (props: any) => {
         key={name}
         onPress={() => {
           navigation.navigate(routeNames[idx]);
-        }}>
+        }}
+        style={styles.viewTouch}>
         <AntDesign
           name={icon}
           size={28}
           color={active ? color.darkCerulean : color.logan}
         />
+        <AppText style={[styles.text, active && {color: color.darkCerulean}]}>
+          {name}
+        </AppText>
       </TouchableOpacity>
     );
   };
@@ -48,5 +53,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: padding.p8,
     backgroundColor: color.blueBg,
+  },
+  viewTouch: {
+    alignItems: 'center',
+  },
+  text: {
+    color: color.logan,
   },
 });
