@@ -6,6 +6,7 @@ import ProfileScreen from 'screen/ProfileScreen';
 import TicketScreen from 'screen/TicketScreen';
 import SearchScreen from 'screen/SearchScreen';
 import TabBar from './components/TabBar';
+import ListTour from 'screen/ListTour';
 
 const AppNavigation = () => {
   //! State
@@ -18,6 +19,7 @@ const AppNavigation = () => {
         <Tab.Screen name="HomeScreen" component={HomeScreen} />
         <Tab.Screen name="SearchScreen" component={SearchScreen} />
         <Tab.Screen name="TicketScreen" component={TicketScreen} />
+        <Tab.Screen name="ListTour" component={ListTour} />
         <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
       </Tab.Navigator>
     );

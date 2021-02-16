@@ -26,10 +26,10 @@ const ListTour = ({area, source}: ListTourI) => {
 export default React.memo(ListTour);
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {width: DEVICE.WIDTH * 0.32, alignItems: 'center'},
   avt: {
     width: DEVICE.WIDTH * 0.3,
     aspectRatio: 1 / 0.7,
-    borderRadius: DEVICE.WIDTH * 0.08,
+    borderRadius: DEVICE.WIDTH * 0.05,
   },
 });

@@ -12,3 +12,23 @@ export const convertObjectToQuery = (param: any) => {
   }
   return '?' + queryString.stringify(param);
 };
+
+export const converPriceToString = (param: number) => {
+  const le = param.toString().length % 3;
+  console.log(le);
+
+  let subFrom = 0;
+  let priceString = '';
+  if (le != 0) {
+    priceString += param.toString().substr(0, le);
+    subFrom = le;
+  } else {
+    priceString += param.toString().substr(0, 3);
+    subFrom = 3;
+  }
+  while (subFrom < param.toString().length) {
+    priceString += '.' + param.toString().substring(subFrom, subFrom + 3);
+    subFrom += 3;
+  }
+  return priceString;
+};

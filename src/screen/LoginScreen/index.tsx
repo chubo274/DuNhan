@@ -31,7 +31,7 @@ const LoginScreen = () => {
   };
   //! UseEffect
   useEffect(() => {
-    if (_.isNaN(userName) && userName?.toString().length > 7) {
+    if (!isNaN(userName) && userName?.toString().length > 7) {
       setError('');
     } else {
       setError('Trường này phải là số và ít nhất 8 ký tự');
@@ -45,6 +45,7 @@ const LoginScreen = () => {
       setErrorPass('Trường này phải ít nhất 8 ký tự');
     }
   }, [password]);
+
   //! Render
   return (
     <ImageBackground source={IMAGE.bgLogin} style={styles.imgBg}>
@@ -85,7 +86,7 @@ const LoginScreen = () => {
             <AppButton
               text="Đăng nhập"
               onPress={loginApp}
-              disabled={!_.isEmpty(error) || !_.isEmpty(errorPass)}
+              disabled={!_.isEmpty(error)}
             />
           </View>
 
