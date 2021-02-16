@@ -19,6 +19,6 @@ export default StyleSheet.create({
   },
   viewListTour: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
 });
