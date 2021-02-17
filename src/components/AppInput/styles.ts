@@ -37,6 +37,7 @@ export default StyleSheet.create({
     borderBottomLeftRadius: 9,
     backgroundColor: color.blueBg,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     height: 35,

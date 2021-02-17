@@ -8,6 +8,8 @@ import FastImage from 'react-native-fast-image';
 import ModalPicker from './components/ModalPicker';
 import {FORMAT_DATE} from 'helpers/constants';
 import AppTextInput from 'components/AppTextInput';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 interface AppInputProps {
   icon?: any;
   text?: string;
@@ -66,11 +68,7 @@ const AppInput = ({
       <View style={styles.viewFieldInput}>
         {!!icon && (
           <View style={styles.viewIcon}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.contain}
-              source={icon}
-              style={styles.icon}
-            />
+            <Entypo name={icon} size={40} />
           </View>
         )}
         {!typeModal && (

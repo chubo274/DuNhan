@@ -1,5 +1,4 @@
 import AppHeaderBack from 'components/AppHeaderBack';
-import AppText from 'components/AppText';
 import React from 'react';
 import {View} from 'react-native';
 import styles from './styles';
@@ -10,9 +9,10 @@ const TicketScreen = () => {
 
   //! Render
   return (
-    <View style={styles.container}>
+    <>
       <AppHeaderBack title="Vé của bạn" />
-    </View>
+      <View style={styles.container}></View>
+    </>
   );
 };
 

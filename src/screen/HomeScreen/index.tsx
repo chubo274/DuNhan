@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
 import {IMAGE} from 'assets';
+import AppHeaderBack from 'components/AppHeaderBack';
 import AppText from 'components/AppText';
 import React from 'react';
 import {View} from 'react-native';
@@ -12,34 +12,37 @@ const HomeScreen = () => {
 
   //! Render
   return (
-    <View style={styles.container}>
-      <View style={styles.viewGroup}>
-        <AppText style={styles.textGroup}>Tour hot trong tuần</AppText>
-        <View style={styles.viewListTour}>
-          {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+    <>
+      <AppHeaderBack title="Trang chủ" />
+      <View style={styles.container}>
+        <View style={styles.viewGroup}>
+          <AppText style={styles.textGroup}>Tour hot trong tuần</AppText>
+          <View style={styles.viewListTour}>
+            {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
           <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
           <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} /> */}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.viewGroup}>
-        <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
-        <View style={styles.viewListTour}>
-          {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+        <View style={styles.viewGroup}>
+          <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
+          <View style={styles.viewListTour}>
+            {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
           <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
           <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} /> */}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.viewGroup}>
-        <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
-        <View style={styles.viewListTour}>
-          <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
-          <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-          <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
+        <View style={styles.viewGroup}>
+          <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
+          <View style={styles.viewListTour}>
+            <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+            <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
+            <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
