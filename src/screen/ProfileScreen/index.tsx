@@ -1,3 +1,4 @@
+import AppHeaderBack from 'components/AppHeaderBack';
 import AppText from 'components/AppText';
 import React from 'react';
 import {View} from 'react-native';
@@ -10,6 +11,7 @@ const ProfileScreen = () => {
   //! Render
   return (
     <View style={styles.container}>
+      <AppHeaderBack title="Thông tin cá nhân" />
       <AppText>ProfileScreen</AppText>
     </View>
   );

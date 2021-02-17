@@ -19,7 +19,6 @@ const AppNavigation = () => {
         <Tab.Screen name="HomeScreen" component={HomeScreen} />
         <Tab.Screen name="SearchScreen" component={SearchScreen} />
         <Tab.Screen name="TicketScreen" component={TicketScreen} />
-        <Tab.Screen name="ListTour" component={ListTour} />
         <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
       </Tab.Navigator>
     );
@@ -29,6 +28,7 @@ const AppNavigation = () => {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="ListTour" component={ListTour} />
     </Stack.Navigator>
   );
 };

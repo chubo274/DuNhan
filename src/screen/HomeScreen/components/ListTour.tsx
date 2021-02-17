@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import AppText from 'components/AppText';
 import {DEVICE} from 'helpers/dimentions';
 import React from 'react';
@@ -7,16 +8,19 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface ListTourI {
   area: 'Tour Miền Bắc' | 'Tour Miền Trung' | 'Tour Miền Nam';
-  source?: any;
+  source: any;
 }
 const ListTour = ({area, source}: ListTourI) => {
   //! State
-
+  const navigation = useNavigation();
   //! Function
+  const onPress = () => {
+    navigation.navigate('ListTour');
+  };
 
   //! Render
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <FastImage source={source} style={styles.avt} resizeMode="contain" />
       <AppText>{area}</AppText>
     </TouchableOpacity>

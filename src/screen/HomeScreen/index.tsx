@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {IMAGE} from 'assets';
 import AppText from 'components/AppText';
 import React from 'react';
@@ -15,18 +16,18 @@ const HomeScreen = () => {
       <View style={styles.viewGroup}>
         <AppText style={styles.textGroup}>Tour hot trong tuần</AppText>
         <View style={styles.viewListTour}>
-          <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+          {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
           <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-          <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
+          <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} /> */}
         </View>
       </View>
 
       <View style={styles.viewGroup}>
         <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
         <View style={styles.viewListTour}>
-          <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+          {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
           <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-          <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
+          <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} /> */}
         </View>
       </View>
 

@@ -1,6 +1,5 @@
-
 import React, {useState} from 'react';
-import {View,TouchableOpacity, StyleSheet, } from 'react-native';
+import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import color from 'helpers/color';
 import AppText from 'components/AppText';
@@ -56,7 +55,7 @@ export default React.memo(AppHeaderBack);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.champagnePink,
+    backgroundColor: color.blueBg,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',

@@ -6,7 +6,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import {ACTUAL_DATE} from 'helpers/constants';
-import {converPriceToString} from 'helpers/function';
+import {converNumberToPrice} from 'helpers/function';
 
 interface TourItemI {
   avatar?: any;
@@ -33,18 +33,24 @@ const TourItem = ({
   //! Render
   return (
     <TouchableOpacity style={styles.container}>
-      <FastImage source={avatar} style={styles.avt} />
+      <FastImage source={avatar} style={styles.avt} resizeMode="cover" />
       <View style={styles.content}>
-        <AppText style={styles.text}>{name}</AppText>
-        <View style={{flexDirection: 'row'}}>
-          <AppText style={styles.text}>Khởi hành: {placeStart}, </AppText>
-          <AppText style={styles.text}>
-            {moment(timeStart).format(ACTUAL_DATE)}
-          </AppText>
-        </View>
-        <AppText style={styles.text}>{travelTime}</AppText>
-        <AppText style={styles.text}>còn {slots} chỗ</AppText>
-        <AppText style={styles.text}>{converPriceToString(price)} đ</AppText>
+        <AppText numberOfLines={1} style={styles.text}>
+          {name}
+        </AppText>
+        <AppText numberOfLines={1} style={styles.text}>
+          Khởi hành: {placeStart}, {moment(timeStart).format(ACTUAL_DATE)}
+        </AppText>
+
+        <AppText numberOfLines={1} style={styles.text}>
+          {travelTime}
+        </AppText>
+        <AppText numberOfLines={1} style={styles.text}>
+          còn {slots} chỗ
+        </AppText>
+        <AppText numberOfLines={1} style={styles.text}>
+          {converNumberToPrice(price)}
+        </AppText>
       </View>
     </TouchableOpacity>
   );
@@ -54,10 +60,10 @@ export default React.memo(TourItem);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: color.champagnePink,
     flexDirection: 'row',
     height: 125,
-    paddingHorizontal: padding.p6,
+    backgroundColor: color.peachOrange,
+    borderRadius: 25,
   },
   avt: {
     width: 125,
