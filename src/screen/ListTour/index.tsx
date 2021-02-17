@@ -19,6 +19,7 @@ const ListTour = () => {
       timeStart: now,
       travelTime: '3 ngày đêm 2',
       price: 2500000,
+      discount: 20,
     },
     {
       id: 2,
@@ -42,6 +43,7 @@ const ListTour = () => {
           timeStart={item.timeStart}
           travelTime={item.travelTime}
           price={item.price}
+          discount={item.discount}
         />
       </View>
     );

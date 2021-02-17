@@ -15,6 +15,7 @@ interface TourItemI {
   timeStart?: any;
   travelTime?: string;
   price?: number;
+  discount?: number;
   slots?: number;
 }
 const TourItem = ({
@@ -24,6 +25,7 @@ const TourItem = ({
   timeStart = '',
   travelTime = '',
   price = 0,
+  discount = 0,
   slots = 0,
 }: TourItemI) => {
   //! State
@@ -48,9 +50,16 @@ const TourItem = ({
         <AppText numberOfLines={1} style={styles.text}>
           còn {slots} chỗ
         </AppText>
-        <AppText numberOfLines={1} style={styles.text}>
-          {converNumberToPrice(price)}
-        </AppText>
+        <View style={{flexDirection: 'row'}}>
+          {!!discount && (
+            <AppText numberOfLines={1} style={styles.textStrike}>
+              {converNumberToPrice(price)}
+            </AppText>
+          )}
+          <AppText numberOfLines={1} style={styles.text}>
+            {converNumberToPrice((price * (100 - discount)) / 100)}
+          </AppText>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -76,5 +85,9 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingBottom: padding.p4,
+  },
+  textStrike: {
+    paddingRight: padding.p12,
+    textDecorationLine: 'line-through',
   },
 });
