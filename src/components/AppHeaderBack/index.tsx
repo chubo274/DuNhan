@@ -13,12 +13,14 @@ interface AppHeaderBackProps {
   title?: string;
   content?: string;
   onPressBack?: () => void;
+  justHeader?: boolean;
 }
 
 const AppHeaderBack = ({
   title = '',
   content = '',
   onPressBack,
+  justHeader = false,
 }: AppHeaderBackProps) => {
   const navigation = useNavigation();
   //! state
@@ -29,17 +31,19 @@ const AppHeaderBack = ({
   return (
     <View style={styles.container}>
       <View style={styles.viewLeft}>
-        <TouchableOpacity
-          hitSlop={HIT_SLOP}
-          onPress={() => {
-            if (onPressBack) {
-              onPressBack();
-              return;
-            }
-            navigation.canGoBack() && navigation.goBack();
-          }}>
-          <AntDesign name="arrowleft" size={25} color={color.primary} />
-        </TouchableOpacity>
+        {justHeader && (
+          <TouchableOpacity
+            hitSlop={HIT_SLOP}
+            onPress={() => {
+              if (onPressBack) {
+                onPressBack();
+                return;
+              }
+              navigation.canGoBack() && navigation.goBack();
+            }}>
+            <AntDesign name="arrowleft" size={25} color={color.primary} />
+          </TouchableOpacity>
+        )}
         <View style={styles.viewTitle}>
           <AppText style={styles.txtTitle} numberOfLines={1}>
             {title}
