@@ -15,7 +15,8 @@ const ListTour = ({area, source}: ListTourI) => {
   const navigation = useNavigation();
   //! Function
   const onPress = () => {
-    navigation.navigate('ListTour');
+    const title = area;
+    navigation.navigate('ListTour', {title});
   };
 
   //! Render
