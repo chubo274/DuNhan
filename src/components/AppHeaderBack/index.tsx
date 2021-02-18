@@ -13,14 +13,14 @@ interface AppHeaderBackProps {
   title?: string;
   content?: string;
   onPressBack?: () => void;
-  justHeader?: boolean;
+  headerBack?: boolean;
 }
 
 const AppHeaderBack = ({
   title = '',
   content = '',
   onPressBack,
-  justHeader = false,
+  headerBack = false,
 }: AppHeaderBackProps) => {
   const navigation = useNavigation();
   //! state
@@ -31,7 +31,7 @@ const AppHeaderBack = ({
   return (
     <View style={styles.container}>
       <View style={styles.viewLeft}>
-        {justHeader && (
+        {headerBack && (
           <TouchableOpacity
             hitSlop={HIT_SLOP}
             onPress={() => {

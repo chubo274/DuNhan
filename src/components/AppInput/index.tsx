@@ -9,11 +9,12 @@ import ModalPicker from './components/ModalPicker';
 import {FORMAT_DATE} from 'helpers/constants';
 import AppTextInput from 'components/AppTextInput';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {ICON} from 'assets';
+import _ from 'lodash';
 
 interface AppInputProps {
   icon?: any;
   text?: string;
-  iconTouchModal?: any;
   placeholder?: string;
   typeModal?: 'ModalPicker' | 'DatePicker' | '';
   //ModalPicker
@@ -30,12 +31,12 @@ interface AppInputProps {
   maxLength?: number;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'numeric' | undefined;
+  initData?: any[];
   //DatePicker
 }
 const AppInput = ({
   icon,
   text = '',
-  iconTouchModal = null,
   placeholder = text,
   typeModal = '',
   data = [],
@@ -48,6 +49,7 @@ const AppInput = ({
   maxLength,
   secureTextEntry = false,
   keyboardType = 'default',
+  initData = [],
 }: AppInputProps) => {
   //! State
   const [showModal, setShowModal] = useState(false);
@@ -91,16 +93,18 @@ const AppInput = ({
             <TouchableOpacity
               style={styles.viewTouchModal}
               onPress={toggleModal}
-              disabled={editable}>
+              disabled={!editable}>
               <View style={styles.viewText}>
                 <AppText style={styles.textView}>
-                  {data.find((el) => el.key === keySelected)?.value}
+                  {!_.isEmpty(initData)
+                    ? initData.find((el) => el.key === keySelected)?.value
+                    : data.find((el) => el.key === keySelected)?.value}
                 </AppText>
               </View>
               <View style={styles.viewIconModal}>
                 <FastImage
                   resizeMode={FastImage.resizeMode.contain}
-                  source={iconTouchModal}
+                  source={ICON.dropDown_1}
                   style={styles.iconTouchModal}
                 />
               </View>
@@ -120,7 +124,7 @@ const AppInput = ({
             <TouchableOpacity
               style={styles.viewTouchModal}
               onPress={toggleModal}
-              disabled={editable}>
+              disabled={!editable}>
               <View style={styles.viewText}>
                 <AppText style={styles.textView}>
                   {moment(value).format('DD/MM/YYYY')}
@@ -129,7 +133,7 @@ const AppInput = ({
               <View style={styles.viewIconModal}>
                 <FastImage
                   resizeMode={FastImage.resizeMode.contain}
-                  source={iconTouchModal}
+                  source={ICON.dropDown_1}
                   style={styles.iconTouchModal}
                 />
               </View>
