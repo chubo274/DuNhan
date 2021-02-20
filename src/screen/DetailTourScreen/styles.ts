@@ -8,7 +8,4 @@ export default StyleSheet.create({
     paddingHorizontal: padding.p8,
     backgroundColor: color.white,
   },
-  viewList: {
-    marginVertical: padding.p8,
-  },
 });

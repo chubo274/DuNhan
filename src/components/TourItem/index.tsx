@@ -9,14 +9,19 @@ import {ACTUAL_DATE} from 'helpers/constants';
 import {converNumberToPrice} from 'helpers/function';
 
 interface TourItemI {
-  avatar?: any;
-  name?: string;
-  placeStart?: any;
-  timeStart?: any;
-  travelTime?: string;
+  avatar: any;
+  name: string;
+  placeStart: any;
+  timeStart: any;
+  travelTime: string;
   price?: number;
   discount?: number;
   slots?: number;
+  // booked
+  bookingDate?: any;
+  totalNumberTicket?: number;
+  totalMoney?: number;
+  ticketBooked?: boolean;
 }
 const TourItem = ({
   avatar = '',
@@ -27,6 +32,10 @@ const TourItem = ({
   price = 0,
   discount = 0,
   slots = 0,
+  bookingDate = '',
+  totalNumberTicket = 0,
+  totalMoney = 0,
+  ticketBooked = false,
 }: TourItemI) => {
   //! State
 
@@ -43,23 +52,39 @@ const TourItem = ({
         <AppText numberOfLines={1} style={styles.text}>
           Khởi hành: {placeStart}, {moment(timeStart).format(ACTUAL_DATE)}
         </AppText>
-
         <AppText numberOfLines={1} style={styles.text}>
           {travelTime}
         </AppText>
-        <AppText numberOfLines={1} style={styles.text}>
-          còn {slots} chỗ
-        </AppText>
-        <View style={{flexDirection: 'row'}}>
-          {!!discount && (
-            <AppText numberOfLines={1} style={styles.textStrike}>
-              {converNumberToPrice(price)}
+
+        {!ticketBooked && (
+          <>
+            <AppText numberOfLines={1} style={styles.text}>
+              còn {slots} chỗ
             </AppText>
-          )}
-          <AppText numberOfLines={1} style={styles.text}>
-            {converNumberToPrice((price * (100 - discount)) / 100)}
-          </AppText>
-        </View>
+            <View style={{flexDirection: 'row'}}>
+              {!!discount && (
+                <AppText numberOfLines={1} style={styles.textStrike}>
+                  {converNumberToPrice(price)}
+                </AppText>
+              )}
+              <AppText numberOfLines={1} style={styles.text}>
+                {converNumberToPrice((price * (100 - discount)) / 100)}
+              </AppText>
+            </View>
+          </>
+        )}
+
+        {ticketBooked && (
+          <>
+            <AppText numberOfLines={1} style={styles.text}>
+              Ngày đặt: {bookingDate}
+            </AppText>
+            <AppText numberOfLines={1} style={styles.text}>
+              Đã đặt {totalNumberTicket} vé với{' '}
+              {converNumberToPrice(totalMoney)}
+            </AppText>
+          </>
+        )}
       </View>
     </TouchableOpacity>
   );

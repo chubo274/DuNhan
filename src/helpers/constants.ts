@@ -12,7 +12,7 @@ export const HIT_SLOP = {
 
 export const GENDER = ['male', 'female'];
 
-export const FORMAT_DATE = 'YYYY-MM-DDTHH:mm:ss';
+export const FORMAT_DATE = 'YYYY-MM-DD HH:mm:ss';
 export const ACTUAL_DATE = 'YYYY-MM-DD';
 
 export const ACTION = {
