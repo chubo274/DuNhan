@@ -100,8 +100,6 @@ const SearchScreen = () => {
           initialValues={data}
           onSubmit={onSreach}>
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
-            console.log('values', values);
-
             return (
               <>
                 <View style={styles.field}>

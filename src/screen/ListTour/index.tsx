@@ -19,6 +19,7 @@ const ListTour = () => {
       placeStart: 'Hà Nội',
       timeStart: now,
       travelTime: '3 ngày đêm 2',
+      slots: 10,
       price: 2500000,
       discount: 20,
     },
@@ -28,13 +29,13 @@ const ListTour = () => {
       name: 'TP.HCM - Phú Quốc',
       placeStart: 'TP.HCM',
       timeStart: now,
+      slots: 7,
       travelTime: '3 ngày đêm 2',
       price: 1500000,
     },
   ];
   const route: any = useRoute();
   const {title, content} = route.params;
-  console.log(title);
   //! Function
 
   const renderItem = ({item, index}: any) => {
@@ -46,6 +47,7 @@ const ListTour = () => {
           placeStart={item.placeStart}
           timeStart={item.timeStart}
           travelTime={item.travelTime}
+          slots={item.slots}
           price={item.price}
           discount={item.discount}
         />
@@ -54,14 +56,16 @@ const ListTour = () => {
   };
   //! Render
   return (
-    <View style={styles.container}>
+    <>
       <AppHeaderBack title={title} headerBack />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-      />
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+        />
+      </View>
+    </>
   );
 };
 
