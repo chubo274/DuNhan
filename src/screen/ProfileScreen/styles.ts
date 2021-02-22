@@ -16,4 +16,7 @@ export default StyleSheet.create({
   viewbtnLogOut: {
     marginTop: padding.p52,
   },
+  field: {
+    marginVertical: padding.p12,
+  },
 });

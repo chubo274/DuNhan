@@ -11,6 +11,8 @@ import padding from 'helpers/padding';
 import color from 'helpers/color';
 import {converNumberToPrice} from 'helpers/function';
 import {Formik} from 'formik';
+import AppButtonCircle from 'components/AppButtonCircle';
+import AppText from 'components/AppText';
 const SearchScreen = () => {
   //! State
   const navigation = useNavigation();
@@ -60,16 +62,15 @@ const SearchScreen = () => {
     {key: 1, value: 'Hà Nội'},
     {key: 2, value: 'TP.HCM'},
   ];
-  const listRoutePlace = [
-    {key: -1, value: 'Không'},
+  const listRoutePlace: any[] = [
     {key: 1, value: 'Hưng Yên'},
     {key: 2, value: 'Hải Phòng'},
     {key: 3, value: 'Hà Nam'},
     {key: 4, value: 'Thanh Hoá'},
   ];
-  const data = {
+  const data: any = {
     place_start: 1,
-    route_place: [-1, -1, -1],
+    route_place: [],
     time_start: moment().format(ACTUAL_DATE),
     priceFromKey: priceData[0].key,
     priceToKey: priceData[priceData.length - 1].key,
@@ -100,6 +101,22 @@ const SearchScreen = () => {
           initialValues={data}
           onSubmit={onSreach}>
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
+            //* Function for Fomik
+            const onPlus = () => {
+              const newList = listRoutePlace.filter(
+                (el) => !values.route_place.includes(el.key),
+              );
+              const newRoutePlace = values.route_place;
+              newRoutePlace.push(newList[0].key);
+              setFieldValue('route_place', newRoutePlace);
+            };
+            const onMinus = () => {
+              const newRoutePlace = values.route_place;
+              newRoutePlace.pop();
+              setFieldValue('route_place', newRoutePlace);
+            };
+            console.log('values.route_place', values.route_place);
+
             return (
               <>
                 <View style={styles.field}>
@@ -114,23 +131,39 @@ const SearchScreen = () => {
                   />
                 </View>
 
-                <View style={styles.field}>
-                  <View style={styles.fieldRoutePlace}>
-                    {values.route_place.map((item, index) => {
+                <View style={styles.fieldPlace}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      paddingVertical: padding.p8,
+                    }}>
+                    <View style={styles.viewPlace}>
+                      <AppText style={styles.textPlace}>Điểm đến</AppText>
+                    </View>
+                    <View style={styles.viewPlace}>
+                      <AppButtonCircle name="pluscircleo" onPress={onPlus} />
+                    </View>
+                    <AppButtonCircle name="minuscircleo" onPress={onMinus} />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}>
+                    {values.route_place.map(({item, index}: any) => {
                       return (
                         <View style={{flex: 1}}>
                           <AppInput
                             typeModal="ModalPicker"
-                            text="Điểm đến"
+                            text=""
                             data={listRoutePlace.filter(
-                              (el) =>
+                              (el: any) =>
                                 el.key == -1 ||
                                 !values.route_place.includes(el.key) ||
                                 values.route_place[index] == el.key,
                             )}
                             keySelected={item}
                             onSelect={(key: number) => {
-                              const array = values.route_place;
+                              const array = [...values.route_place];
                               array[index] = key;
                               setFieldValue('route_place', array);
                             }}
@@ -161,7 +194,7 @@ const SearchScreen = () => {
                       }
                     />
                   </View>
-                  <View style={{flex: 1, paddingTop: 30}}>
+                  <View style={{flex: 1, paddingTop: 25}}>
                     <AppButton
                       text="Tất cả các ngày"
                       onPress={onAllDay}

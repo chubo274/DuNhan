@@ -51,8 +51,6 @@ const AppInput = ({
   keyboardType = 'default',
   initData = [],
 }: AppInputProps) => {
-  console.log({typeModal});
-
   //! State
   const [showModal, setShowModal] = useState(false);
 
@@ -67,95 +65,96 @@ const AppInput = ({
 
   //! Render
   return (
-    <View style={[styles.container, !icon && {height: 100}]}>
-      <AppText style={styles.textTitle}>{text}</AppText>
-      <View style={styles.viewFieldInput}>
-        {!!icon && (
-          <View style={styles.viewIcon}>
-            <Entypo name={icon} size={40} />
-          </View>
-        )}
-        {!typeModal && (
-          <View style={styles.viewInput}>
-            <AppTextInput
-              value={value}
-              placeholder={placeholder}
-              onChangeText={(text) => onChangeValue(text)}
-              // multiline={!icon}
-              editable={editable}
-              maxLength={maxLength}
-              keyboardType={keyboardType}
-              style={styles.textInput}
-              secureTextEntry={secureTextEntry}
-            />
-          </View>
-        )}
-        {typeModal == 'ModalPicker' && (
-          <>
-            <TouchableOpacity
-              style={styles.viewTouchModal}
-              onPress={toggleModal}
-              disabled={!editable}>
-              <View style={styles.viewText}>
-                <AppText style={styles.textView}>
-                  {!_.isEmpty(initData)
-                    ? initData.find((el) => el.key === keySelected)?.value
-                    : data.find((el) => el.key === keySelected)?.value}
-                </AppText>
-              </View>
-              <View style={styles.viewIconModal}>
-                <FastImage
-                  resizeMode={FastImage.resizeMode.contain}
-                  source={ICON.dropDown_1}
-                  style={styles.iconTouchModal}
-                />
-              </View>
-            </TouchableOpacity>
-            <ModalPicker
-              data={data}
-              keySelected={keySelected}
-              onSelect={onSelect}
-              showModal={showModal}
-              toggleModal={toggleModal}
-              hideModal={hideModal}
-            />
-          </>
-        )}
-        {typeModal == 'DatePicker' && (
-          <>
-            <TouchableOpacity
-              style={styles.viewTouchModal}
-              onPress={toggleModal}
-              disabled={!editable}>
-              <View style={styles.viewText}>
-                <AppText style={styles.textView}>
-                  {moment(value).format('DD/MM/YYYY')}
-                </AppText>
-              </View>
-              <View style={styles.viewIconModal}>
-                <FastImage
-                  resizeMode={FastImage.resizeMode.contain}
-                  source={ICON.dropDown_1}
-                  style={styles.iconTouchModal}
-                />
-              </View>
-            </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={showModal}
-              mode="date"
-              maximumDate={maximumDate}
-              onConfirm={(date: any) => {
-                console.log('date', moment(date).format(FORMAT_DATE));
-                hideModal();
-                onChangeValue(moment(date).format(FORMAT_DATE));
-              }}
-              onCancel={hideModal}
-              date={moment(value).toDate()}
-            />
-          </>
-        )}
+    <>
+      {!!text && <AppText style={styles.textTitle}>{text}</AppText>}
+      <View style={[styles.container, !icon && {height: 60}]}>
+        <View style={styles.viewFieldInput}>
+          {!!icon && (
+            <View style={styles.viewIcon}>
+              <Entypo name={icon} size={40} />
+            </View>
+          )}
+          {!typeModal && (
+            <View style={styles.viewInput}>
+              <AppTextInput
+                value={value}
+                placeholder={placeholder}
+                onChangeText={(text) => onChangeValue(text)}
+                editable={editable}
+                maxLength={maxLength}
+                keyboardType={keyboardType}
+                style={styles.textInput}
+                secureTextEntry={secureTextEntry}
+              />
+            </View>
+          )}
+          {typeModal == 'ModalPicker' && (
+            <>
+              <TouchableOpacity
+                style={styles.viewTouchModal}
+                onPress={toggleModal}
+                disabled={!editable}>
+                <View style={styles.viewText}>
+                  <AppText style={styles.textView}>
+                    {!_.isEmpty(initData)
+                      ? initData.find((el) => el.key === keySelected)?.value
+                      : data.find((el) => el.key === keySelected)?.value}
+                  </AppText>
+                </View>
+                <View style={styles.viewIconModal}>
+                  <FastImage
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={ICON.dropDown_1}
+                    style={styles.iconTouchModal}
+                  />
+                </View>
+              </TouchableOpacity>
+              <ModalPicker
+                data={data}
+                keySelected={keySelected}
+                onSelect={onSelect}
+                showModal={showModal}
+                toggleModal={toggleModal}
+                hideModal={hideModal}
+              />
+            </>
+          )}
+          {typeModal == 'DatePicker' && (
+            <>
+              <TouchableOpacity
+                style={styles.viewTouchModal}
+                onPress={toggleModal}
+                disabled={!editable}>
+                <View style={styles.viewText}>
+                  <AppText style={styles.textView}>
+                    {moment(value).format('DD/MM/YYYY')}
+                  </AppText>
+                </View>
+                <View style={styles.viewIconModal}>
+                  <FastImage
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={ICON.dropDown_1}
+                    style={styles.iconTouchModal}
+                  />
+                </View>
+              </TouchableOpacity>
+              <DateTimePickerModal
+                isVisible={showModal}
+                mode="date"
+                maximumDate={maximumDate}
+                onConfirm={(date: any) => {
+                  console.log('date', moment(date).format(FORMAT_DATE));
+                  hideModal();
+                  onChangeValue(moment(date).format(FORMAT_DATE));
+                }}
+                onCancel={hideModal}
+                date={moment(value).toDate()}
+              />
+            </>
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 export default React.memo(AppInput);

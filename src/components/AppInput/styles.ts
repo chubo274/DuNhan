@@ -13,7 +13,7 @@ export default StyleSheet.create({
     fontSize: fontSize.f16,
   },
   container: {
-    height: 80,
+    height: 50,
   },
   textTitle: {
     fontFamily: font.VDBrevia_Sb,

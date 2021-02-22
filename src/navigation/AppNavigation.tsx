@@ -20,7 +20,7 @@ const AppNavigation = () => {
         <Tab.Screen name="HomeScreen" component={HomeScreen} />
         <Tab.Screen name="SearchScreen" component={SearchScreen} />
         <Tab.Screen name="TicketScreen" component={TicketScreen} />
-        <Tab.Screen name="DetailTourScreen" component={DetailTourScreen} />
+        <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
       </Tab.Navigator>
     );
   };
