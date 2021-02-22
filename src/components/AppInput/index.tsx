@@ -51,6 +51,8 @@ const AppInput = ({
   keyboardType = 'default',
   initData = [],
 }: AppInputProps) => {
+  console.log({typeModal});
+
   //! State
   const [showModal, setShowModal] = useState(false);
 
@@ -79,7 +81,7 @@ const AppInput = ({
               value={value}
               placeholder={placeholder}
               onChangeText={(text) => onChangeValue(text)}
-              multiline={!icon}
+              // multiline={!icon}
               editable={editable}
               maxLength={maxLength}
               keyboardType={keyboardType}
