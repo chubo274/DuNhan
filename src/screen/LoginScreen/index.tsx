@@ -31,7 +31,7 @@ const LoginScreen = () => {
   };
   //! UseEffect
   useEffect(() => {
-    if (!isNaN(userName) && userName?.toString().length > 7) {
+    if (!isNaN(Number(userName)) && Number(userName)?.toString().length > 7) {
       setError('');
     } else {
       setError('Trường này phải là số và ít nhất 8 ký tự');
@@ -39,7 +39,7 @@ const LoginScreen = () => {
   }, [userName]);
 
   useEffect(() => {
-    if (password?.length > 7) {
+    if (String(password)?.length > 7) {
       setErrorPass('');
     } else {
       setErrorPass('Trường này phải ít nhất 8 ký tự');
