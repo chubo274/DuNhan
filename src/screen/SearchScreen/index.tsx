@@ -115,7 +115,6 @@ const SearchScreen = () => {
               newRoutePlace.pop();
               setFieldValue('route_place', newRoutePlace);
             };
-            console.log('values.route_place', values.route_place);
 
             return (
               <>
@@ -140,16 +139,20 @@ const SearchScreen = () => {
                     <View style={styles.viewPlace}>
                       <AppText style={styles.textPlace}>Điểm đến</AppText>
                     </View>
-                    <View style={styles.viewPlace}>
-                      <AppButtonCircle name="pluscircleo" onPress={onPlus} />
-                    </View>
-                    <AppButtonCircle name="minuscircleo" onPress={onMinus} />
+                    {values.route_place.length < 3 && (
+                      <View style={styles.viewPlace}>
+                        <AppButtonCircle name="pluscircleo" onPress={onPlus} />
+                      </View>
+                    )}
+                    {values.route_place.length > 0 && (
+                      <AppButtonCircle name="minuscircleo" onPress={onMinus} />
+                    )}
                   </View>
                   <View
                     style={{
                       flexDirection: 'row',
                     }}>
-                    {values.route_place.map(({item, index}: any) => {
+                    {values.route_place.map((item: any, index: any) => {
                       return (
                         <View style={{flex: 1}}>
                           <AppInput
@@ -157,15 +160,16 @@ const SearchScreen = () => {
                             text=""
                             data={listRoutePlace.filter(
                               (el: any) =>
-                                el.key == -1 ||
                                 !values.route_place.includes(el.key) ||
                                 values.route_place[index] == el.key,
                             )}
                             keySelected={item}
                             onSelect={(key: number) => {
-                              const array = [...values.route_place];
+                              const array = values.route_place;
                               array[index] = key;
                               setFieldValue('route_place', array);
+                              console.log({array});
+                              console.log({index});
                             }}
                           />
                         </View>
