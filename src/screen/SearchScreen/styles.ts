@@ -1,4 +1,6 @@
 import color from 'helpers/color';
+import font from 'helpers/font';
+import fontSize from 'helpers/fontSize';
 import padding from 'helpers/padding';
 import {StyleSheet} from 'react-native';
 
@@ -17,7 +19,15 @@ export default StyleSheet.create({
     paddingBottom: padding.p6,
     flexDirection: 'row',
   },
-  fieldRoutePlace: {
-    flexDirection: 'row',
+  fieldPlace: {
+    paddingBottom: padding.p6,
+  },
+  viewPlace: {
+    justifyContent: 'center',
+    marginHorizontal: padding.p4,
+  },
+  textPlace: {
+    fontSize: fontSize.f16,
+    fontFamily: font.VDBrevia_Sb,
   },
 });

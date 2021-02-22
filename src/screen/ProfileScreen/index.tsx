@@ -60,30 +60,38 @@ const ProfileScreen = () => {
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
             return (
               <>
-                <AppInput
-                  icon={'user'}
-                  text=""
-                  placeholder="Minh Nhân"
-                  value={values.name}
-                  onChangeValue={handleChange('name')}
-                  editable={editting}
-                />
-                <AppInput
-                  icon={'mobile'}
-                  text=""
-                  placeholder="03767891"
-                  value={values.phone}
-                  onChangeValue={handleChange('phone')}
-                  editable={editting}
-                />
-                <AppInput
-                  icon={'address'}
-                  text=""
-                  placeholder="Đại học Công Nghiệp"
-                  value={values.address}
-                  onChangeValue={(address) => setFieldValue('address', address)}
-                  editable={editting}
-                />
+                <View style={styles.field}>
+                  <AppInput
+                    icon={'user'}
+                    text=""
+                    placeholder="Minh Nhân"
+                    value={values.name}
+                    onChangeValue={handleChange('name')}
+                    editable={editting}
+                  />
+                </View>
+                <View style={styles.field}>
+                  <AppInput
+                    icon={'mobile'}
+                    text=""
+                    placeholder="03767891"
+                    value={values.phone}
+                    onChangeValue={handleChange('phone')}
+                    editable={editting}
+                  />
+                </View>
+                <View style={styles.field}>
+                  <AppInput
+                    icon={'address'}
+                    text=""
+                    placeholder="Đại học Công Nghiệp"
+                    value={values.address}
+                    onChangeValue={(address) =>
+                      setFieldValue('address', address)
+                    }
+                    editable={editting}
+                  />
+                </View>
 
                 <View style={styles.viewbtnSave}>
                   <AppButton text={text} onPress={handleSubmit} />
