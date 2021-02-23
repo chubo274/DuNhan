@@ -19,7 +19,7 @@ interface TourItemI {
   slots?: number;
   // booked
   bookingDate?: any;
-  totalNumberTicket?: number;
+  totalTicket?: number;
   totalMoney?: number;
   ticketBooked?: boolean;
 }
@@ -33,7 +33,7 @@ const TourItem = ({
   discount = 0,
   slots = 0,
   bookingDate = '',
-  totalNumberTicket = 0,
+  totalTicket = 0,
   totalMoney = 0,
   ticketBooked = false,
 }: TourItemI) => {
@@ -80,8 +80,7 @@ const TourItem = ({
               Ngày đặt: {bookingDate}
             </AppText>
             <AppText numberOfLines={1} style={styles.text}>
-              Đã đặt {totalNumberTicket} vé với{' '}
-              {converNumberToPrice(totalMoney)}
+              Đã đặt {totalTicket} vé với {converNumberToPrice(totalMoney)}
             </AppText>
           </>
         )}
