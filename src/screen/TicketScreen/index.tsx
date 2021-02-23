@@ -21,7 +21,7 @@ const TicketScreen = () => {
       price: 2000000,
       discount: 20,
       bookingDate: now,
-      totalNumberTicket: 5,
+      totalTicket: 5,
       totalMoney: 10000000,
     },
     {
@@ -34,7 +34,7 @@ const TicketScreen = () => {
       travelTime: '3 ngày đêm 2',
       price: 1500000,
       bookingDate: now,
-      totalNumberTicket: 2,
+      totalTicket: 2,
       totalMoney: 3000000,
     },
   ];
@@ -51,7 +51,7 @@ const TicketScreen = () => {
           timeStart={item.timeStart}
           travelTime={item.travelTime}
           bookingDate={item.bookingDate}
-          totalNumberTicket={item.totalNumberTicket}
+          totalTicket={item.totalTicket}
           totalMoney={item.totalMoney}
         />
       </View>

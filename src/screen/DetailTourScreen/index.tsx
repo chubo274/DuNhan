@@ -21,7 +21,7 @@ const DetailTourScreen = () => {
     price: 2000000,
     discount: 20,
     bookingDate: now,
-    totalNumberTicket: 5,
+    totalTicket: 5,
     totalMoney: 10000000,
     // list_image: [IMAGE.listTourMB, IMAGE.listTourMT, IMAGE.listTourMN],
     // list_image: [

@@ -35,7 +35,7 @@ const ListTour = () => {
     },
   ];
   const route: any = useRoute();
-  const {title, content} = route.params;
+  const {title} = route.params;
   //! Function
 
   const renderItem = ({item, index}: any) => {
