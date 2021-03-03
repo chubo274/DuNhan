@@ -5,7 +5,12 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   imgBg: {flex: 1, opacity: 0.8},
-  container: {flex: 1, padding: padding.p20, backgroundColor: '#FFFFFF'},
+  container: {
+    flex: 1,
+    height: DEVICE.HEIGHT,
+    padding: padding.p20,
+    backgroundColor: '#FFFFFF',
+  },
   textWel: {
     fontSize: fontSize.f22,
     marginTop: padding.p40,

@@ -49,7 +49,10 @@ const LoginScreen = () => {
   //! Render
   return (
     <ImageBackground source={IMAGE.bgLogin} style={styles.imgBg}>
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={{flex: 1}}
+        enableOnAndroid>
         <View style={styles.container}>
           <AppText style={styles.textWel}>Welcome to App Du Nhân</AppText>
           <AppText style={styles.textWel2}>Đăng nhập để tiếp tục!</AppText>
