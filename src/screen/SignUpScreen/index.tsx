@@ -2,50 +2,121 @@ import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import React, {useRef} from 'react';
-import {Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import _ from 'lodash';
 import * as Yup from 'yup';
+import {useDispatch} from 'react-redux';
+import {signUpAction} from 'redux/actions/userActions';
+import {useNavigation} from '@react-navigation/native';
 
 const validationSchema = Yup.object().shape({
-  phone_number: Yup.string()
+  phone: Yup.string()
     .trim()
-    .matches(/^[0-9]+$/, 'phone_number Phải là số')
-    .min(8, 'phone_number Ít nhất 8 ký tự')
-    .required('phone_number Bắt buộc'),
+    .matches(/^[0-9]+$/, 'phone Phải là số')
+    .min(8, 'phone Ít nhất 8 ký tự')
+    .required('phone Bắt buộc'),
   password: Yup.string()
     .trim()
     .min(8, 'password Ít nhất 8 ký tự')
     .required('password Bắt buộc'),
-  user_name: Yup.string().trim().required('user_name Bắt buộc'),
+  name: Yup.string().trim().required('name Bắt buộc'),
 });
 const SignUpScreen = () => {
   //! State
   const refFormik = useRef<any>(null);
-  const defaultData = {
-    phone_number: '',
+  const userDataForm = {
+    phone: '',
     password: '',
-    user_name: '',
+    name: '',
     address: '',
   };
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   //! Function
-  const onBack = () => {};
-  const onSubmit = () => {};
+  const onBack = () => {
+    const isDirty = refFormik?.current?.dirty;
+    isDirty
+      ? Alert.alert(
+          'Thông báo',
+          'Bạn có một số thay đổi chưa lưu, bạn có muốn tiếp tục thoát?',
+          [
+            {
+              text: 'Ok',
+              onPress: () => navigation.goBack(),
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+          {cancelable: false},
+        )
+      : navigation.goBack();
+  };
+
+  const onSubmit = (values: any) => {
+    const data = {...values};
+    dispatch(
+      signUpAction(data, {
+        onSuccess: () => {
+          refFormik?.current?.resetForm();
+          Alert.alert(
+            'Thông báo',
+            'Đăng ký thành công!',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+        onFailed: (err: string) => {
+          // refFormik?.current?.resetForm();
+          if (err.includes('duplicate key error collection')) {
+            Alert.alert(
+              'Xảy ra lỗi',
+              'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.',
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          } else {
+            Alert.alert(
+              'Xảy ra lỗi',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          }
+        },
+      }),
+    );
+  };
 
   //! UseEffect
 
   //! Render
   return (
     <View style={styles.viewBg}>
-      <AppHeaderBack title={'Quên mật khẩu'} />
+      <AppHeaderBack title={'Quên mật khẩu'} headerBack onPressBack={onBack} />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Formik
           enableReinitialize
           innerRef={refFormik}
           validationSchema={validationSchema}
-          initialValues={defaultData}
+          initialValues={userDataForm}
           onSubmit={onSubmit}>
           {({
             handleChange,
@@ -54,8 +125,6 @@ const SignUpScreen = () => {
             values,
             setFieldValue,
           }: any) => {
-            console.log(errors);
-
             return (
               <View style={styles.container}>
                 <View style={styles.viewInput}>
@@ -64,8 +133,8 @@ const SignUpScreen = () => {
                     placeholder="098765431"
                     maxLength={20}
                     keyboardType="numeric"
-                    value={values.phone_number}
-                    onChangeValue={handleChange('phone_number')}
+                    value={values.phone}
+                    onChangeValue={handleChange('phone')}
                   />
                 </View>
                 <View style={styles.viewInput}>
@@ -82,8 +151,8 @@ const SignUpScreen = () => {
                     text="Họ, Tên *"
                     placeholder="Minh Nhân"
                     maxLength={20}
-                    value={values.user_name}
-                    onChangeValue={handleChange('user_name')}
+                    value={values.name}
+                    onChangeValue={handleChange('name')}
                   />
                 </View>
                 <View style={styles.viewInput}>

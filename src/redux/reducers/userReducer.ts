@@ -2,25 +2,16 @@ import actionTypes from 'redux/actionTypes';
 
 export interface IUserReducer {
   data?: {};
-  listAction: any[];
-  listActionMommy: any[];
-  type: string;
-  errorMessage: string;
-  template: any[];
-  actual_date: any;
+  isCreatingUser: boolean;
+  errorCreatingUser: string;
 }
 const initialState: IUserReducer = {
-  type: '',
   data: {},
-  listAction: [],
-  listActionMommy: [],
-  errorMessage: '',
-  template: [],
-  actual_date: undefined,
+  isCreatingUser: false,
+  errorCreatingUser: '',
 };
 
 export default (state = initialState, action: any) => {
-  state.type = action.type;
   switch (action.type) {
     case actionTypes.LOGIN_SUCCESS:
       return {
@@ -33,22 +24,35 @@ export default (state = initialState, action: any) => {
         data: {},
         errorMessage: action.error,
       };
+
     case actionTypes.LOG_OUT:
       return {
         ...state,
         data: {},
         errorMessage: '',
       };
-    case actionTypes.GET_USER_DATA_SUCCESS:
+
+    case actionTypes.SIGN_UP_REQUEST: {
       return {
         ...state,
-        data: {...state.data, ...action.response},
+        isCreatingUser: true,
       };
-    case actionTypes.GET_USER_DATA_FAILED:
+    }
+    case actionTypes.SIGN_UP_SUCCESS: {
       return {
         ...state,
-        errorMessage: action.error,
+        isCreatingUser: false,
+        errorCreatingUser: undefined,
       };
+    }
+    case actionTypes.SIGN_UP_FAILED: {
+      return {
+        ...state,
+        isCreatingUser: false,
+        errorCreatingUser: action.error,
+      };
+    }
+
     default:
       return state;
   }
