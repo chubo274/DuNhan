@@ -6,6 +6,9 @@ import React, {useRef, useState} from 'react';
 import {View} from 'react-native';
 import styles from './styles';
 import * as Yup from 'yup';
+import {useDispatch} from 'react-redux';
+import actionTypes from 'redux/actionTypes';
+import {userActions} from 'redux/actions';
 
 let text: string;
 const validationSchema = Yup.object().shape({
@@ -18,6 +21,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProfileScreen = () => {
+  const dispatch = useDispatch();
   //! State
   const refFormik = useRef<any>(null);
   const [editting, setEditting] = useState(false);
@@ -41,7 +45,10 @@ const ProfileScreen = () => {
     setEditting(!editting);
   };
 
-  const onLogOut = () => {};
+  const onLogOut = () => {
+    dispatch({type: '_REQUEST'});
+    dispatch(userActions.logout());
+  };
 
   //! Effect
 

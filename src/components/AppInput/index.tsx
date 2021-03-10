@@ -1,7 +1,7 @@
 import styles from 'components/AppInput/styles';
 import AppText from 'components/AppText';
 import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {KeyboardTypeOptions, TouchableOpacity, View} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
@@ -30,7 +30,7 @@ interface AppInputProps {
   maximumDate?: any;
   maxLength?: number;
   secureTextEntry?: boolean;
-  keyboardType?: 'default' | 'numeric' | undefined;
+  keyboardType?: KeyboardTypeOptions;
   initData?: any[];
   //DatePicker
 }

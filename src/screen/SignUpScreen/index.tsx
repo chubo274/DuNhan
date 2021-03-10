@@ -77,40 +77,24 @@ const SignUpScreen = () => {
         },
         onFailed: (err: string) => {
           // refFormik?.current?.resetForm();
-          if (err.includes('duplicate key error collection')) {
-            Alert.alert(
-              'Xảy ra lỗi',
-              'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.',
-              [
-                {
-                  text: 'Ok',
-                },
-              ],
-              {cancelable: false},
-            );
-          } else if (err.includes('is required')) {
-            Alert.alert(
-              'Xảy ra lỗi',
-              'Bạn cần nhập đủ những trường bắt buộc',
-              [
-                {
-                  text: 'Ok',
-                },
-              ],
-              {cancelable: false},
-            );
-          } else {
-            Alert.alert(
-              'Xảy ra lỗi',
-              err,
-              [
-                {
-                  text: 'Ok',
-                },
-              ],
-              {cancelable: false},
-            );
+          let errorMessage = err;
+
+          if (errorMessage.includes('duplicate key error collection')) {
+            errorMessage =
+              'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.';
+          } else if (errorMessage.includes('is required')) {
+            errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
           }
+          Alert.alert(
+            'Xảy ra lỗi',
+            errorMessage,
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
         },
       }),
     );

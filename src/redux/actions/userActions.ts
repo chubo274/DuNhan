@@ -4,31 +4,29 @@ import actionTypes from '../actionTypes';
  * Reducer actions related with login
  */
 
-export const loginRequest = (body: any) => {
+export const login = (data: any, callbacks: any) => {
   return {
     type: actionTypes.LOGIN_REQUEST,
-    body,
+    data,
+    callbacks,
   };
 };
 
-export const loginFailed = (error: any) => {
-  return {
-    type: actionTypes.LOGIN_FAILED,
-    error,
-  };
+export const logout = () => {
+  return {type: actionTypes.LOG_OUT};
 };
 
-export const loginSuccess = (response: any) => {
-  return {
-    type: actionTypes.LOGIN_SUCCESS,
-    response,
-  };
-};
-
-// signUp
 export const signUpAction = (data: any, callbacks: any) => {
   return {
     type: actionTypes.SIGN_UP_REQUEST,
+    data,
+    callbacks,
+  };
+};
+
+export const getUserData = (data: any, callbacks: any) => {
+  return {
+    type: actionTypes.GET_USER_DATA_REQUEST,
     data,
     callbacks,
   };
