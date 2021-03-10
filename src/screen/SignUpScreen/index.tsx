@@ -88,6 +88,17 @@ const SignUpScreen = () => {
               ],
               {cancelable: false},
             );
+          } else if (err.includes('is required')) {
+            Alert.alert(
+              'Xảy ra lỗi',
+              'Bạn cần nhập đủ những trường bắt buộc',
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
           } else {
             Alert.alert(
               'Xảy ra lỗi',

@@ -3,7 +3,7 @@ import {post} from './serviceHandle';
 
 class userService {
   signUpUser(body: any) {
-    return post(`${serviceBase.url.user}${serviceBase.method.create}`, body);
+    return post(serviceBase.url.user, body);
   }
 }
 
