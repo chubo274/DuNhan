@@ -11,12 +11,6 @@ export default {
     place: 'place/',
     tour: 'tour/',
   },
-  method: {
-    create: 'create/',
-    update: 'update/',
-    delete: 'delete/',
-    find: 'find/',
-  },
   statusCode: {
     success: [200, 201, 204],
     auth: [401],
