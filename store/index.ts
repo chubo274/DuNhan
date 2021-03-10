@@ -10,6 +10,7 @@ import _ from 'lodash';
 import rootReducer from '../src/redux/reducers';
 //import * as serviceHandle from '../src/services/serviceHandle';
 import actionTypes from '../src/redux/actionTypes';
+import {removeAuthorization, setToken} from 'services/serviceHandle';
 //* Middleware: Redux Persist Config
 const persistConfig = {
   //* Root
@@ -26,13 +27,13 @@ const persistConfig = {
 const middleware = [];
 const sagaMiddleware = createSagaMiddleware();
 const handleAuthTokenMiddleware = () => (next: any) => (action: any) => {
-  // if (action.type === actionTypes.LOGIN_SUCCESS) {
-  //   const token = action.response?.token;
-  //   serviceHandle.setToken(token);
-  // }
-  // if (action.type === actionTypes.LOG_OUT) {
-  //   serviceHandle.removeAuthorization();
-  // }
+  if (action.type === actionTypes.LOGIN_SUCCESS) {
+    const token = action.data?.token;
+    setToken(token);
+  }
+  if (action.type === actionTypes.LOG_OUT) {
+    removeAuthorization();
+  }
   next(action);
 };
 middleware.push(sagaMiddleware, handleAuthTokenMiddleware);
@@ -55,7 +56,7 @@ const persistor = persistStore(store, config, () => {
     !_.isEmpty(stateData.userReducer) &&
     !_.isEmpty(stateData.userReducer.data)
   ) {
-    // serviceHandle.setToken(stateData.userReducer.data.token);
+    setToken(stateData.userReducer.data.token);
   }
 });
 sagaMiddleware.run(sagas);

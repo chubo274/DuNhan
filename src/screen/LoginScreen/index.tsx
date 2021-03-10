@@ -4,15 +4,18 @@ import AppButton from 'components/AppButton';
 import AppInput from 'components/AppInput';
 import AppText from 'components/AppText';
 import React, {useEffect, useState} from 'react';
-import {ImageBackground, View} from 'react-native';
+import {Alert, ImageBackground, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import _ from 'lodash';
+import {useDispatch} from 'react-redux';
+import {userActions} from 'redux/actions';
 
 const LoginScreen = () => {
   //! State
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState<number>();
   const [password, setPassword] = useState<string>();
   const [error, setError] = useState('');
@@ -27,7 +30,26 @@ const LoginScreen = () => {
   };
 
   const loginApp = () => {
-    // dispatch(userActions.loginRequest(param));
+    dispatch(
+      userActions.login(
+        {user_name: userName, password},
+        {
+          onFailed: (err: string) => {
+            let errorMessage = err;
+            Alert.alert(
+              'Thông báo',
+              errorMessage,
+              [
+                {
+                  text: 'ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        },
+      ),
+    );
   };
   //! UseEffect
   useEffect(() => {
@@ -63,7 +85,7 @@ const LoginScreen = () => {
               value={userName}
               onChangeValue={onChangeUserName}
               maxLength={20}
-              keyboardType="numeric"
+              keyboardType="number-pad"
             />
             <AppText>{error}</AppText>
           </View>

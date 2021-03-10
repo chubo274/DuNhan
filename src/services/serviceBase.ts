@@ -1,8 +1,8 @@
 export default {
   url: {
-    HOST: 'http://192.168.0.110:5000/',
+    HOST: 'http://192.168.1.7:5000/',
     template: 'template/',
-    login: 'login/',
+    login: 'user/login/',
     user: 'user/',
     hotel: 'hotel/',
     tourGuide: 'tourGuide/',
