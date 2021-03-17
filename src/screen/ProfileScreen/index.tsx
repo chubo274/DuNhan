@@ -3,12 +3,12 @@ import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import {Formik} from 'formik';
 import React, {useRef, useState} from 'react';
-import {View} from 'react-native';
+import {Alert, View} from 'react-native';
 import styles from './styles';
 import * as Yup from 'yup';
-import {useDispatch} from 'react-redux';
-import actionTypes from 'redux/actionTypes';
+import {useDispatch, useSelector} from 'react-redux';
 import {userActions} from 'redux/actions';
+import {RootState} from 'redux/reducers';
 
 let text: string;
 const validationSchema = Yup.object().shape({
@@ -25,20 +25,50 @@ const ProfileScreen = () => {
   //! State
   const refFormik = useRef<any>(null);
   const [editting, setEditting] = useState(false);
-  const data = {
-    name: 'Nhân',
-    phone: '03767891',
-    address: 'Đại học Công Nghiệp',
-  };
-
-  //! Function
+  const data = useSelector((state: RootState) => state.userReducer.data);
   if (editting) {
     text = 'Lưu';
   } else {
     text = 'Sửa';
   }
+
+  //! Function
   const onPressSubmit = (values: any) => {
-    console.log('submit');
+    dispatch(
+      userActions.updateUserData(values, {
+        onSuccess: () => {
+          refFormik?.current?.resetForm();
+          Alert.alert(
+            'Thông báo',
+            'Cập nhật thành công!',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+        onFailed: (err: string) => {
+          // refFormik?.current?.resetForm();
+          let errorMessage = err;
+
+          if (errorMessage.includes('is required')) {
+            errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
+          }
+          Alert.alert(
+            'Xảy ra lỗi',
+            errorMessage,
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+      }),
+    );
     toggleBtn();
   };
   const toggleBtn = () => {
@@ -59,11 +89,15 @@ const ProfileScreen = () => {
       <View style={styles.container}>
         <Formik
           enableReinitialize
-          initialValues={data}
+          initialValues={{
+            name: data.name,
+            phone: data.phone,
+            address: data.address,
+          }}
           innerRef={refFormik}
           validateOnBlur={false}
           validationSchema={validationSchema}
-          onSubmit={onPressSubmit}>
+          onSubmit={editting ? onPressSubmit : toggleBtn}>
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
             return (
               <>

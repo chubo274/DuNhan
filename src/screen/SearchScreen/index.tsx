@@ -1,9 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import {FORMAT_DATE, ACTUAL_DATE} from 'helpers/constants';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import styles from './styles';
 import moment from 'moment';
@@ -13,8 +13,22 @@ import {converNumberToPrice} from 'helpers/function';
 import {Formik} from 'formik';
 import AppButtonCircle from 'components/AppButtonCircle';
 import AppText from 'components/AppText';
+import {useDispatch, useSelector} from 'react-redux';
+import provinceActions from 'redux/actions/provinceActions';
+import {RootState} from 'redux/reducers';
 const SearchScreen = () => {
+  const dispatch = useDispatch();
+  const listProvinceData = useSelector(
+    (state: RootState) => state.provinceReducer.data,
+  );
+  const listProvince: any[] = [];
+  listProvinceData.map((el) =>
+    listProvince.push({key: el._id, value: el.name}),
+  );
+  console.log({listProvince}, {listProvinceData});
+
   //! State
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const priceData = [
     {
@@ -58,18 +72,9 @@ const SearchScreen = () => {
       value: 'Không giới hạn',
     },
   ];
-  const listPlaceStart = [
-    {key: 1, value: 'Hà Nội'},
-    {key: 2, value: 'TP.HCM'},
-  ];
-  const listRoutePlace: any[] = [
-    {key: 1, value: 'Hưng Yên'},
-    {key: 2, value: 'Hải Phòng'},
-    {key: 3, value: 'Hà Nam'},
-    {key: 4, value: 'Thanh Hoá'},
-  ];
+
   const data: any = {
-    place_start: 1,
+    place_start: listProvince[0]?.key || '',
     route_place: [],
     time_start: moment().format(ACTUAL_DATE),
     priceFromKey: priceData[0].key,
@@ -89,6 +94,11 @@ const SearchScreen = () => {
   };
 
   //! UseState
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(provinceActions.getListProvince());
+    }
+  }, [isFocused]);
 
   //! Render
   return (
@@ -103,7 +113,7 @@ const SearchScreen = () => {
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
             //* Function for Fomik
             const onPlus = () => {
-              const newList = listRoutePlace.filter(
+              const newList = listProvince.filter(
                 (el) => !values.route_place.includes(el.key),
               );
               const newRoutePlace = values.route_place;
@@ -122,7 +132,7 @@ const SearchScreen = () => {
                   <AppInput
                     typeModal="ModalPicker"
                     text="Địa điểm khởi hành"
-                    data={listPlaceStart}
+                    data={listProvince}
                     keySelected={values.place_start}
                     onSelect={(key: number) =>
                       setFieldValue('place_start', key)
@@ -154,11 +164,11 @@ const SearchScreen = () => {
                     }}>
                     {values.route_place.map((item: any, index: any) => {
                       return (
-                        <View style={{flex: 1}}>
+                        <View style={{flex: 1}} key={item}>
                           <AppInput
                             typeModal="ModalPicker"
                             text=""
-                            data={listRoutePlace.filter(
+                            data={listProvince.filter(
                               (el: any) =>
                                 !values.route_place.includes(el.key) ||
                                 values.route_place[index] == el.key,
@@ -168,8 +178,6 @@ const SearchScreen = () => {
                               const array = values.route_place;
                               array[index] = key;
                               setFieldValue('route_place', array);
-                              console.log({array});
-                              console.log({index});
                             }}
                           />
                         </View>
@@ -196,6 +204,7 @@ const SearchScreen = () => {
                           moment(data).format(ACTUAL_DATE),
                         )
                       }
+                      minimumDate={moment().toDate()}
                     />
                   </View>
                   <View style={{flex: 1, paddingTop: 25}}>

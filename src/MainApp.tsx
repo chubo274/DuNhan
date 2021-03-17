@@ -21,11 +21,11 @@ const MainApp = () => {
   //! Function
 
   //! Use Effect
-  useEffect(() => {
-    if (loadingReducer.type.includes('_FAILED')) {
-      Alert.alert('Thông báo', loadingReducer.errorMessage);
-    }
-  }, [loadingReducer.type]);
+  // useEffect(() => {
+  //   if (loadingReducer.type.includes('_FAILED')) {
+  //     Alert.alert('Thông báo', loadingReducer.errorMessage);
+  //   }
+  // }, [loadingReducer.type]);
 
   //! Render
   return (

@@ -24,9 +24,16 @@ export const signUpAction = (data: any, callbacks: any) => {
   };
 };
 
-export const getUserData = (data: any, callbacks: any) => {
+export const getUserData = (callbacks: any) => {
   return {
     type: actionTypes.GET_USER_DATA_REQUEST,
+    callbacks,
+  };
+};
+
+export const updateUserData = ( data: any, callbacks: any) => {
+  return {
+    type: actionTypes.UPDATE_USER_DATA_REQUEST,
     data,
     callbacks,
   };

@@ -28,6 +28,7 @@ interface AppInputProps {
   onChangeValue?: (data: any) => void;
   editable?: boolean;
   maximumDate?: any;
+  minimumDate?: any;
   maxLength?: number;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
@@ -46,6 +47,7 @@ const AppInput = ({
   onChangeValue = () => {},
   editable = true,
   maximumDate = undefined,
+  minimumDate = undefined,
   maxLength,
   secureTextEntry = false,
   keyboardType = 'default',
@@ -142,6 +144,7 @@ const AppInput = ({
                 isVisible={showModal}
                 mode="date"
                 maximumDate={maximumDate}
+                minimumDate={minimumDate}
                 onConfirm={(date: any) => {
                   console.log('date', moment(date).format(FORMAT_DATE));
                   hideModal();

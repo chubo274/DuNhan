@@ -6,8 +6,7 @@ import {StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-interface TabBarI {}
-const TabBar = (props: any) => {
+const TabBar = (props: any) => {  
   //! State
   const {navigation, state} = props;
   const {routeNames, index} = state;
@@ -25,9 +24,7 @@ const TabBar = (props: any) => {
     return (
       <TouchableOpacity
         key={name}
-        onPress={() => {
-          navigation.navigate(routeNames[idx]);
-        }}
+        onPress={() => navigation.navigate(routeNames[idx])}
         style={styles.viewTouch}>
         <AntDesign
           name={icon}
