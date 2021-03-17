@@ -9,21 +9,23 @@ import TabBar from './components/TabBar';
 import ListTour from 'screen/ListTour';
 import DetailTourScreen from 'screen/DetailTourScreen';
 
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="SearchScreen" component={SearchScreen} />
+      <Tab.Screen name="TicketScreen" component={TicketScreen} />
+      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+};
+
 const AppNavigation = () => {
   //! State
-  const Stack = createStackNavigator();
-  const Tab = createBottomTabNavigator();
+
   //! Function
-  const TabNavigator = () => {
-    return (
-      <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-        <Tab.Screen name="HomeScreen" component={HomeScreen} />
-        <Tab.Screen name="SearchScreen" component={SearchScreen} />
-        <Tab.Screen name="TicketScreen" component={TicketScreen} />
-        <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
-      </Tab.Navigator>
-    );
-  };
 
   //! Render
   return (

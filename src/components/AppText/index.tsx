@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   defautlText: {
     color: color.black,
     fontSize: fontSize.f14,
-    fontFamily: font.VDBrevia_M
+    fontFamily: font.VDBrevia_M,
   },
 });

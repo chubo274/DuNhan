@@ -6,11 +6,11 @@ import styles from './styles';
 import Octicons from 'react-native-vector-icons/Octicons';
 interface AppPickerProps {
   data: Array<{
-    key: number;
+    key: any;
     value: string;
   }>;
-  keySelected: number;
-  onSelect: (key: number) => void;
+  keySelected: any;
+  onSelect: (key: any) => void;
   showModal: boolean;
   toggleModal: () => void;
   hideModal: () => void;

@@ -1,4 +1,4 @@
-import {create, NETWORK_ERROR} from 'apisauce';
+import {create, NETWORK_ERROR, TIMEOUT_ERROR} from 'apisauce';
 import serviceBase from './serviceBase';
 import _ from 'lodash';
 import {Alert} from 'react-native';
@@ -19,6 +19,8 @@ const convertProblemMessages = (message: string) => {
   switch (message) {
     case NETWORK_ERROR:
       return 'Kết nối Wifi/3G/GPRS bị gián đoạn, Quý khách vui lòng kiểm tra lại';
+    case TIMEOUT_ERROR:
+      return 'Quá hạn kết nối đến server, vui lòng kiểm tra kết nối và thử lại';
     default:
       return message;
   }
@@ -33,31 +35,32 @@ const returnData = (response: any) => {
   let errorMessage = '';
   if (serviceBase.statusCode.success.includes(response.status)) {
     return {
-      response: response.data,
-      error: false,
+      response: {
+        data: response.data,
+        error: false,
+      },
     };
   }
-  if (_.isNull(response.data)) {
-    errorMessage = convertProblemMessages(response.problem);
-  } else if (
-    serviceBase.statusCode.notFound.includes(response.data.status) ||
-    serviceBase.statusCode.auth.includes(response.data.status)
+  if (
+    serviceBase.statusCode.notFound.includes(response.status) ||
+    serviceBase.statusCode.auth.includes(response.status) ||
+    serviceBase.statusCode.error.includes(response.status)
   ) {
     errorMessage = `${
-      response.data.message ? response.data.message : response.data
+      response.data.error ? response.data.error : response.data
     }`;
-  } else if (serviceBase.statusCode.error.includes(response.data.status)) {
+  } else {
     errorMessage = convertProblemMessages(response.problem);
     errorMessage = _.isString(errorMessage)
       ? errorMessage
       : JSON.stringify(errorMessage);
-  } else {
-    errorMessage = convertProblemMessages(response.data.problem);
   }
   return {
-    errorMessage,
-    detail: response.data || errorMessage,
-    error: true,
+    response: {
+      errorMessage,
+      dataFailed: {...response.data},
+      error: true,
+    },
   };
 };
 
@@ -101,7 +104,7 @@ const post = async (url: string, body: any) => {
  * @param {*url without host} url
  * @param {*} body
  */
-const put = async (url: string, body: any) => {
+const putUpdate = async (url: string, body: any) => {
   debug(body);
   const dataResponse = await api.put(url, body);
   // logic handle dataResponse here
@@ -131,4 +134,4 @@ const deleteApi = async (url: string, body: any) => {
   return returnData(response);
 };
 
-export {get, post, setToken, put, patch, deleteApi, removeAuthorization};
+export {get, post, setToken, putUpdate, patch, deleteApi, removeAuthorization};
