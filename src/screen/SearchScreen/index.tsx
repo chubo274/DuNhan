@@ -25,7 +25,6 @@ const SearchScreen = () => {
   listProvinceData.map((el) =>
     listProvince.push({key: el._id, value: el.name}),
   );
-  console.log({listProvince}, {listProvinceData});
 
   //! State
   const isFocused = useIsFocused();
