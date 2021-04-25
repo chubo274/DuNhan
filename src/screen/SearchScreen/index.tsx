@@ -3,8 +3,8 @@ import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import {FORMAT_DATE, ACTUAL_DATE} from 'helpers/constants';
-import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, View} from 'react-native';
 import styles from './styles';
 import moment from 'moment';
 import padding from 'helpers/padding';
@@ -14,17 +14,32 @@ import {Formik} from 'formik';
 import AppButtonCircle from 'components/AppButtonCircle';
 import AppText from 'components/AppText';
 import {useDispatch, useSelector} from 'react-redux';
-import provinceActions from 'redux/actions/provinceActions';
+import placeActions from 'redux/actions/placeActions';
 import {RootState} from 'redux/reducers';
+import _ from 'lodash';
+import tourActions from 'redux/actions/tourActions';
 const SearchScreen = () => {
+  const innerRef = useRef<any>(null);
   const dispatch = useDispatch();
-  const listProvinceData = useSelector(
-    (state: RootState) => state.provinceReducer.data,
+  const listPlaceData = useSelector(
+    (state: RootState) => state.placeReducer.data,
   );
-  const listProvince: any[] = [];
-  listProvinceData.map((el) =>
-    listProvince.push({key: el._id, value: el.name}),
+  const listToursData = useSelector(
+    (state: RootState) => state.tourReducer.data,
   );
+
+  const listPlacesStart: any[] = [];
+  listToursData.map((el: any) => {
+    if (listPlacesStart.indexOf(el?.place_start) === -1) {
+      listPlacesStart.push({
+        key: listPlacesStart.length,
+        value: el?.place_start,
+      });
+    }
+  });
+
+  const listPlace: any[] = [];
+  listPlaceData.map((el) => listPlace.push({key: el._id, value: el.name}));
 
   //! State
   const isFocused = useIsFocused();
@@ -73,7 +88,7 @@ const SearchScreen = () => {
   ];
 
   const data: any = {
-    place_start: listProvince[0]?.key || '',
+    place_start: listPlacesStart[0]?.key,
     route_place: [],
     time_start: moment().format(ACTUAL_DATE),
     priceFromKey: priceData[0].key,
@@ -83,21 +98,40 @@ const SearchScreen = () => {
   const [isAllDay, setIsAllDay] = useState(false);
 
   //! Function
-  const onSreach = () => {
-    const title = 'Kết quả tìm kiếm';
-    navigation.navigate('ListTour', {title});
-  };
+  const onSreach = (value: any) => {
+    value.place_start = listPlacesStart.find(
+      (el) => el.key === value.place_start,
+    )?.value;
 
-  const onAllDay = () => {
-    setIsAllDay(!isAllDay);
+    dispatch(
+      tourActions.searchTours(value, {
+        onSuccess: (resultSearch: any) => {
+          const title = 'Kết quả tìm kiếm';
+          innerRef?.current?.resetForm();
+          navigation.navigate('ListTour', {title, resultSearch});
+        },
+        onFailed: () => {
+          Alert.alert(
+            'Cảnh báo!',
+            'Oops! Lỗi bất ngờ',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+      }),
+    );
   };
 
   //! UseState
   useEffect(() => {
     if (isFocused) {
-      dispatch(provinceActions.getListProvince());
+      dispatch(placeActions.getListPlace());
     }
-  }, [isFocused]);
+  }, []);
 
   //! Render
   return (
@@ -108,11 +142,12 @@ const SearchScreen = () => {
           enableReinitialize
           validateOnBlur={false}
           initialValues={data}
+          innerRef={innerRef}
           onSubmit={onSreach}>
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
             //* Function for Fomik
             const onPlus = () => {
-              const newList = listProvince.filter(
+              const newList = listPlace.filter(
                 (el) => !values.route_place.includes(el.key),
               );
               const newRoutePlace = values.route_place;
@@ -125,13 +160,20 @@ const SearchScreen = () => {
               setFieldValue('route_place', newRoutePlace);
             };
 
+            const onAllDay = () => {
+              setIsAllDay(!isAllDay);
+              if (isAllDay)
+                setFieldValue('time_start', moment(data).format(ACTUAL_DATE));
+              else setFieldValue('time_start', null);
+            };
+
             return (
               <>
                 <View style={styles.field}>
                   <AppInput
                     typeModal="ModalPicker"
                     text="Địa điểm khởi hành"
-                    data={listProvince}
+                    data={listPlacesStart}
                     keySelected={values.place_start}
                     onSelect={(key: number) =>
                       setFieldValue('place_start', key)
@@ -148,7 +190,7 @@ const SearchScreen = () => {
                     <View style={styles.viewPlace}>
                       <AppText style={styles.textPlace}>Điểm đến</AppText>
                     </View>
-                    {values.route_place.length < 3 && (
+                    {!_.isEmpty(listPlace) && values.route_place.length < 3 && (
                       <View style={styles.viewPlace}>
                         <AppButtonCircle name="pluscircleo" onPress={onPlus} />
                       </View>
@@ -167,7 +209,7 @@ const SearchScreen = () => {
                           <AppInput
                             typeModal="ModalPicker"
                             text=""
-                            data={listProvince.filter(
+                            data={listPlace.filter(
                               (el: any) =>
                                 !values.route_place.includes(el.key) ||
                                 values.route_place[index] == el.key,

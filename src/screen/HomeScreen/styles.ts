@@ -17,8 +17,20 @@ export default StyleSheet.create({
     paddingTop: padding.p12,
     paddingBottom: padding.p6,
   },
+  viewList: {
+    flex: 1,
+    marginVertical: padding.p8,
+    marginRight: padding.p12,
+  },
   viewListTour: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  viewBtnTool: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    height: 160,
+    justifyContent: 'space-around',
   },
 });

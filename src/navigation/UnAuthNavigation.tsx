@@ -5,11 +5,10 @@ import SignUpScreen from '../screen/SignUpScreen';
 import ForgotPassScreen from '../screen/ForgotPassScreen';
 import CodeForGetPassScreen from 'screen/CodeForGetPassScreen';
 
+const Stack = createStackNavigator();
 const UnAuthNavigation = () => {
   //! State
-  const Stack = createStackNavigator();
   //! Function
-
   //! Render
   return (
     <Stack.Navigator headerMode="none">
