@@ -1,4 +1,4 @@
 import * as userActions from './userActions';
-import * as provinceActions from './provinceActions';
+import * as placeActions from './placeActions';
 
-export {userActions, provinceActions};
+export {userActions, placeActions};

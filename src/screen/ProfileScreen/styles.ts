@@ -4,19 +4,20 @@ import padding from 'helpers/padding';
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
+  containerTren: {flex: 1, backgroundColor: color.apple},
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: color.white,
     paddingHorizontal: padding.p8,
   },
   viewbtnSave: {
-    marginTop: padding.p28,
+    marginTop: padding.p16,
     marginLeft: DEVICE.WIDTH * 0.7,
   },
   viewbtnLogOut: {
-    marginTop: padding.p52,
+    marginTop: padding.p32,
   },
   field: {
-    marginVertical: padding.p12,
+    marginVertical: padding.p8,
   },
 });

@@ -96,6 +96,7 @@ const get = async (url: string, params?: any) => {
 const post = async (url: string, body: any) => {
   debug(body);
   const dataResponse = await api.post(url, JSON.stringify(body));
+
   return returnData(dataResponse);
 };
 

@@ -4,28 +4,28 @@ import serviceBase from 'services/serviceBase';
 import {get} from 'services/serviceHandle';
 import _ from 'lodash';
 
-function* getListProvince() {
-  const url = serviceBase.url.province;
+function* getListPlace() {
+  const url = serviceBase.url.place;
   try {
-    const {response} = yield call(get, url, '');    
+    const {response} = yield call(get, url, '');
     if (response.error) {
       yield put({
-        type: actionTypes.GET_PROVINCE_FAILED,
+        type: actionTypes.GET_PLACE_FAILED,
         error: response.errorMessage,
       });
     } else {
       yield put({
-        type: actionTypes.GET_PROVINCE_SUCCESS,
+        type: actionTypes.GET_PLACE_SUCCESS,
         data: response.data,
       });
     }
   } catch (error) {
     yield put({
-      type: actionTypes.GET_PROVINCE_FAILED,
+      type: actionTypes.GET_PLACE_FAILED,
       error: error.message,
     });
   }
 }
 export default function* () {
-  yield takeLatest(actionTypes.GET_PROVINCE_REQUEST, getListProvince);
+  yield takeLatest(actionTypes.GET_PLACE_REQUEST, getListPlace);
 }

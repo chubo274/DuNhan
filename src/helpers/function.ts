@@ -13,7 +13,7 @@ export const convertObjectToQuery = (param: any) => {
   return '?' + queryString.stringify(param);
 };
 
-export const converNumberToPrice = (param: number, unit = 'đ') => {
+export const converNumberToPrice = (param: number, unit = 'vnđ') => {
   const le = param.toString().length % 3;
   let subFrom = 0;
   let priceString = '';

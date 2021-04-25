@@ -11,18 +11,18 @@ const initialState: IReducer = {
 
 export default (state = initialState, action: any) => {
   switch (action.type) {
-    case actionTypes.GET_PROVINCE_REQUEST:
+    case actionTypes.GET_TOURS_REQUEST:
       return {
         ...state,
         error: '',
       };
-    case actionTypes.GET_PROVINCE_SUCCESS:
+    case actionTypes.GET_TOURS_SUCCESS:
       return {
         ...state,
         data: [...action.data],
         error: '',
       };
-    case actionTypes.GET_PROVINCE_FAILED:
+    case actionTypes.GET_TOURS_FAILED:
       return {
         ...state,
         error: action.error,

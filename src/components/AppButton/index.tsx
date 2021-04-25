@@ -37,6 +37,15 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     borderRadius: padding.p16,
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   text: {fontSize: fontSize.f18, textAlign: 'center'},
 });

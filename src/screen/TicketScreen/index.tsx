@@ -6,8 +6,12 @@ import moment from 'moment';
 import {FORMAT_DATE} from 'helpers/constants';
 import {IMAGE} from 'assets';
 import TourItem from 'components/TourItem';
+import {useNavigation} from '@react-navigation/core';
+import AppButton from 'components/AppButton';
 const TicketScreen = () => {
   //! State
+  const huy = true;
+  const navigation = useNavigation();
   const now = moment().format(FORMAT_DATE);
   const data = [
     {
@@ -38,7 +42,7 @@ const TicketScreen = () => {
       totalMoney: 3000000,
     },
   ];
-
+  const onCancelTicket = () => {};
   //! Function
   const renderItem = ({item, index}: any) => {
     return (
@@ -53,7 +57,11 @@ const TicketScreen = () => {
           bookingDate={item.bookingDate}
           totalTicket={item.totalTicket}
           totalMoney={item.totalMoney}
+          onPress={() => {
+            navigation.navigate('DetailTourScreen');
+          }}
         />
+        <AppButton text={'Yêu cầu huỷ vé'} onPress={onCancelTicket} />
       </View>
     );
   };

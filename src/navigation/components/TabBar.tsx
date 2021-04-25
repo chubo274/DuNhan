@@ -1,12 +1,11 @@
 import AppText from 'components/AppText';
 import color from 'helpers/color';
 import padding from 'helpers/padding';
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, {useEffect, useState} from 'react';
+import {Keyboard, StyleSheet, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const TabBar = (props: any) => {  
+const TabBar = (props: any) => {
   //! State
   const {navigation, state} = props;
   const {routeNames, index} = state;
@@ -16,7 +15,27 @@ const TabBar = (props: any) => {
     {name: 'Ticket', icon: 'tago'},
     {name: 'Profile', icon: 'user'},
   ];
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  //! Effect
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
 
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
   //! Function
   const renderTab = (item: any, idx: any) => {
     const {name, icon} = item;
@@ -39,7 +58,9 @@ const TabBar = (props: any) => {
   };
 
   //! Render
-  return <View style={styles.container}>{tab.map(renderTab)}</View>;
+  return isKeyboardVisible ? null : (
+    <View style={styles.container}>{tab.map(renderTab)}</View>
+  );
 };
 
 export default React.memo(TabBar);

@@ -7,9 +7,10 @@ import moment from 'moment';
 import {FORMAT_DATE} from 'helpers/constants';
 import styles from './styles';
 import AppHeaderBack from 'components/AppHeaderBack';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 const ListTour = () => {
   //! State
+  const navigation = useNavigation();
   const now = moment().format(FORMAT_DATE);
   const data = [
     {
@@ -50,6 +51,9 @@ const ListTour = () => {
           slots={item.slots}
           price={item.price}
           discount={item.discount}
+          onPress={() => {
+            navigation.navigate('DetailTourScreen', {data: item});
+          }}
         />
       </View>
     );

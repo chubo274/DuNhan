@@ -146,7 +146,6 @@ const AppInput = ({
                 maximumDate={maximumDate}
                 minimumDate={minimumDate}
                 onConfirm={(date: any) => {
-                  console.log('date', moment(date).format(FORMAT_DATE));
                   hideModal();
                   onChangeValue(moment(date).format(FORMAT_DATE));
                 }}

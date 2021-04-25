@@ -105,7 +105,7 @@ const SignUpScreen = () => {
   //! Render
   return (
     <View style={styles.viewBg}>
-      <AppHeaderBack title={'Quên mật khẩu'} headerBack onPressBack={onBack} />
+      <AppHeaderBack title={'Đăng ký tài khoản'} headerBack onPressBack={onBack} />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Formik
           enableReinitialize

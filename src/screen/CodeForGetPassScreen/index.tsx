@@ -11,7 +11,6 @@ const CodeForGetPassScreen = () => {
   //! State
   const [value, setValue] = useState<number>();
   const param = useRoute().params;
-  console.log(param);
 
   //! Function
   const onChangeValue = (data: number) => {
