@@ -1,6 +1,7 @@
 export default {
-  primary: '#55C940',
+  primary: '#33CC66',
   textPri: '#007F54',
+  bgPri: '#00CCCC',
   black: '#000000',
   white: '#ffffff',
   silver: '#CCCCCC',
