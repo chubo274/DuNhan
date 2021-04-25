@@ -30,3 +30,21 @@ export const converNumberToPrice = (param: number, unit = 'vnđ') => {
   }
   return priceString + ' ' + unit;
 };
+
+export const converNumberToBankNumber = (param: number) => {
+  const le = param.toString().length % 4;
+  let subFrom = 0;
+  let priceString = '';
+  if (le != 0) {
+    priceString += param.toString().substr(0, le);
+    subFrom = le;
+  } else {
+    priceString += param.toString().substr(0, 4);
+    subFrom = 4;
+  }
+  while (subFrom < param.toString().length) {
+    priceString += '  ' + param.toString().substring(subFrom, subFrom + 4);
+    subFrom += 4;
+  }
+  return priceString;
+};

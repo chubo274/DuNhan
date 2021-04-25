@@ -3,6 +3,7 @@ export const IMAGE = {
   listTourMB: require('./img/du-lich-mien-bac.jpg'),
   listTourMT: require('./img/du-lich-mien-trung.jpg'),
   listTourMN: require('./img/tour-du-lich-mien-nam.jpg'),
+  theVisa: require('./img/theVisa.png'),
 };
 
 export const ICON = {

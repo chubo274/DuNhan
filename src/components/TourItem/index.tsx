@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 125,
-    backgroundColor: color.peachOrange,
+    backgroundColor: color.bgPri,
     borderRadius: 25,
     shadowColor: '#000',
     shadowOffset: {

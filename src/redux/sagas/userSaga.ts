@@ -102,7 +102,6 @@ function* updateUserData(payload: any) {
 
   const url = `${serviceBase.url.user}${_id}`;
   const body = {
-    phone: data.phone.trim(),
     name: data.name.trim(),
     address: data.address.trim(),
   };

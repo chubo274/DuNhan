@@ -69,9 +69,9 @@ const HomeScreen = () => {
     await Linking.openURL(`tel:${phoneNumber}`);
   };
   //! Effect
-  // useEffect(() => {
-  //   dispatch(tourActions.getListTours());
-  // }, [isFocused]);
+  useEffect(() => {
+    dispatch(tourActions.getListTours());
+  }, [isFocused]);
   //! Render
   return (
     <>
@@ -79,7 +79,7 @@ const HomeScreen = () => {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.viewGroup}>
-            <AppText style={styles.textGroup}>Tour hot trong tuần</AppText>
+            <AppText style={styles.textGroup}>Tour đề xuất cho bạn</AppText>
             <View style={styles.viewListTour}>
               <FlatList
                 keyExtractor={(item) => item._id.toString()}
@@ -104,7 +104,7 @@ const HomeScreen = () => {
             </View>
           </View>
 
-          <View style={styles.viewGroup}>
+          {/* <View style={styles.viewGroup}>
             <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
             <View style={styles.viewListTour}>
               <FlatList
@@ -114,11 +114,11 @@ const HomeScreen = () => {
                 horizontal={true}
                 scrollEnabled={true}
               />
-              {/* <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+              <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
               <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-              <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} /> */}
+              <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
             </View>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
       <View style={styles.viewBtnTool}>
