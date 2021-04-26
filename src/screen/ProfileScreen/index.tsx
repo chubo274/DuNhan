@@ -45,44 +45,44 @@ const ProfileScreen = () => {
   }
 
   //! Function
-  const toggleShowWallet = () => {
-    setShowWallet(!showWallet);
-  };
 
   const onPressSubmit = (values: any) => {
     dispatch(
-      userActions.updateUserData(values, {
-        onSuccess: () => {
-          refFormik?.current?.resetForm();
-          Alert.alert(
-            'Thông báo',
-            'Cập nhật thành công!',
-            [
-              {
-                text: 'Ok',
-              },
-            ],
-            {cancelable: false},
-          );
+      userActions.updateUserData(
+        {name: values.name.trim(), address: values.address.trim()},
+        {
+          onSuccess: () => {
+            refFormik?.current?.resetForm();
+            Alert.alert(
+              'Thông báo',
+              'Cập nhật thành công!',
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+          onFailed: (err: string) => {
+            // refFormik?.current?.resetForm();
+            let errorMessage = err;
+            if (errorMessage.includes('is required')) {
+              errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
+            }
+            Alert.alert(
+              'Xảy ra lỗi',
+              errorMessage,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
         },
-        onFailed: (err: string) => {
-          // refFormik?.current?.resetForm();
-          let errorMessage = err;
-          if (errorMessage.includes('is required')) {
-            errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
-          }
-          Alert.alert(
-            'Xảy ra lỗi',
-            errorMessage,
-            [
-              {
-                text: 'Ok',
-              },
-            ],
-            {cancelable: false},
-          );
-        },
-      }),
+      ),
     );
     toggleBtn();
   };
@@ -95,14 +95,57 @@ const ProfileScreen = () => {
     dispatch(userActions.logout());
   };
 
+  const toggleShowWallet = () => {
+    setShowWallet(!showWallet);
+    if (showWallet) {
+      setAddMoney('');
+    }
+  };
+
   const onChangeAddMoney = (value: any) => {
     setAddMoney(value);
   };
   const onAddMoney = () => {
-    console.log(addMoney);
-    console.log(Number(addMoney));
+    if (/^[0-9]+?$/.test(addMoney)) {
+      dispatch(
+        userActions.updateUserData(
+          {money_available: Number(addMoney) + data.money_available},
+          {
+            onSuccess: () => {
+              toggleShowWallet();
+              Alert.alert(
+                'Thông báo',
+                `Nạp thành công ${converNumberToPrice(
+                  Number(addMoney),
+                )} vào tài khoản!`,
+                [
+                  {
+                    text: 'Ok',
+                  },
+                ],
+                {cancelable: false},
+              );
+            },
+            onFailed: (err: string) => {
+              toggleShowWallet();
+              // refFormik?.current?.resetForm();
+              let errorMessage = err;
+              Alert.alert(
+                'Xảy ra lỗi',
+                errorMessage,
+                [
+                  {
+                    text: 'Ok',
+                  },
+                ],
+                {cancelable: false},
+              );
+            },
+          },
+        ),
+      );
+    }
   };
-
   //! Effect
 
   //! Render
@@ -146,7 +189,7 @@ const ProfileScreen = () => {
                     <Entypo name={'credit'} size={24} color={'yellow'} />
                     <TextInput
                       value={addMoney}
-                      onChange={onChangeAddMoney}
+                      onChangeText={onChangeAddMoney}
                       style={styles.inputMoney}
                       keyboardType="numeric"
                       autoFocus={true}
@@ -199,57 +242,57 @@ const ProfileScreen = () => {
             </View>
           </View>
           <View style={styles.container}>
-            <ScrollView>
-              <Formik
-                enableReinitialize
-                initialValues={{
-                  name: data.name,
-                  address: data.address,
-                }}
-                innerRef={refFormik}
-                validateOnBlur={false}
-                validationSchema={validationSchema}
-                onSubmit={editting ? onPressSubmit : toggleBtn}>
-                {({
-                  handleChange,
-                  handleSubmit,
-                  errors,
-                  values,
-                  setFieldValue,
-                }) => {
-                  return (
-                    <>
-                      <View style={styles.field}>
-                        <AppInput
-                          icon={'user'}
-                          text=""
-                          placeholder="Minh Nhân"
-                          value={values.name}
-                          onChangeValue={handleChange('name')}
-                          editable={editting}
-                        />
-                      </View>
-                      <View style={styles.field}>
-                        <AppInput
-                          icon={'address'}
-                          text=""
-                          placeholder="Đại học Công Nghiệp"
-                          value={values.address}
-                          onChangeValue={(address) =>
-                            setFieldValue('address', address)
-                          }
-                          editable={editting}
-                        />
-                      </View>
+            <Formik
+              enableReinitialize
+              initialValues={{
+                name: data.name,
+                address: data.address,
+              }}
+              innerRef={refFormik}
+              validateOnBlur={false}
+              validationSchema={validationSchema}
+              onSubmit={editting ? onPressSubmit : toggleBtn}>
+              {({
+                handleChange,
+                handleSubmit,
+                errors,
+                values,
+                setFieldValue,
+              }) => {
+                return (
+                  <>
+                    <View style={styles.field}>
+                      <AppInput
+                        icon={'user'}
+                        text=""
+                        placeholder="Minh Nhân"
+                        value={values.name}
+                        onChangeValue={handleChange('name')}
+                        editable={editting}
+                        maxLength={30}
+                      />
+                    </View>
+                    <View style={styles.field}>
+                      <AppInput
+                        icon={'address'}
+                        text=""
+                        placeholder="Đại học Công Nghiệp"
+                        value={values.address}
+                        onChangeValue={(address) =>
+                          setFieldValue('address', address)
+                        }
+                        editable={editting}
+                        maxLength={100}
+                      />
+                    </View>
 
-                      <View style={styles.viewbtnSave}>
-                        <AppButton text={text} onPress={handleSubmit} />
-                      </View>
-                    </>
-                  );
-                }}
-              </Formik>
-            </ScrollView>
+                    <View style={styles.viewbtnSave}>
+                      <AppButton text={text} onPress={handleSubmit} />
+                    </View>
+                  </>
+                );
+              }}
+            </Formik>
             <View style={styles.viewbtnLogOut}>
               <AppButton text="Đăng xuất" onPress={onLogOut} />
             </View>
