@@ -37,7 +37,7 @@ export default StyleSheet.create({
   viewbtnLogOut: {
     paddingLeft: padding.p12,
     position: 'absolute',
-    bottom: 10,
+    top: (DEVICE.HEIGHT * 2.5) / 3.5 - 120,
     width: '100%',
     justifyContent: 'center',
   },

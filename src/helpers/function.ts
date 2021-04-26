@@ -1,9 +1,17 @@
 import queryString from 'query-string';
 import _ from 'lodash';
 
-export const validateEmail = (email: string) => {
+export const validateEmail = (value: string) => {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
+  return re.test(value);
+};
+export const validatePhoneNumberVN = (value: string) => {
+  const re = /(0[3|5|7|8|9])+([0-9]{8})\b/;
+  return re.test(value);
+};
+export const validateMoney = (value: string) => {
+  const re = /^[0-9]+(\.[0-9]{1,2})?$/;
+  return re.test(value);
 };
 
 export const convertObjectToQuery = (param: any) => {

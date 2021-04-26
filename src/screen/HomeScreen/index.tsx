@@ -76,35 +76,34 @@ const HomeScreen = () => {
   return (
     <>
       <AppHeaderBack title="Trang chủ" />
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.viewGroup}>
-            <AppText style={styles.textGroup}>Tour đề xuất cho bạn</AppText>
-            <View style={styles.viewListTour}>
-              <FlatList
-                keyExtractor={(item) => item._id.toString()}
-                data={listToursData}
-                renderItem={renderTourManyDiscount}
-                horizontal={true}
-                scrollEnabled={true}
-              />
-            </View>
+      <View style={styles.container}>
+        <View style={styles.viewGroup}>
+          <AppText style={styles.textGroup}>Tour đề xuất cho bạn</AppText>
+          <View style={styles.viewListTour}>
+            <FlatList
+              keyExtractor={(item) => item._id.toString()}
+              data={listToursData}
+              renderItem={renderTourManyDiscount}
+              horizontal={true}
+              scrollEnabled={true}
+            />
           </View>
+        </View>
 
-          <View style={styles.viewGroup}>
-            <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
-            <View style={styles.viewListTour}>
-              <FlatList
-                keyExtractor={(item) => item._id.toString()}
-                data={listToursData}
-                renderItem={renderTourManyDiscount}
-                horizontal={true}
-                scrollEnabled={true}
-              />
-            </View>
+        <View style={styles.viewGroup}>
+          <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
+          <View style={styles.viewListTour}>
+            <FlatList
+              keyExtractor={(item) => item._id.toString()}
+              data={listToursData}
+              renderItem={renderTourManyDiscount}
+              horizontal={true}
+              scrollEnabled={true}
+            />
           </View>
+        </View>
 
-          {/* <View style={styles.viewGroup}>
+        {/* <View style={styles.viewGroup}>
             <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
             <View style={styles.viewListTour}>
               <FlatList
@@ -119,8 +118,7 @@ const HomeScreen = () => {
               <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
             </View>
           </View> */}
-        </View>
-      </ScrollView>
+      </View>
       <View style={styles.viewBtnTool}>
         <TouchableOpacity onPress={onMesseger}>
           <Fontisto name={'messenger'} size={40} color={color.facebook} />

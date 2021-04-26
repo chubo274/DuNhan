@@ -101,12 +101,8 @@ function* updateUserData(payload: any) {
   const onFailed = payload?.callbacks?.onFailed;
 
   const url = `${serviceBase.url.user}${_id}`;
-  const body = {
-    name: data.name.trim(),
-    address: data.address.trim(),
-  };
   try {
-    const {response} = yield call(putUpdate, url, body);
+    const {response} = yield call(putUpdate, url, data);
 
     if (response.error) {
       yield put({
