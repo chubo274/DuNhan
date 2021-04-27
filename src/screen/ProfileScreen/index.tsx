@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import * as Yup from 'yup';
+import _ from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {userActions} from 'redux/actions';
 import {RootState} from 'redux/reducers';
@@ -106,7 +107,7 @@ const ProfileScreen = () => {
     setAddMoney(value);
   };
   const onAddMoney = () => {
-    if (/^[0-9]+?$/.test(addMoney)) {
+    if (/^[0-9]+?$/.test(addMoney) && Number(addMoney) % 10000 === 0) {
       dispatch(
         userActions.updateUserData(
           {money_available: Number(addMoney) + data.money_available},
@@ -143,6 +144,17 @@ const ProfileScreen = () => {
             },
           },
         ),
+      );
+    } else {
+      Alert.alert(
+        'Thông báo',
+        'Số tiền nạp phải là bội của 10.000 vnđ',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        {cancelable: false},
       );
     }
   };
@@ -287,7 +299,11 @@ const ProfileScreen = () => {
                     </View>
 
                     <View style={styles.viewbtnSave}>
-                      <AppButton text={text} onPress={handleSubmit} />
+                      <AppButton
+                        text={text}
+                        onPress={handleSubmit}
+                        disabled={!_.isEmpty(errors)}
+                      />
                     </View>
                   </>
                 );
