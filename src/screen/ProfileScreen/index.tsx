@@ -210,7 +210,11 @@ const ProfileScreen = () => {
                   </View>
                 </View>
                 <View style={styles.viewBtnWallet}>
-                  <AppButton text={'Nạp'} onPress={onAddMoney} />
+                  <AppButton
+                    text={'Nạp'}
+                    onPress={onAddMoney}
+                    disabled={!!!Number(addMoney)}
+                  />
                   <AppText></AppText>
                   <AppButton text={'Huỷ'} onPress={toggleShowWallet} />
                 </View>

@@ -7,9 +7,10 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: padding.p8,
+    paddingHorizontal: padding.p16,
     backgroundColor: color.white,
   },
+  btnBooking: {padding: padding.p16, backgroundColor: color.white},
   viewModal: {
     backgroundColor: color.fade,
     flex: 1,
@@ -57,5 +58,18 @@ export default StyleSheet.create({
     marginTop: padding.p20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  textTourName: {
+    fontSize: fontSize.f18,
+    fontFamily: font.VDBrevia_Sb,
+  },
+  textTitlePath: {
+    paddingTop: padding.p8,
+    fontSize: fontSize.f18,
+    fontFamily: font.VDBrevia_Sb,
+  },
+  viewNotes: {
+    flexDirection: 'row',
+    paddingVertical: padding.p4,
   },
 });
