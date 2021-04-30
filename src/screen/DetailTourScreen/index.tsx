@@ -1,9 +1,8 @@
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppText from 'components/AppText';
-import React, {useState} from 'react';
-import {Modal, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Modal, ScrollView, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
-import {IMAGE} from 'assets';
 import {FORMAT_DATE, HIT_SLOP} from 'helpers/constants';
 import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -13,7 +12,13 @@ import {useRoute} from '@react-navigation/core';
 import color from 'helpers/color';
 import {converNumberToPrice} from 'helpers/function';
 import PayField from './components/PayField';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from 'redux/reducers';
+import AppReadMore from 'components/AppReadMore';
+import AppTimeLineSchedule from 'components/AppTimeLineSchedule';
 const DetailTourScreen = () => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.userReducer.data);
   //! State
   //TODO booking
   const [showModalBooking, setShowModalBooking] = useState(false);
@@ -23,38 +28,9 @@ const DetailTourScreen = () => {
   const [disabledPlus, setDisabledPlus] = useState(false);
   //TODO Pay
   const [showModalPay, setShowModalPay] = useState(false);
-  const now = moment().format(FORMAT_DATE);
   //TODO getDataDetail
-  const route = useRoute();
-  // const dataTour=route.params;
-  const data = {
-    id: 1,
-    avatar: IMAGE.listTourMB,
-    name: 'Hà Nội - Hưng Yênnnnnnnnnnnnnnnn',
-    placeStart: 'Hà Nội',
-    timeStart: now,
-    travelTime: '3 ngày đêm 2',
-    slots: 10,
-    price: 2000000,
-    discount: 20,
-    bookingDate: now,
-    totalTicket: 5,
-    totalMoney: 10000000,
-    // list_image: [IMAGE.listTourMB, IMAGE.listTourMT, IMAGE.listTourMN],
-    // list_image: [
-    //   {
-    //     url:
-    //       'https://ejoy-english.com/blog/wp-content/uploads/2018/05/tie%CC%82%CC%81ng-anh-u%CC%81c-.jpg',
-    //   },
-    //   {url: 'https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg'},
-    //   {url: 'https://trangvisa.com/wp-content/uploads/2019/07/65.png'},
-    // ],
-    list_image: [
-      'https://ejoy-english.com/blog/wp-content/uploads/2018/05/tie%CC%82%CC%81ng-anh-u%CC%81c-.jpg',
-      'https://avi.edu.vn/wp-content/uploads/2019/11/london-2393098.jpg',
-      'https://trangvisa.com/wp-content/uploads/2019/07/65.png',
-    ],
-  };
+  const route: any = useRoute();
+  const data = route.params?.data;
 
   //! Function
   const toggleModalBooking = () => {
@@ -69,6 +45,9 @@ const DetailTourScreen = () => {
   const toggleModalPay = () => {
     setShowModalPay(!showModalPay);
   };
+
+  //! Effect
+  //! Render
 
   const bookingticket = () => {
     const onMinus = () => {
@@ -98,7 +77,6 @@ const DetailTourScreen = () => {
 
     const onApplyBook = () => {
       toggleModalPay();
-      // toggleModalBooking();
     };
 
     const onPay = () => {
@@ -166,7 +144,10 @@ const DetailTourScreen = () => {
                 <AppText style={styles.textPay}>Thanh toán đặt vé</AppText>
               </View>
               <PayField title={'Tên tour: '} data={data.name} />
-              <PayField title={'Khởi hành: '} data={data.timeStart} />
+              <PayField
+                title={'Khởi hành: '}
+                data={moment(data.time_start).format(FORMAT_DATE)}
+              />
               <PayField
                 title={'Đơn giá: '}
                 data={converNumberToPrice(data.price)}
@@ -179,8 +160,24 @@ const DetailTourScreen = () => {
                   (data.price * (100 - data.discount) * ticket) / 100,
                 )}
               />
+              <View style={styles.titlePay}>
+                <AppText style={styles.textPay}>Tài khoản</AppText>
+              </View>
+              <PayField
+                title={'Só dư khả dụng: '}
+                data={converNumberToPrice(userData.money_available)}
+              />
               <View style={styles.viewBtnPay}>
-                <AppButton text="Thanh toán" onPress={onPay} />
+                <AppButton
+                  text="Thanh toán"
+                  onPress={onPay}
+                  disabled={
+                    !!!(
+                      userData.money_available -
+                      (data.price * (100 - data.discount) * ticket) / 100
+                    )
+                  }
+                />
                 <AppButton text="Quay lại" onPress={toggleModalPay} />
               </View>
             </TouchableOpacity>
@@ -189,12 +186,79 @@ const DetailTourScreen = () => {
       </>
     );
   };
+  //----- hết phần modal đặt
   //! Render
   return (
     <>
       <AppHeaderBack title="Chi Tiết Tour" headerBack />
-      <AppSilder data={data.list_image} />
+      <AppSilder data={data.list_images} />
       <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.titlePay}>
+            <AppText style={styles.textTourName}>{data.name}</AppText>
+          </View>
+          <PayField title={'Điểm xuất phát: '} data={data.place_start} />
+          <PayField
+            title={'Khởi hành: '}
+            data={moment(data.time_start).format(FORMAT_DATE)}
+          />
+          <PayField
+            title={'Thời gian tour: '}
+            data={`${data.travel_time.day} ngày ${
+              data.travel_time.night ?? 0
+            } đêm`}
+          />
+          <PayField title={'Số vé còn nhận: '} data={data.slots} />
+          <AppText style={styles.textTitlePath}>Mô Tả</AppText>
+          <AppReadMore longText={data.description} />
+          <AppText style={styles.textTitlePath}>Lộ Trình</AppText>
+          {data.schedule.map((el: any, index: any) => {
+            if (index === 0)
+              return (
+                <AppTimeLineSchedule
+                  title={`${el.day}: ${el.title}`}
+                  longText={el.detail}
+                  firstPoint
+                />
+              );
+            else if (index === data.schedule.length - 1)
+              return (
+                <AppTimeLineSchedule
+                  title={`${el.day}: ${el.title}`}
+                  longText={el.detail}
+                  lastPoint
+                />
+              );
+            else
+              return (
+                <AppTimeLineSchedule
+                  title={`${el.day}: ${el.title}`}
+                  longText={el.detail}
+                />
+              );
+          })}
+          <AppText style={styles.textTitlePath}>Ghi Chú</AppText>
+          {data.notes.map((el: any, index: any) => {
+            return (
+              <View style={styles.viewNotes}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    paddingRight: 8,
+                  }}>
+                  <AntDesign
+                    name={'caretright'}
+                    size={20}
+                    color={color.tulip}
+                  />
+                </View>
+                <AppText>{el}</AppText>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+      <View style={styles.btnBooking}>
         <AppButton text={'Đặt vé'} onPress={toggleModalBooking} />
       </View>
       <Modal

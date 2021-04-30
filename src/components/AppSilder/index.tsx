@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   // paging style \/
   ctnPaging: {
-    backgroundColor: color.blueBg,
+    backgroundColor: color.white,
     paddingVertical: padding.p8,
     paddingHorizontal: 0,
   },

@@ -18,12 +18,7 @@ const PayField = (props: PayFieldI) => {
 
   //! Render
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: padding.p2,
-      }}>
+    <View style={styles.container}>
       <View style={{flex: 4}}>
         <AppText style={{fontStyle: 'italic'}}>{props.title} </AppText>
       </View>
@@ -36,4 +31,10 @@ const PayField = (props: PayFieldI) => {
 
 export default React.memo(PayField);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: padding.p2,
+  },
+});

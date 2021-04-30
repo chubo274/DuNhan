@@ -70,7 +70,7 @@ const HomeScreen = () => {
   };
   //! Effect
   useEffect(() => {
-    dispatch(tourActions.getListTours());
+    if (isFocused) dispatch(tourActions.getListTours());
   }, [isFocused]);
   //! Render
   return (
