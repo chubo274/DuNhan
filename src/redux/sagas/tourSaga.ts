@@ -5,6 +5,7 @@ import {get, post, putUpdate} from 'services/serviceHandle';
 import _ from 'lodash';
 import {convertObjectToQuery} from 'helpers/function';
 import {getUserData} from './userSaga';
+import {select} from 'redux-saga/effects';
 
 function* getListTours() {
   const url = serviceBase.url.tour;
@@ -93,9 +94,10 @@ function* bookingTour(payload: any) {
 function* cancelBookingTour(payload: any) {
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
-  const url = `${serviceBase.url.booking}${convertObjectToQuery(payload.body)}`;
+
+  const url = `${serviceBase.url.cancel}${convertObjectToQuery(payload.body)}`;
   try {
-    const {response} = yield call(post, url, {});
+    const {response} = yield call(putUpdate, url, {});
     if (response.error) {
       yield put({
         type: actionTypes.CANCEL_BOOKING_TOURS_FAILED,
@@ -106,7 +108,9 @@ function* cancelBookingTour(payload: any) {
       yield put({
         type: actionTypes.CANCEL_BOOKING_TOURS_SUCCESS,
       });
-      getListTours();
+      yield getListTours();
+      yield getUserData();
+      yield listBookingByUserTour();
       onSuccess && onSuccess(response.data);
     }
   } catch (error) {
@@ -118,13 +122,12 @@ function* cancelBookingTour(payload: any) {
   }
 }
 
-function* listBookingByUserTour(payload: any) {
+function* listBookingByUserTour(payload?: any) {
+  const {_id} = yield select((state) => state.userReducer.data);
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
-
-  const url = `${serviceBase.url.allBooking}${convertObjectToQuery(
-    payload.body,
-  )}`;
+  const body = {user_id: _id};
+  const url = `${serviceBase.url.allBooking}${convertObjectToQuery(body)}`;
 
   try {
     const {response} = yield call(get, url, {});
@@ -151,15 +154,13 @@ function* listBookingByUserTour(payload: any) {
   }
 }
 
-function* listBookingAll(payload: any) {
+function* listBookingAll(payload?: any) {
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
-  const body = {...payload.body};
-  delete body.id;
 
-  const url = `${serviceBase.url.booking}${payload.body.id}`;
+  const url = serviceBase.url.allBooking;
   try {
-    const {response} = yield call(putUpdate, url, body);
+    const {response} = yield call(get, url, {});
     if (response.error) {
       yield put({
         type: actionTypes.LIST_BOOKING_ALL_FAILED,
@@ -169,6 +170,7 @@ function* listBookingAll(payload: any) {
     } else {
       yield put({
         type: actionTypes.LIST_BOOKING_ALL_SUCCESS,
+        data: response.data,
       });
       onSuccess && onSuccess(response.data);
     }

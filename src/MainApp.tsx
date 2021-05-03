@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from 'redux/reducers';
 import AppLoading from 'components/AppLoading';
 import color from 'helpers/color';
+import AppAdmin from 'navigation/AppAdmin';
 
 const MainApp = () => {
   //! State
@@ -21,11 +22,6 @@ const MainApp = () => {
   //! Function
 
   //! Use Effect
-  // useEffect(() => {
-  //   if (loadingReducer.type.includes('_FAILED')) {
-  //     Alert.alert('Thông báo', loadingReducer.errorMessage);
-  //   }
-  // }, [loadingReducer.type]);
 
   //! Render
   return (
@@ -33,8 +29,10 @@ const MainApp = () => {
       <NavigationContainer fallback={() => <AppText>...Loading</AppText>}>
         {_.isEmpty(userReducer.data?.phone) ? (
           <UnAuthNavigation />
-        ) : (
+        ) : userReducer.data?.role === 'User' ? (
           <AppNavigation />
+        ) : (
+          <AppAdmin />
         )}
       </NavigationContainer>
       {loadingReducer.isLoading && (

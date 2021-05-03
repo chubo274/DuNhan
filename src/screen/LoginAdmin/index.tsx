@@ -12,20 +12,20 @@ import {useDispatch} from 'react-redux';
 import {userActions} from 'redux/actions';
 import {HIT_SLOP} from 'helpers/constants';
 
-const LoginScreen = () => {
+const LoginAdminScreen = () => {
   //! State
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState<number>();
+  const [password, setPassword] = useState<string>();
   const [error, setError] = useState('');
   const [errorPass, setErrorPass] = useState('');
 
   //! Function
-  const onChangeUserName = (data: string) => {
+  const onChangeUserName = (data: number) => {
     setUserName(data);
   };
-  const onChangePassword = (data: string) => {
+  const onChangePassword = (data: any) => {
     setPassword(data);
   };
 
@@ -53,20 +53,21 @@ const LoginScreen = () => {
   };
   //! UseEffect
   useEffect(() => {
-    if (!_.isEmpty(userName?.toString().trim())) {
+    if (
+      !_.isEmpty(userName?.toString().trim()) &&
+      String(userName)?.length > 7
+    ) {
       setError('');
     } else {
-      setError('Trường này không được để trống');
+      setError('Trường này phải ít nhất 8 ký tự');
     }
   }, [userName]);
-  console.log(password.length > 7);
 
   useEffect(() => {
-    if (!_.isEmpty(password?.toString().trim())) {
-      if (password.length > 7) setErrorPass('');
-      else setErrorPass('Trường này ít nhất 8 ký tự');
+    if (String(password)?.length > 7) {
+      setErrorPass('');
     } else {
-      setErrorPass('Trường này không được để trống');
+      setErrorPass('Trường này phải ít nhất 8 ký tự');
     }
   }, [password]);
 
@@ -87,7 +88,7 @@ const LoginScreen = () => {
               value={userName}
               onChangeValue={onChangeUserName}
               maxLength={20}
-              // keyboardType="number-pad"
+              keyboardType="number-pad"
             />
             <AppText>{error}</AppText>
           </View>
@@ -101,20 +102,7 @@ const LoginScreen = () => {
           />
           <AppText>{errorPass}</AppText>
 
-          <View style={styles.viewForgotPass}>
-            {/* <TouchableOpacity
-              hitSlop={HIT_SLOP}
-              style={styles.touch}
-              onPress={() => navigation.navigate('LoginAdminScreen')}>
-              <AppText style={{color: 'blue'}}>Quản trị viên</AppText>
-            </TouchableOpacity> */}
-            <TouchableOpacity
-              hitSlop={HIT_SLOP}
-              style={styles.touch}
-              onPress={() => navigation.navigate('ForgotPassScreen')}>
-              <AppText style={{color: 'blue'}}>Quên mật khẩu?</AppText>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.viewForgotPass}></View>
 
           <View style={styles.btnLogin}>
             <AppButton
@@ -124,18 +112,11 @@ const LoginScreen = () => {
             />
           </View>
 
-          <View style={styles.viewSignup}>
-            <AppText style={styles.touch}>Bạn chưa có tài khoản? </AppText>
-            <TouchableOpacity
-              style={styles.touch}
-              onPress={() => navigation.navigate('SignUpScreen')}>
-              <AppText style={{color: 'blue'}}>Đăng ký ngay!</AppText>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.viewSignup}></View>
         </View>
       </KeyboardAwareScrollView>
     </ImageBackground>
   );
 };
 
-export default LoginScreen;
+export default LoginAdminScreen;

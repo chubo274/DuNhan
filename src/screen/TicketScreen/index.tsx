@@ -14,6 +14,9 @@ import color from 'helpers/color';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'redux/reducers';
 import tourActions from 'redux/actions/tourActions';
+import FieldRule from './components/FieldRule';
+import {converNumberToPrice} from 'helpers/function';
+import MoneyField from 'screen/TicketScreen/components/MoneyField';
 const TicketScreen = () => {
   //! State
   const navigation = useNavigation();
@@ -31,38 +34,14 @@ const TicketScreen = () => {
     return {...el, tour: {...tour}};
   });
 
-  const now = moment().format(FORMAT_DATE);
-  const data2 = [
-    {
-      id: 1,
-      avatar: IMAGE.listTourMB,
-      name: 'Hà Nội - Hưng Yênnnnnnnnnnnnnnnn',
-      placeStart: 'Hà Nội',
-      timeStart: now,
-      travelTime: '3 ngày đêm 2',
-      slots: 10,
-      price: 2000000,
-      discount: 20,
-      bookingDate: now,
-      totalTicket: 5,
-      totalMoney: 10000000,
-    },
-    {
-      id: 2,
-      avatar: IMAGE.listTourMN,
-      name: 'TP.HCM - Phú Quốc',
-      placeStart: 'TP.HCM',
-      timeStart: now,
-      slots: 7,
-      travelTime: '3 ngày đêm 2',
-      price: 1500000,
-      bookingDate: now,
-      totalTicket: 2,
-      totalMoney: 3000000,
-    },
-  ];
   const [checked, setChecked] = useState(false);
   const [showModalBooking, setShowModalBooking] = useState(false);
+  //TODO for show and match cancel Data
+  const [timeStartTour, setTimeStartTour] = useState();
+  const [moneyPayed, setMoneyPayed] = useState(0);
+  const [percentRefund, setPercentRefund] = useState(0);
+  const [idTour, setIdTour] = useState('');
+  const [idBooking, setIdBooking] = useState('');
   //! Function
   const toggleModalBooking = () => {
     setShowModalBooking(!showModalBooking);
@@ -70,13 +49,66 @@ const TicketScreen = () => {
       setChecked(false);
     }
   };
-  const onCancelTicket = () => {
+  const onCancelTicket = (
+    idTour: string,
+    idBook: string,
+    timeStart: any,
+    bookingMoneyPayed: any,
+  ) => {
+    //* chuẩn bị data để hiển thị
+    setIdTour(idTour);
+    setIdBooking(idBook);
+    setTimeStartTour(timeStart);
+    setMoneyPayed(Number(bookingMoneyPayed));
+
+    if (moment(timeStart).diff(moment().toDate(), 'days') > 9) {
+      setPercentRefund(100);
+    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 7) {
+      setPercentRefund(75);
+    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 5) {
+      setPercentRefund(50);
+    } else if (moment(timeStart).diff(moment().toDate(), 'days') < 3) {
+      setPercentRefund(0);
+    }
+
+    //* hiển thị modal
     toggleModalBooking();
   };
   const onCheck = () => {
     setChecked(!checked);
   };
-  const onConfirmCancel = () => {};
+  const onConfirmCancel = () => {
+    const body = {tour_id: idTour, booking_id: idBooking};
+    dispatch(
+      tourActions.cancelBookingTours(body, {
+        onSuccess: () => {
+          Alert.alert(
+            'Thông báo!',
+            'Huỷ vé và hoàn tiền thành công. Vui lòng kiểm tra tài khoản!',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+        onFailed: () => {
+          Alert.alert(
+            'Cảnh báo!',
+            'Oops! Lỗi bất ngờ',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+      }),
+    );
+    toggleModalBooking();
+  };
   const renderItem = ({item, index}: any) => {
     return (
       <View style={styles.viewList}>
@@ -97,10 +129,16 @@ const TicketScreen = () => {
           }}
         />
         <AppButton
-          text={'Yêu cầu huỷ vé'}
+          text={item.can_dispose ? 'Huỷ vé' : 'Không hỗ trợ huỷ'}
           onPress={
             item.can_dispose
-              ? onCancelTicket
+              ? () =>
+                  onCancelTicket(
+                    item.tour._id,
+                    item._id,
+                    item.tour.time_start,
+                    item.total_money,
+                  )
               : () => {
                   Alert.alert(
                     'Thông báo!',
@@ -125,6 +163,62 @@ const TicketScreen = () => {
             style={styles.viewModal}
             onPress={toggleModalBooking}>
             <TouchableOpacity activeOpacity={1} style={styles.viewContent}>
+              <View>
+                <View style={styles.titlePay}>
+                  <AppText style={styles.textPay}>Quy định hoàn vé</AppText>
+                </View>
+                <AppText style={{paddingVertical: 4}}>
+                  Huỷ vé hoàn tiền ứng với số ngày so với ngày khởi hành:
+                </AppText>
+                <FieldRule
+                  title={'nhiều hơn 9 ngày hoàn: '}
+                  data={'100%'}
+                  active={
+                    moment(timeStartTour).diff(moment().toDate(), 'days') > 9
+                  }
+                />
+                <FieldRule
+                  title={'nhiều hơn 7 ngày hoàn: '}
+                  data={'75%'}
+                  active={
+                    moment(timeStartTour).diff(moment().toDate(), 'days') > 7 &&
+                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 9
+                  }
+                />
+                <FieldRule
+                  title={'nhiều hơn 5 ngày hoàn: '}
+                  data={'50%'}
+                  active={
+                    moment(timeStartTour).diff(moment().toDate(), 'days') > 5 &&
+                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 7
+                  }
+                />
+                <FieldRule
+                  title={'ít hơn 3 ngày hoàn: '}
+                  data={'0%'}
+                  active={
+                    moment(timeStartTour).diff(moment().toDate(), 'days') < 3
+                  }
+                />
+                <View style={styles.titlePay}>
+                  <AppText style={styles.textPay}>
+                    Số tiền đã thanh toán
+                  </AppText>
+                </View>
+                <MoneyField
+                  title={'Đã thanh toán: '}
+                  data={converNumberToPrice(moneyPayed)}
+                />
+                <View style={styles.titlePay}>
+                  <AppText style={styles.textPay}>
+                    Số tiền hoàn trả khi huỷ
+                  </AppText>
+                </View>
+                <MoneyField
+                  title={'Sễ hoàn trả: '}
+                  data={converNumberToPrice(moneyPayed * (percentRefund / 100))}
+                />
+              </View>
               <TouchableOpacity
                 hitSlop={HIT_SLOP}
                 onPress={onCheck}
@@ -156,8 +250,7 @@ const TicketScreen = () => {
   //! Effect
   useEffect(() => {
     if (isFocused) {
-      const body = {user_id};
-      dispatch(tourActions.listBookingByUserTours(body));
+      dispatch(tourActions.listBookingByUserTours());
     }
   }, [isFocused]);
   //! Render

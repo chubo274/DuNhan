@@ -2,7 +2,7 @@ import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import {Formik} from 'formik';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Alert,
   ImageBackground,
@@ -24,6 +24,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {converNumberToBankNumber, converNumberToPrice} from 'helpers/function';
 import ProfileField from './components/profileField';
 import {IMAGE} from 'assets';
+import {useIsFocused} from '@react-navigation/core';
 
 let text: string;
 const validationSchema = Yup.object().shape({
@@ -31,6 +32,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProfileScreen = () => {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   //! State
   const refFormik = useRef<any>(null);
@@ -158,7 +160,13 @@ const ProfileScreen = () => {
       );
     }
   };
+
   //! Effect
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(userActions.getUserData());
+    }
+  }, [isFocused]);
 
   //! Render
   return (

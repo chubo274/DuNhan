@@ -20,7 +20,7 @@ export default (state = initialState, action: any) => {
     case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
-        data: {...state.data, ...action.data},
+        data: {...action.data},
         error: '',
       };
     case actionTypes.LOGIN_FAILED:

@@ -52,7 +52,11 @@ export default StyleSheet.create({
     aspectRatio: 1,
   },
   textRule: {marginHorizontal: padding.p12},
-  titlePay: {borderBottomWidth: 1, paddingVertical: padding.p8},
+  titlePay: {
+    borderBottomWidth: 1,
+    paddingTop: padding.p12,
+    paddingBottom: padding.p4,
+  },
   textPay: {fontSize: fontSize.f16, fontFamily: font.VDBrevia_Sb},
   viewBtnPay: {
     marginTop: padding.p20,

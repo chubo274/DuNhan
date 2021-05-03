@@ -25,8 +25,7 @@ export default StyleSheet.create({
     marginBottom: padding.p44,
     padding: padding.p4,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   viewSignup: {
     marginTop: padding.p12,

@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .trim()
-    .matches(/^[0-9]+$/, 'phone Phải là số')
+    .matches(/(0[3|5|7|8|9])+([0-9]{8})\b/, 'phone Phải là số')
     .min(8, 'phone Ít nhất 8 ký tự')
     .required('phone Bắt buộc'),
   password: Yup.string()
@@ -70,6 +70,7 @@ const SignUpScreen = () => {
             [
               {
                 text: 'Ok',
+                onPress: () => navigation.goBack(),
               },
             ],
             {cancelable: false},
@@ -105,7 +106,11 @@ const SignUpScreen = () => {
   //! Render
   return (
     <View style={styles.viewBg}>
-      <AppHeaderBack title={'Đăng ký tài khoản'} headerBack onPressBack={onBack} />
+      <AppHeaderBack
+        title={'Đăng ký tài khoản'}
+        headerBack
+        onPressBack={onBack}
+      />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Formik
           enableReinitialize
@@ -139,6 +144,7 @@ const SignUpScreen = () => {
                     maxLength={20}
                     value={values.password}
                     onChangeValue={handleChange('password')}
+                    secureTextEntry
                   />
                 </View>
                 <View style={styles.viewInput}>

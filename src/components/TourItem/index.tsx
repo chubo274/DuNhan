@@ -78,7 +78,7 @@ const TourItem = ({
                 </AppText>
               )}
               <AppText numberOfLines={1} style={styles.text}>
-                {converNumberToPrice((price * (100 - discount)) / 100)}
+                {converNumberToPrice(price * ((100 - discount) / 100))}
               </AppText>
             </View>
           </>
