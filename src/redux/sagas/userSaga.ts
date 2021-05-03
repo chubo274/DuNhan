@@ -66,7 +66,7 @@ function* signUp(payload: any) {
 }
 
 //* GET USER DATA
-function* getUserData(payload: any) {
+export function* getUserData(payload?: any) {
   const {_id} = yield select((state) => state.userReducer.data);
   const url = `${serviceBase.url.user}${_id}`;
   const onSuccess = payload?.callbacks?.onSuccess;

@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import padding from 'helpers/padding';
 import fontSize from 'helpers/fontSize';
 import color from 'helpers/color';
-import { DIMENSION } from 'helpers/dimentions';
+import {DEVICE, DIMENSION} from 'helpers/dimentions';
 
 export default StyleSheet.create({
   container: {
@@ -28,6 +28,7 @@ export default StyleSheet.create({
   },
   viewContent: {
     backgroundColor: color.white,
+    maxHeight: DEVICE.HEIGHT * 0.5,
   },
   btnOption: {
     flexDirection: 'row',

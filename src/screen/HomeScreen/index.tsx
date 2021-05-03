@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 import tourActions from 'redux/actions/tourActions';
 import {RootState} from 'redux/reducers';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -20,6 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import ListTour from './components/ListTour';
 import styles from './styles';
 import color from 'helpers/color';
+import {FORMAT_DATE} from 'helpers/constants';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ const HomeScreen = () => {
           avatar={item.avatar}
           name={item.name}
           placeStart={item.place_start}
-          timeStart={item.time_start}
+          timeStart={moment(item.time_start).format(FORMAT_DATE)}
           // travelTime={item.travel_time}
           travelTimeDay={item.travel_time.day}
           travelTimeNight={item.travel_time.night}
@@ -46,7 +48,7 @@ const HomeScreen = () => {
           price={item.price}
           discount={item.discount}
           onPress={() => {
-            navigation.navigate('DetailTourScreen', {data: item});
+            navigation.navigate('DetailTourScreen', {id: item._id});
           }}
         />
       </View>
@@ -104,20 +106,20 @@ const HomeScreen = () => {
         </View>
 
         {/* <View style={styles.viewGroup}>
-            <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
-            <View style={styles.viewListTour}>
-              <FlatList
-                keyExtractor={(item) => item._id.toString()}
-                data={listToursData}
-                renderItem={renderTourManyDiscount}
-                horizontal={true}
-                scrollEnabled={true}
-              />
-              <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
-              <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-              <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
-            </View>
-          </View> */}
+          <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
+          <View style={styles.viewListTour}>
+            <FlatList
+              keyExtractor={(item) => item._id.toString()}
+              data={listToursData}
+              renderItem={renderTourManyDiscount}
+              horizontal={true}
+              scrollEnabled={true}
+            />
+            <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
+            <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
+            <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
+          </View>
+        </View> */}
       </View>
       <View style={styles.viewBtnTool}>
         <TouchableOpacity onPress={onMesseger}>

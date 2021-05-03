@@ -1,12 +1,14 @@
 export default {
   url: {
-    HOST: 'http://192.168.5.5:5000/',
+    HOST: 'http://192.168.1.9:5000/',
     template: 'template/',
     login: 'user/login/',
     user: 'user/',
     place: 'place/',
     tour: 'tour/',
     searchTour: 'tour/search/',
+    booking: 'tour/booking/',
+    allBooking: 'tour/allBooking/',
   },
   statusCode: {
     success: [200, 201, 204],
