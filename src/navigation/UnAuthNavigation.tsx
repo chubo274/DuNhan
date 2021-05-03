@@ -4,6 +4,7 @@ import LoginScreen from '../screen/LoginScreen';
 import SignUpScreen from '../screen/SignUpScreen';
 import ForgotPassScreen from '../screen/ForgotPassScreen';
 import CodeForGetPassScreen from 'screen/CodeForGetPassScreen';
+import LoginAdminScreen from 'screen/LoginAdmin';
 
 const Stack = createStackNavigator();
 const UnAuthNavigation = () => {
@@ -13,6 +14,9 @@ const UnAuthNavigation = () => {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name={'LoginScreen'} component={LoginScreen}></Stack.Screen>
+      <Stack.Screen
+        name={'LoginAdminScreen'}
+        component={LoginAdminScreen}></Stack.Screen>
       <Stack.Screen
         name={'SignUpScreen'}
         component={SignUpScreen}></Stack.Screen>

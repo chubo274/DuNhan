@@ -9,6 +9,7 @@ export default {
     searchTour: 'tour/search/',
     booking: 'tour/booking/',
     allBooking: 'tour/allBooking/',
+    cancel: 'tour/cancel/',
   },
   statusCode: {
     success: [200, 201, 204],

@@ -32,8 +32,8 @@ export default StyleSheet.create({
     fontFamily: font.VDBrevia_Sb,
   },
   viewbtnLogOut: {
-    paddingLeft: padding.p12,
     position: 'absolute',
+    left: 10,
     bottom: 20,
     width: '100%',
     justifyContent: 'center',

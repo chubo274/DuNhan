@@ -8,7 +8,7 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   containerTren: {
     height: (DEVICE.HEIGHT * 1) / 3.5,
-    backgroundColor: '#CCFFFF',
+    backgroundColor: color.blueBg,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -35,8 +35,8 @@ export default StyleSheet.create({
     marginLeft: DEVICE.WIDTH * 0.7,
   },
   viewbtnLogOut: {
-    paddingLeft: padding.p12,
     position: 'absolute',
+    left: 10,
     top: (DEVICE.HEIGHT * 2.5) / 3.5 - 120,
     width: '100%',
     justifyContent: 'center',

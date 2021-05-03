@@ -61,10 +61,6 @@ const DetailTourScreen = () => {
     return newList;
   };
 
-  //! Effect
-
-  //! Render
-
   const bookingticket = () => {
     const onMinus = () => {
       setTicket(ticket - 1);
@@ -214,7 +210,7 @@ const DetailTourScreen = () => {
               <PayField
                 title={'Thành tiền: '}
                 data={converNumberToPrice(
-                  (data.price * (100 - data.discount) * ticket) / 100,
+                  data.price * (((100 - data.discount) * ticket) / 100),
                 )}
               />
               <View style={styles.titlePay}>
@@ -230,13 +226,13 @@ const DetailTourScreen = () => {
                   onPress={() =>
                     onPay(
                       ticket,
-                      (data.price * (100 - data.discount) * ticket) / 100,
+                      data.price * (((100 - data.discount) * ticket) / 100),
                       data.discount,
                     )
                   }
                   disabled={
                     userData.money_available -
-                      (data.price * (100 - data.discount) * ticket) / 100 <
+                      data.price * (((100 - data.discount) * ticket) / 100) <
                     0
                   }
                 />

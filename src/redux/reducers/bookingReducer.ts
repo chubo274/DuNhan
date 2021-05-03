@@ -28,6 +28,22 @@ export default (state = initialState, action: any) => {
         error: action.error,
       };
 
+    case actionTypes.LIST_BOOKING_ALL_REQUEST:
+      return {
+        ...state,
+        error: '',
+      };
+    case actionTypes.LIST_BOOKING_ALL_SUCCESS:
+      return {
+        ...state,
+        data: [...action.data],
+        error: '',
+      };
+    case actionTypes.LIST_BOOKING_ALL_FAILED:
+      return {
+        ...state,
+        error: action.error,
+      };
     default:
       return state;
   }

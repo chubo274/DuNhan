@@ -8,6 +8,7 @@ export default StyleSheet.create({
   textInput: {
     padding: 0,
     fontSize: fontSize.f16,
+    flex: 1,
   },
   textView: {
     fontSize: fontSize.f16,
@@ -56,13 +57,18 @@ export default StyleSheet.create({
   },
   viewInput: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: padding.p8,
+    flexDirection: 'row',
   },
   viewIconModal: {
     alignSelf: 'flex-end',
     width: 30,
     height: 50,
     justifyContent: 'center',
+  },
+  touchToggleHidePass: {
+    justifyContent: 'center',
+    paddingHorizontal: padding.p8,
   },
 });

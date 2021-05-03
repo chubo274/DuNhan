@@ -6,7 +6,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import ModalPicker from './components/ModalPicker';
-import {FORMAT_DATE} from 'helpers/constants';
+import {FORMAT_DATE, HIT_SLOP} from 'helpers/constants';
 import AppTextInput from 'components/AppTextInput';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {ICON} from 'assets';
@@ -55,8 +55,12 @@ const AppInput = ({
 }: AppInputProps) => {
   //! State
   const [showModal, setShowModal] = useState(false);
+  const [hidePass, setHidePass] = useState(true);
 
   //! Function
+  const toggleHidePass = () => {
+    setHidePass(!hidePass);
+  };
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -86,8 +90,16 @@ const AppInput = ({
                 maxLength={maxLength}
                 keyboardType={keyboardType}
                 style={styles.textInput}
-                secureTextEntry={secureTextEntry}
+                secureTextEntry={secureTextEntry && hidePass}
               />
+              {secureTextEntry && (
+                <TouchableOpacity
+                  style={styles.touchToggleHidePass}
+                  onPress={toggleHidePass}
+                  hitSlop={HIT_SLOP}>
+                  <Entypo name={hidePass ? 'eye' : 'eye-with-line'} size={16} />
+                </TouchableOpacity>
+              )}
             </View>
           )}
           {typeModal == 'ModalPicker' && (

@@ -27,7 +27,7 @@ const ForgotPassScreen = () => {
   //! Render
   return (
     <View style={styles.container}>
-      <AppHeaderBack title={'Quên mật khẩu'} />
+      <AppHeaderBack title={'Quên mật khẩu'} headerBack />
       <View style={styles.viewInput}>
         <AppInput
           text="Nhập số điện thoại"

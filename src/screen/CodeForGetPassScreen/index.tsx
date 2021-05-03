@@ -25,7 +25,7 @@ const CodeForGetPassScreen = () => {
   //! Render
   return (
     <View style={styles.container}>
-      <AppHeaderBack title={'Quên mật khẩu'} />
+      <AppHeaderBack title={'Quên mật khẩu'} headerBack />
       <View style={styles.viewInput}>
         <AppInput
           text="Điền mã code"
