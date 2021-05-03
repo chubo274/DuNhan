@@ -4,7 +4,7 @@ import actionTypes from '../actionTypes';
  * Reducer actions related with login
  */
 
-export const login = (data: any, callbacks: any) => {
+export const login = (data: any, callbacks?: any) => {
   return {
     type: actionTypes.LOGIN_REQUEST,
     data,
@@ -16,7 +16,7 @@ export const logout = () => {
   return {type: actionTypes.LOG_OUT};
 };
 
-export const signUpAction = (data: any, callbacks: any) => {
+export const signUpAction = (data: any, callbacks?: any) => {
   return {
     type: actionTypes.SIGN_UP_REQUEST,
     data,
@@ -24,14 +24,14 @@ export const signUpAction = (data: any, callbacks: any) => {
   };
 };
 
-export const getUserData = (callbacks: any) => {
+export const getUserData = (callbacks?: any) => {
   return {
     type: actionTypes.GET_USER_DATA_REQUEST,
     callbacks,
   };
 };
 
-export const updateUserData = ( data: any, callbacks: any) => {
+export const updateUserData = (data: any, callbacks?: any) => {
   return {
     type: actionTypes.UPDATE_USER_DATA_REQUEST,
     data,

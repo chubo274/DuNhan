@@ -47,7 +47,7 @@ export default (state = initialState, action: any) => {
     case actionTypes.GET_USER_DATA_SUCCESS: {
       return {
         ...state,
-        data: {...state.data, ...action.data},
+        data: {...action.data},
         error: '',
       };
     }

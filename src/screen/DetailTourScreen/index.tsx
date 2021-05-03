@@ -16,9 +16,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'redux/reducers';
 import AppReadMore from 'components/AppReadMore';
 import AppTimeLineSchedule from 'components/AppTimeLineSchedule';
+import tourActions from 'redux/actions/tourActions';
+import {Alert} from 'react-native';
 const DetailTourScreen = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer.data);
+  const listTour = useSelector((state: RootState) => state.tourReducer.data);
   //! State
   //TODO booking
   const [showModalBooking, setShowModalBooking] = useState(false);
@@ -30,7 +33,10 @@ const DetailTourScreen = () => {
   const [showModalPay, setShowModalPay] = useState(false);
   //TODO getDataDetail
   const route: any = useRoute();
-  const data = route.params?.data;
+  const id = route.params?.id;
+  const data = listTour.find((el: any) => {
+    if (el._id === id) return el;
+  });
 
   //! Function
   const toggleModalBooking = () => {
@@ -44,9 +50,19 @@ const DetailTourScreen = () => {
   };
   const toggleModalPay = () => {
     setShowModalPay(!showModalPay);
+    console.log(moment().toDate());
+  };
+  const reListPlaces = (data: any) => {
+    let newList = '';
+    data.map((el: any, index: any) => {
+      if (index < data.length - 1) newList = newList + el.name + ', ';
+      else newList = newList + el.name;
+    });
+    return newList;
   };
 
   //! Effect
+
   //! Render
 
   const bookingticket = () => {
@@ -79,9 +95,50 @@ const DetailTourScreen = () => {
       toggleModalPay();
     };
 
-    const onPay = () => {
+    const onPay = (
+      total_ticket: number,
+      total_money: number,
+      discount: number,
+    ) => {
       toggleModalPay();
       toggleModalBooking();
+      const body = {
+        id: data._id,
+        tour: data._id,
+        user: userData._id,
+        booking_date: moment().toDate(),
+        total_money,
+        total_ticket,
+        discount,
+      };
+      dispatch(
+        tourActions.userBookingTour(body, {
+          onSuccess: () => {
+            Alert.alert(
+              'Thành công!',
+              'Đặt Tour thành công',
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+          onFailed: () => {
+            Alert.alert(
+              'Lỗi!',
+              'Đặt Tour không thành công',
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
     };
 
     return (
@@ -170,12 +227,17 @@ const DetailTourScreen = () => {
               <View style={styles.viewBtnPay}>
                 <AppButton
                   text="Thanh toán"
-                  onPress={onPay}
-                  disabled={
-                    !!!(
-                      userData.money_available -
-                      (data.price * (100 - data.discount) * ticket) / 100
+                  onPress={() =>
+                    onPay(
+                      ticket,
+                      (data.price * (100 - data.discount) * ticket) / 100,
+                      data.discount,
                     )
+                  }
+                  disabled={
+                    userData.money_available -
+                      (data.price * (100 - data.discount) * ticket) / 100 <
+                    0
                   }
                 />
                 <AppButton text="Quay lại" onPress={toggleModalPay} />
@@ -198,6 +260,7 @@ const DetailTourScreen = () => {
             <AppText style={styles.textTourName}>{data.name}</AppText>
           </View>
           <PayField title={'Điểm xuất phát: '} data={data.place_start} />
+          <PayField title={'Điểm du lịch: '} data={reListPlaces(data.places)} />
           <PayField
             title={'Khởi hành: '}
             data={moment(data.time_start).format(FORMAT_DATE)}
@@ -216,6 +279,7 @@ const DetailTourScreen = () => {
             if (index === 0)
               return (
                 <AppTimeLineSchedule
+                  key={index}
                   title={`${el.day}: ${el.title}`}
                   longText={el.detail}
                   firstPoint
@@ -224,6 +288,7 @@ const DetailTourScreen = () => {
             else if (index === data.schedule.length - 1)
               return (
                 <AppTimeLineSchedule
+                  key={index}
                   title={`${el.day}: ${el.title}`}
                   longText={el.detail}
                   lastPoint
@@ -232,6 +297,7 @@ const DetailTourScreen = () => {
             else
               return (
                 <AppTimeLineSchedule
+                  key={index}
                   title={`${el.day}: ${el.title}`}
                   longText={el.detail}
                 />
@@ -240,7 +306,7 @@ const DetailTourScreen = () => {
           <AppText style={styles.textTitlePath}>Ghi Chú</AppText>
           {data.notes.map((el: any, index: any) => {
             return (
-              <View style={styles.viewNotes}>
+              <View style={styles.viewNotes} key={index}>
                 <View
                   style={{
                     justifyContent: 'center',

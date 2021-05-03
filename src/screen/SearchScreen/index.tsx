@@ -24,22 +24,16 @@ const SearchScreen = () => {
   const listPlaceData = useSelector(
     (state: RootState) => state.placeReducer.data,
   );
-  const listToursData = useSelector(
-    (state: RootState) => state.tourReducer.data,
+  const listPlacesData = useSelector(
+    (state: RootState) => state.tourReducer.listPlacesStart,
   );
 
-  const listPlacesStart: any[] = [];
-  listToursData.map((el: any) => {
-    if (listPlacesStart.indexOf(el?.place_start) === -1) {
-      listPlacesStart.push({
-        key: listPlacesStart.length,
-        value: el?.place_start,
-      });
-    }
-  });
-
   const listPlace: any[] = [];
+  const listPlacesStart: any[] = [];
   listPlaceData.map((el) => listPlace.push({key: el._id, value: el.name}));
+  listPlacesData.map((el: any) =>
+    listPlacesStart.push({key: listPlacesStart.length, value: el}),
+  );
 
   //! State
   const isFocused = useIsFocused();
@@ -89,7 +83,7 @@ const SearchScreen = () => {
 
   const data: any = {
     place_start: listPlacesStart[0]?.key,
-    route_place: [],
+    places: [],
     time_start: moment().format(ACTUAL_DATE),
     priceFromKey: priceData[0].key,
     priceToKey: priceData[priceData.length - 1].key,
@@ -98,17 +92,21 @@ const SearchScreen = () => {
   const [isAllDay, setIsAllDay] = useState(false);
 
   //! Function
-  const onSreach = (value: any) => {
+  const onSearch = (value: any) => {
     value.place_start = listPlacesStart.find(
-      (el) => el.key === value.place_start,
+      (el: any) => el.key === value.place_start,
     )?.value;
 
+    isAllDay && delete value.time_start;
+
+    // value.time_start = moment(value.time_start, FORMAT_DATE).toDate();
+    console.log(value);
     dispatch(
       tourActions.searchTours(value, {
-        onSuccess: (resultSearch: any) => {
+        onSuccess: (listTour: any) => {
           const title = 'Kết quả tìm kiếm';
+          navigation.navigate('ListTour', {title, listTour});
           innerRef?.current?.resetForm();
-          navigation.navigate('ListTour', {title, resultSearch});
         },
         onFailed: () => {
           Alert.alert(
@@ -143,21 +141,21 @@ const SearchScreen = () => {
           validateOnBlur={false}
           initialValues={data}
           innerRef={innerRef}
-          onSubmit={onSreach}>
+          onSubmit={onSearch}>
           {({handleChange, handleSubmit, errors, values, setFieldValue}) => {
             //* Function for Fomik
             const onPlus = () => {
               const newList = listPlace.filter(
-                (el) => !values.route_place.includes(el.key),
+                (el) => !values.places.includes(el.key),
               );
-              const newRoutePlace = values.route_place;
+              const newRoutePlace = values.places;
               newRoutePlace.push(newList[0].key);
-              setFieldValue('route_place', newRoutePlace);
+              setFieldValue('places', newRoutePlace);
             };
             const onMinus = () => {
-              const newRoutePlace = values.route_place;
+              const newRoutePlace = values.places;
               newRoutePlace.pop();
-              setFieldValue('route_place', newRoutePlace);
+              setFieldValue('places', newRoutePlace);
             };
 
             const onAllDay = () => {
@@ -190,12 +188,12 @@ const SearchScreen = () => {
                     <View style={styles.viewPlace}>
                       <AppText style={styles.textPlace}>Điểm đến</AppText>
                     </View>
-                    {!_.isEmpty(listPlace) && values.route_place.length < 3 && (
+                    {!_.isEmpty(listPlace) && values.places.length < 3 && (
                       <View style={styles.viewPlace}>
                         <AppButtonCircle name="pluscircleo" onPress={onPlus} />
                       </View>
                     )}
-                    {values.route_place.length > 0 && (
+                    {values.places.length > 0 && (
                       <AppButtonCircle name="minuscircleo" onPress={onMinus} />
                     )}
                   </View>
@@ -203,7 +201,7 @@ const SearchScreen = () => {
                     style={{
                       flexDirection: 'row',
                     }}>
-                    {values.route_place.map((item: any, index: any) => {
+                    {values.places.map((item: any, index: any) => {
                       return (
                         <View style={{flex: 1}} key={item}>
                           <AppInput
@@ -211,14 +209,14 @@ const SearchScreen = () => {
                             text=""
                             data={listPlace.filter(
                               (el: any) =>
-                                !values.route_place.includes(el.key) ||
-                                values.route_place[index] == el.key,
+                                !values.places.includes(el.key) ||
+                                values.places[index] == el.key,
                             )}
                             keySelected={item}
                             onSelect={(key: number) => {
-                              const array = values.route_place;
+                              const array = values.places;
                               array[index] = key;
-                              setFieldValue('route_place', array);
+                              setFieldValue('places', array);
                             }}
                           />
                         </View>
@@ -296,7 +294,7 @@ const SearchScreen = () => {
                   </View>
                 </View>
 
-                <View style={{paddingTop: padding.p12}}>
+                <View style={styles.viewbtnLogOut}>
                   <AppButton text="Tìm" onPress={handleSubmit} />
                 </View>
               </>

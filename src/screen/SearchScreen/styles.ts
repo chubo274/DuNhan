@@ -1,4 +1,5 @@
 import color from 'helpers/color';
+import {DEVICE} from 'helpers/dimentions';
 import font from 'helpers/font';
 import fontSize from 'helpers/fontSize';
 import padding from 'helpers/padding';
@@ -29,5 +30,12 @@ export default StyleSheet.create({
   textPlace: {
     fontSize: fontSize.f16,
     fontFamily: font.VDBrevia_Sb,
+  },
+  viewbtnLogOut: {
+    paddingLeft: padding.p12,
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+    justifyContent: 'center',
   },
 });
