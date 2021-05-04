@@ -59,7 +59,6 @@ const LoginScreen = () => {
       setError('Trường này không được để trống');
     }
   }, [userName]);
-  console.log(password.length > 7);
 
   useEffect(() => {
     if (!_.isEmpty(password?.toString().trim())) {
