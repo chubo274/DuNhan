@@ -9,8 +9,8 @@ export default StyleSheet.create({
   viewbtnLogOut: {
     position: 'absolute',
     left: 10,
+    right: 10,
     bottom: 20,
-    width: '100%',
     justifyContent: 'center',
   },
 });
