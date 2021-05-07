@@ -67,9 +67,9 @@ const TicketScreen = () => {
       setPercentRefund(75);
     } else if (moment(timeStart).diff(moment().toDate(), 'days') > 5) {
       setPercentRefund(50);
-    } else if (moment(timeStart).diff(moment().toDate(), 'days') < 3) {
-      setPercentRefund(0);
-    }
+    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 3) {
+      setPercentRefund(25);
+    } else setPercentRefund(0);
 
     //* hiển thị modal
     toggleModalBooking();
@@ -194,10 +194,18 @@ const TicketScreen = () => {
                   }
                 />
                 <FieldRule
-                  title={'ít hơn 3 ngày hoàn: '}
+                  title={'nhiều hơn 3 ngày hoàn: '}
+                  data={'25%'}
+                  active={
+                    moment(timeStartTour).diff(moment().toDate(), 'days') > 3 &&
+                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 5
+                  }
+                />
+                <FieldRule
+                  title={'bằng hay ít hơn 3 ngày hoàn: '}
                   data={'0%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') < 3
+                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 3
                   }
                 />
                 <View style={styles.titlePay}>

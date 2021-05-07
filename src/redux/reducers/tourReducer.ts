@@ -2,13 +2,17 @@ import actionTypes from 'redux/actionTypes';
 
 export interface IReducer {
   data: any[];
-  error: string;
+  listSuggest: any[];
+  listSale: any[];
   listPlacesStart: any[];
+  error: string;
 }
 const initialState: IReducer = {
   data: [],
-  error: '',
+  listSuggest: [],
+  listSale: [],
   listPlacesStart: [],
+  error: '',
 };
 
 export default (state = initialState, action: any) => {
@@ -20,16 +24,18 @@ export default (state = initialState, action: any) => {
       };
     case actionTypes.GET_TOURS_SUCCESS:
       const newPlacesStart: any = [];
-      action.data.map((el: any) => {
+      action.data.Tour.map((el: any) => {
         if (newPlacesStart.indexOf(el?.place_start) === -1) {
           newPlacesStart.push(el?.place_start);
         }
       });
       return {
         ...state,
-        data: [...action.data],
-        error: '',
+        data: [...action.data.Tour],
+        listSuggest: [...action.data.listSuggest],
+        listSale: [...action.data.listSale],
         listPlacesStart: newPlacesStart,
+        error: '',
       };
     case actionTypes.GET_TOURS_FAILED:
       return {

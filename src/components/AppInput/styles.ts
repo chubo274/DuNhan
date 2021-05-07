@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   textInput: {
-    padding: 0,
+    padding: 10,
     fontSize: fontSize.f16,
     flex: 1,
   },
