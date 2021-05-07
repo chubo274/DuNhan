@@ -8,9 +8,10 @@ import {getUserData} from './userSaga';
 import {select} from 'redux-saga/effects';
 
 function* getListTours() {
+  const {_id} = yield select((state) => state.userReducer.data);
   const url = serviceBase.url.tour;
   try {
-    const {response} = yield call(get, url, {});
+    const {response} = yield call(get, url, {_id});
     if (response.error) {
       yield put({
         type: actionTypes.GET_TOURS_FAILED,

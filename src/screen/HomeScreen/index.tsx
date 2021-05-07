@@ -19,6 +19,7 @@ import {RootState} from 'redux/reducers';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import ListTour from './components/ListTour';
+import _ from 'lodash';
 import styles from './styles';
 import color from 'helpers/color';
 import {FORMAT_DATE} from 'helpers/constants';
@@ -30,6 +31,12 @@ const HomeScreen = () => {
   const isFocused = useIsFocused();
   const listToursData = useSelector(
     (state: RootState) => state.tourReducer.data,
+  );
+  const listSuggest = useSelector(
+    (state: RootState) => state.tourReducer.listSuggest,
+  );
+  const listSale = useSelector(
+    (state: RootState) => state.tourReducer.listSale,
   );
 
   //! Function
@@ -82,44 +89,40 @@ const HomeScreen = () => {
         <View style={styles.viewGroup}>
           <AppText style={styles.textGroup}>Tour đề xuất cho bạn</AppText>
           <View style={styles.viewListTour}>
-            <FlatList
-              keyExtractor={(item) => item._id.toString()}
-              data={listToursData}
-              renderItem={renderTourManyDiscount}
-              horizontal={true}
-              scrollEnabled={true}
-            />
+            {_.isEmpty(listSuggest) ? (
+              <View style={styles.viewNonData}>
+                <AppText>Không có đề xuất nào</AppText>
+              </View>
+            ) : (
+              <FlatList
+                keyExtractor={(item) => item._id.toString()}
+                data={listSuggest}
+                renderItem={renderTourManyDiscount}
+                horizontal={true}
+                scrollEnabled={true}
+              />
+            )}
           </View>
         </View>
 
         <View style={styles.viewGroup}>
-          <AppText style={styles.textGroup}>Tour khuyến mại nhiều</AppText>
+          <AppText style={styles.textGroup}>Tour siêu khuyến mại</AppText>
           <View style={styles.viewListTour}>
-            <FlatList
-              keyExtractor={(item) => item._id.toString()}
-              data={listToursData}
-              renderItem={renderTourManyDiscount}
-              horizontal={true}
-              scrollEnabled={true}
-            />
+            {_.isEmpty(listSale) ? (
+              <View style={styles.viewNonData}>
+                <AppText>Chưa có siêu sale để săn</AppText>
+              </View>
+            ) : (
+              <FlatList
+                keyExtractor={(item) => item._id.toString()}
+                data={listSale}
+                renderItem={renderTourManyDiscount}
+                horizontal={true}
+                scrollEnabled={true}
+              />
+            )}
           </View>
         </View>
-
-        {/* <View style={styles.viewGroup}>
-          <AppText style={styles.textGroup}>List tour theo khu vực</AppText>
-          <View style={styles.viewListTour}>
-            <FlatList
-              keyExtractor={(item) => item._id.toString()}
-              data={listToursData}
-              renderItem={renderTourManyDiscount}
-              horizontal={true}
-              scrollEnabled={true}
-            />
-            <ListTour area="Tour Miền Bắc" source={IMAGE.listTourMB} />
-            <ListTour area="Tour Miền Trung" source={IMAGE.listTourMT} />
-            <ListTour area="Tour Miền Nam" source={IMAGE.listTourMN} />
-          </View>
-        </View> */}
       </View>
       <View style={styles.viewBtnTool}>
         <TouchableOpacity onPress={onMesseger}>

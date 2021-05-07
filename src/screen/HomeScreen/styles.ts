@@ -5,6 +5,12 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {flex: 1, backgroundColor: color.white},
+  viewNonData: {
+    height: 80,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   viewGroup: {
     marginHorizontal: padding.p8,
     paddingBottom: padding.p12,
