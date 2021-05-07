@@ -25,6 +25,7 @@ const AdminDashBoard = () => {
   const [end_date, setend_date] = useState(moment().toDate());
   const [showModal, setShowModal] = useState(false);
   const [filterByDay, setFilterByDay] = useState(true);
+  const [renderFilterByDay, setRenderFilterByDay] = useState(true);
   const [detailDataMoney, setDetailDataMoney] = useState();
   const [detailDataDay, setDetailDataDay] = useState();
 
@@ -57,6 +58,7 @@ const AdminDashBoard = () => {
   const onApply = () => {
     toggleModal();
     dispatch(tourActions.listBookingAllTours());
+    setRenderFilterByDay(filterByDay);
   };
 
   //! UseEffects
@@ -72,12 +74,17 @@ const AdminDashBoard = () => {
           startDate={start_date}
           endDate={end_date}
           onSelectChart={onChangeDetailData}
+          filterByDay={renderFilterByDay}
         />
         {!!detailDataDay ? (
           <View style={styles.viewTotal}>
-            <AppText style={styles.textdate}>{detailDataDay ?? ''}</AppText>
+            <AppText style={styles.textdate}>
+              {moment(detailDataDay).format(
+                renderFilterByDay ? 'DD-MM-YYYY' : 'MM-YYYY',
+              ) ?? ''}
+            </AppText>
             <AppText style={styles.textTotal}>
-              "Tổng": {converNumberToPrice(detailDataMoney ?? 0)}
+              Tổng thu: {converNumberToPrice(detailDataMoney ?? 0)}
             </AppText>
           </View>
         ) : (

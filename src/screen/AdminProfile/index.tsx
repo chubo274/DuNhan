@@ -20,7 +20,7 @@ const AdminProfile = () => {
   //! Render
   return (
     <>
-      <AppHeaderBack title="Thông tin quản trị viên" />
+      <AppHeaderBack title="Đang trong giai đoạn phát triển" />
       <View style={styles.viewbtnLogOut}>
         <AppButton text="Đăng xuất" onPress={onLogOut} />
       </View>

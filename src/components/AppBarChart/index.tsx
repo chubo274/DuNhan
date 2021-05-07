@@ -16,12 +16,14 @@ interface BarChartReportProps {
   onSelectChart?: (day: any, value: any) => void;
   startDate: Date;
   endDate: Date;
+  filterByDay: Boolean;
 }
 
 const Chart = ({
   onSelectChart = () => {},
   startDate,
   endDate,
+  filterByDay = true,
 }: BarChartReportProps) => {
   //! State
   const listBooking = useSelector(
@@ -43,22 +45,26 @@ const Chart = ({
   //! Effects
   useEffect(() => {
     //TODO tạo list booking rỗng theo start,end time
-    let newDay = moment(startDate).startOf('day').format(ACTUAL_DATE);
+    let newDay = moment(startDate)
+      .startOf(filterByDay ? 'day' : 'month')
+      .format(ACTUAL_DATE);
     const newData: any = [];
     while (
       moment(newDay).isSameOrBefore(
-        moment(endDate).startOf('day').format(ACTUAL_DATE),
+        moment(endDate)
+          .startOf(filterByDay ? 'day' : 'month')
+          .format(ACTUAL_DATE),
       )
     ) {
       const newLabel =
         String(newDay).split('-')[2] + '/' + String(newDay).split('-')[1];
       newData.push({
         day: newDay,
-        // total: 0,
-        // label: newLabel,
         value: 0,
       });
-      newDay = moment(newDay).add(1, 'day').format(ACTUAL_DATE);
+      newDay = moment(newDay)
+        .add(1, filterByDay ? 'day' : 'month')
+        .format(ACTUAL_DATE);
     }
 
     //TODO tạo list booking theo listBooking và filter
@@ -66,24 +72,30 @@ const Chart = ({
     listBooking.map((el: any) => {
       if (_.isEmpty(newListBooking)) {
         newListBooking.push({
-          day: moment(moment(el.booking_date).startOf('day').toDate()).format(
-            ACTUAL_DATE,
-          ),
+          day: moment(
+            moment(el.booking_date)
+              .startOf(filterByDay ? 'day' : 'month')
+              .toDate(),
+          ).format(ACTUAL_DATE),
           value: el.total_money,
         });
       } else {
         if (
           moment(newListBooking[newListBooking.length - 1].day)
-            .startOf('day')
-            .isSame(moment(el.booking_date).startOf('day'))
+            .startOf(filterByDay ? 'day' : 'month')
+            .isSame(
+              moment(el.booking_date).startOf(filterByDay ? 'day' : 'month'),
+            )
         ) {
           newListBooking[newListBooking.length - 1].value =
             newListBooking[newListBooking.length - 1].value + el.total_money;
         } else {
           newListBooking.push({
-            day: moment(moment(el.booking_date).startOf('day').toDate()).format(
-              ACTUAL_DATE,
-            ),
+            day: moment(
+              moment(el.booking_date)
+                .startOf(filterByDay ? 'day' : 'month')
+                .toDate(),
+            ).format(ACTUAL_DATE),
             value: el.total_money,
           });
         }
@@ -94,8 +106,10 @@ const Chart = ({
     newData.map((el: any, idx: any) => {
       const dataEl = newListBooking.find((e: any, i: any) => {
         return moment(e.day, ACTUAL_DATE)
-          .startOf('day')
-          .isSame(moment(el.day, ACTUAL_DATE).startOf('day'));
+          .startOf(filterByDay ? 'day' : 'month')
+          .isSame(
+            moment(el.day, ACTUAL_DATE).startOf(filterByDay ? 'day' : 'month'),
+          );
       });
       if (!_.isEmpty(dataEl))
         newData[idx] = {
@@ -121,7 +135,7 @@ const Chart = ({
           500,
         );
     }
-  }, [listBooking]);
+  }, [listBooking, filterByDay]);
 
   //! Render
   return (
@@ -137,7 +151,7 @@ const Chart = ({
                     newDataChart?.map((el: any) => {
                       return {y: Number((el.value / 1000000).toFixed(1))};
                     }) || [],
-                  label: 'Tiền',
+                  label: 'Triệu vnđ',
                   config: {
                     valueTextSize: fontSize.f12,
                     color: processColor(color.sundown),
@@ -153,7 +167,7 @@ const Chart = ({
             xAxis={{
               valueFormatter:
                 newDataChart?.map((el: any) =>
-                  moment(el.day).format('DD/MM'),
+                  moment(el.day).format(filterByDay ? 'DD/MM' : 'MM/YY'),
                 ) || [],
               granularityEnabled: true,
               granularity: 1,
@@ -179,7 +193,15 @@ const Chart = ({
             }}
             // animation={{durationX: 2000}}
             legend={{
-              enabled: false,
+              enabled: true,
+              textSize: 14,
+              form: 'SQUARE',
+              formSize: 14,
+              xEntrySpace: 10,
+              yEntrySpace: 5,
+              formToTextSpace: 5,
+              wordWrapEnabled: true,
+              maxSizePercent: 0.5,
             }}
             ref={barChartRef}
             minOffset={0}

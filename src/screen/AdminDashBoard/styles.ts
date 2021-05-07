@@ -38,7 +38,7 @@ export default StyleSheet.create({
   },
   viewTotal: {
     margin: padding.p16,
-    flexDirection: 'row',
+    // flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: color.champagnePink,
