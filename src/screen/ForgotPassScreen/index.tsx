@@ -6,19 +6,40 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import styles from './styles';
 import _ from 'lodash';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const ForgotPassScreen = () => {
   //! State
   const navigation = useNavigation();
-  const [userName, setUserName] = useState<number>();
+  const [userName, setUserName] = useState('');
+  const [
+    confirm,
+    setConfirm,
+  ] = useState<FirebaseAuthTypes.ConfirmationResult>();
+  const [code, setCode] = useState('');
 
   //! Function
-  const onChangeUserName = (data: number) => {
+  const onChangeUserName = (data: string) => {
     setUserName(data);
   };
 
-  const onPress = () => {
+  async function signInWithPhoneNumber() {
+    const confirmation = await auth().signInWithPhoneNumber(userName);
+    console.log('conf', confirmation);
+    setConfirm(confirmation);
+  }
+
+  async function confirmCode() {
+    try {
+      await confirm?.confirm(code);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
+
+  const onPress = async () => {
     const param = {user_name: userName};
+    await signInWithPhoneNumber();
     //check xem có user không?
     navigation.navigate('CodeForGetPassScreen', param);
   };
