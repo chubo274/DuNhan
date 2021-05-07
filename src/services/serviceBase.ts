@@ -1,6 +1,6 @@
 export default {
   url: {
-    HOST: 'http://192.168.1.9:5000/',
+    HOST: 'http://192.168.0.102:5000/',
     template: 'template/',
     login: 'user/login/',
     user: 'user/',
