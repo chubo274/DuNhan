@@ -98,15 +98,13 @@ const SearchScreen = () => {
     )?.value;
 
     isAllDay && delete value.time_start;
-
-    // value.time_start = moment(value.time_start, FORMAT_DATE).toDate();
-    console.log(value);
     dispatch(
       tourActions.searchTours(value, {
         onSuccess: (listTour: any) => {
           const title = 'Kết quả tìm kiếm';
           navigation.navigate('ListTour', {title, listTour});
           innerRef?.current?.resetForm();
+          setIsAllDay(false);
         },
         onFailed: () => {
           Alert.alert(

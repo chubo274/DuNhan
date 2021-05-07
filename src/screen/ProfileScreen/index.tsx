@@ -52,7 +52,7 @@ const ProfileScreen = () => {
   const onPressSubmit = (values: any) => {
     dispatch(
       userActions.updateUserData(
-        {name: values.name.trim(), address: values.address.trim()},
+        {name: values.name.trim(), address: values.address},
         {
           onSuccess: () => {
             refFormik?.current?.resetForm();

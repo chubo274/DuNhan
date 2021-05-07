@@ -8,7 +8,7 @@ import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppSilder from 'components/AppSilder';
 import AppButton from 'components/AppButton';
-import {useRoute} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import color from 'helpers/color';
 import {converNumberToPrice} from 'helpers/function';
 import PayField from './components/PayField';
@@ -19,6 +19,7 @@ import AppTimeLineSchedule from 'components/AppTimeLineSchedule';
 import tourActions from 'redux/actions/tourActions';
 import {Alert} from 'react-native';
 const DetailTourScreen = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer.data);
   const listTour = useSelector((state: RootState) => state.tourReducer.data);
@@ -223,18 +224,37 @@ const DetailTourScreen = () => {
               <View style={styles.viewBtnPay}>
                 <AppButton
                   text="Thanh toán"
-                  onPress={() =>
-                    onPay(
-                      ticket,
-                      data.price * (((100 - data.discount) * ticket) / 100),
-                      data.discount,
-                    )
-                  }
-                  disabled={
+                  onPress={() => {
                     userData.money_available -
-                      data.price * (((100 - data.discount) * ticket) / 100) <
+                      data.price * (((100 - data.discount) * ticket) / 100) >
                     0
-                  }
+                      ? onPay(
+                          ticket,
+                          data.price * (((100 - data.discount) * ticket) / 100),
+                          data.discount,
+                        )
+                      : Alert.alert(
+                          'Thông báo!',
+                          'Vui lòng nạp thêm tiền!',
+                          [
+                            {
+                              text: 'Nạp',
+                              onPress: () => {
+                                navigation.goBack();
+                                setTimeout(
+                                  () => navigation.navigate('ProfileScreen'),
+                                  500,
+                                );
+                              },
+                            },
+                            {
+                              text: 'Để Sau',
+                              style: 'cancel',
+                            },
+                          ],
+                          {cancelable: false},
+                        );
+                  }}
                 />
                 <AppButton text="Quay lại" onPress={toggleModalPay} />
               </View>
