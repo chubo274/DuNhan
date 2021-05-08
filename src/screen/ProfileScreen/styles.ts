@@ -38,7 +38,7 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 10,
     right: 10,
-    top: (DEVICE.HEIGHT * 2.5) / 3.5 - 120,
+    top: (DEVICE.HEIGHT * 2.5) / 3.5 - 180,
     justifyContent: 'center',
   },
   field: {

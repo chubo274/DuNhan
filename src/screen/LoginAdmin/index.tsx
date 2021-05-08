@@ -90,17 +90,17 @@ const LoginAdminScreen = () => {
               maxLength={20}
               keyboardType="number-pad"
             />
-            <AppText>{error}</AppText>
+            <AppText style={{color: 'red'}}>{error}</AppText>
           </View>
 
           <AppInput
             text="Mật khẩu"
-            placeholder="123abc"
+            placeholder="123abcxyz"
             value={password}
             onChangeValue={onChangePassword}
             secureTextEntry
           />
-          <AppText>{errorPass}</AppText>
+          <AppText style={{color: 'red'}}>{errorPass}</AppText>
 
           <View style={styles.viewForgotPass}></View>
 
