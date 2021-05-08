@@ -246,11 +246,8 @@ const SearchScreen = () => {
                   </View>
                   <View style={{flex: 1, paddingTop: 25}}>
                     <AppButton
-                      text="Tất cả các ngày"
+                      text={isAllDay ? 'Ngày chỉ định' : 'Tất cả các ngày'}
                       onPress={onAllDay}
-                      style={{
-                        backgroundColor: isAllDay ? color.primary : color.fade,
-                      }}
                     />
                   </View>
                 </View>

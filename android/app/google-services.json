@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "54357698938",
+    "project_id": "nhandu-519f8",
+    "storage_bucket": "nhandu-519f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54357698938:android:29906b2439ab5011c3cec3",
+        "android_client_info": {
+          "package_name": "com.dunhan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54357698938-4ulhmccfdt1hknfooa6g64if0cr3dvgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dunhan",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "54357698938-4ir8acgai7es3i1ba0hhmfs5faadcetu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP2ccJY-3KIdXu_casydTdblALm363fqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54357698938-4ir8acgai7es3i1ba0hhmfs5faadcetu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
