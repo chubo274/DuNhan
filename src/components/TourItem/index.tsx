@@ -50,11 +50,7 @@ const TourItem = ({
   //! Render
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <FastImage
-        source={require('../../assets/img/218beb31-153a-4423-b2a6-6cd1a4bed8eb.png')}
-        style={styles.avt}
-        resizeMode="cover"
-      />
+      <FastImage source={{uri: avatar}} style={styles.avt} resizeMode="cover" />
       <View style={styles.content}>
         <AppText numberOfLines={1} style={styles.text}>
           {name}

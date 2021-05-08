@@ -18,6 +18,8 @@ import AppReadMore from 'components/AppReadMore';
 import AppTimeLineSchedule from 'components/AppTimeLineSchedule';
 import tourActions from 'redux/actions/tourActions';
 import {Alert} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {IMAGE} from 'assets';
 const DetailTourScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -274,6 +276,13 @@ const DetailTourScreen = () => {
         <ScrollView>
           <View style={styles.titlePay}>
             <AppText style={styles.textTourName}>{data.name}</AppText>
+            {data.discount >= 25 && (
+              <FastImage
+                source={IMAGE.superSale}
+                style={styles.imgSuperSale}
+                resizeMode={'contain'}
+              />
+            )}
           </View>
           <PayField title={'Điểm xuất phát: '} data={data.place_start} />
           <PayField title={'Điểm du lịch: '} data={reListPlaces(data.places)} />
@@ -287,6 +296,11 @@ const DetailTourScreen = () => {
               data.travel_time.night ?? 0
             } đêm`}
           />
+          <PayField
+            title={'Đơn giá vé: '}
+            data={converNumberToPrice(data.price)}
+          />
+          <PayField title={'Khuyến mại: '} data={data.discount + '%'} />
           <PayField title={'Số vé còn nhận: '} data={data.slots} />
           <AppText style={styles.textTitlePath}>Mô Tả</AppText>
           <AppReadMore longText={data.description} />
