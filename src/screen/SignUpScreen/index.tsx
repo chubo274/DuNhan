@@ -140,7 +140,7 @@ const SignUpScreen = () => {
                 <View style={styles.viewInput}>
                   <AppInput
                     text="Mật khẩu *"
-                    placeholder="123abc"
+                    placeholder="123abcxyz"
                     maxLength={20}
                     value={values.password}
                     onChangeValue={handleChange('password')}

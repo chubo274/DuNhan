@@ -88,25 +88,19 @@ const LoginScreen = () => {
               maxLength={20}
               // keyboardType="number-pad"
             />
-            <AppText>{error}</AppText>
+            <AppText style={{color: 'red'}}>{error}</AppText>
           </View>
 
           <AppInput
             text="Mật khẩu"
-            placeholder="123abc"
+            placeholder="123abcxyz"
             value={password}
             onChangeValue={onChangePassword}
             secureTextEntry
           />
-          <AppText>{errorPass}</AppText>
+          <AppText style={{color: 'red'}}>{errorPass}</AppText>
 
           <View style={styles.viewForgotPass}>
-            {/* <TouchableOpacity
-              hitSlop={HIT_SLOP}
-              style={styles.touch}
-              onPress={() => navigation.navigate('LoginAdminScreen')}>
-              <AppText style={{color: 'blue'}}>Quản trị viên</AppText>
-            </TouchableOpacity> */}
             <TouchableOpacity
               hitSlop={HIT_SLOP}
               style={styles.touch}

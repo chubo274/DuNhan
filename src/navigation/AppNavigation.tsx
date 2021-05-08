@@ -8,6 +8,8 @@ import SearchScreen from 'screen/SearchScreen';
 import TabBar from './components/TabBar';
 import ListTour from 'screen/ListTour';
 import DetailTourScreen from 'screen/DetailTourScreen';
+import NewPass from 'screen/NewPass';
+import PassSecure from 'screen/PassSecure';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,6 +35,8 @@ const AppNavigation = () => {
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="ListTour" component={ListTour} />
       <Stack.Screen name="DetailTourScreen" component={DetailTourScreen} />
+      <Stack.Screen name="PassSecure" component={PassSecure} />
+      <Stack.Screen name="NewPass" component={NewPass} />
     </Stack.Navigator>
   );
 };

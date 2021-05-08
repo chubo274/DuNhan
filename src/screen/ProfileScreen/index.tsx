@@ -24,7 +24,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {converNumberToBankNumber, converNumberToPrice} from 'helpers/function';
 import ProfileField from './components/profileField';
 import {IMAGE} from 'assets';
-import {useIsFocused} from '@react-navigation/core';
+import {useIsFocused, useNavigation} from '@react-navigation/core';
 
 let text: string;
 const validationSchema = Yup.object().shape({
@@ -32,6 +32,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   //! State
@@ -161,6 +162,9 @@ const ProfileScreen = () => {
     }
   };
 
+  const onChangePass = () => {
+    navigation.navigate('PassSecure');
+  };
   //! Effect
   useEffect(() => {
     if (isFocused) {
@@ -322,6 +326,11 @@ const ProfileScreen = () => {
               }}
             </Formik>
             <View style={styles.viewbtnLogOut}>
+              <AppButton
+                text="Đổi mật khẩu"
+                onPress={onChangePass}
+                style={{marginBottom: 20}}
+              />
               <AppButton text="Đăng xuất" onPress={onLogOut} />
             </View>
           </View>
