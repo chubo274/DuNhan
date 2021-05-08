@@ -15,10 +15,14 @@ export const validateMoney = (value: string) => {
 };
 
 export const convertObjectToQuery = (param: any) => {
-  if (_.isEmpty(param)) {
-    return '';
-  }
-  return '?' + queryString.stringify(param);
+  if (!_.isEmpty(param)) {
+    // if (!_.isArray(param)) {
+    //   let list =""
+    //   param.map((el :any)=>{})
+    //   return '?' + queryString.stringify(param);
+    // }
+    return '?' + queryString.stringify(param);
+  } else return '';
 };
 
 export const converNumberToPrice = (param: number, unit = 'vnđ') => {
