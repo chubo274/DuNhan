@@ -4,6 +4,7 @@ export const IMAGE = {
   listTourMT: require('./img/du-lich-mien-trung.jpg'),
   listTourMN: require('./img/tour-du-lich-mien-nam.jpg'),
   theVisa: require('./img/theVisa.png'),
+  superSale: require('./img/superSale.png'),
 };
 
 export const ICON = {

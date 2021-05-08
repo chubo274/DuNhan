@@ -56,7 +56,9 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     paddingTop: padding.p12,
     paddingBottom: padding.p4,
+    flexDirection: 'row',
   },
+  imgSuperSale: {position: 'absolute', right: 0, width: 80, height: 60},
   textPay: {fontSize: fontSize.f16, fontFamily: font.VDBrevia_Sb},
   viewBtnPay: {
     marginTop: padding.p20,
