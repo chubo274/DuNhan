@@ -10,13 +10,12 @@ import auth from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 
 const CodeForGetPassScreen = () => {
-  //! State
+  const route: any = useRoute();
+  const {confirmation, userName} = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  //! State
   const [value, setValue] = useState('');
-  const route: any = useRoute();
-  const {confirmation} = route.params;
-  console.log({confirmation});
 
   //! Function
   const onChangeValue = (data: string) => {
@@ -31,7 +30,7 @@ const CodeForGetPassScreen = () => {
       console.log('confirmCode -> res', res);
       const signOut = await auth().signOut();
       dispatch({type: ''});
-      navigation.navigate('CodeForGetPassScreen');
+      navigation.navigate('NewPass', {phone: userName});
     } catch (error) {
       dispatch({type: ''});
       console.log('confirmCode -> error', error);

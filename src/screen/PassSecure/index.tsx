@@ -31,7 +31,7 @@ const PassSecure = () => {
         {user_name: userName, password},
         {
           onSuccess: () => {
-            navigation.navigate('NewPass', {userName});
+            navigation.navigate('NewPass', {isChangePass: true});
           },
           onFailed: (err: string) => {
             let errorMessage = err;

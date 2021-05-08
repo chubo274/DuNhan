@@ -3,6 +3,7 @@ export default {
     HOST: 'http://192.168.1.9:5000/',
     template: 'template/',
     login: 'user/login/',
+    forGotPass: 'user/forGotPass/',
     user: 'user/',
     place: 'place/',
     tour: 'tour/',

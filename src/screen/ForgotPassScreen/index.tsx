@@ -2,20 +2,21 @@ import {useNavigation} from '@react-navigation/native';
 import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Keyboard, View} from 'react-native';
 import styles from './styles';
 import _ from 'lodash';
 import auth from '@react-native-firebase/auth';
 import {validatePhoneNumberVN} from 'helpers/function';
 import {useDispatch} from 'react-redux';
+import AppText from 'components/AppText';
 
 const ForgotPassScreen = () => {
-  //! State
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  //! State
   const [userName, setUserName] = useState('');
-
+  const [error, setError] = useState('');
   //! Function
   const onChangeUserName = (data: string) => {
     setUserName(data);
@@ -35,7 +36,7 @@ const ForgotPassScreen = () => {
         convertPhoneNumber(),
       );
       dispatch({type: ''});
-      navigation.navigate('CodeForGetPassScreen', {confirmation});
+      navigation.navigate('CodeForGetPassScreen', {confirmation, userName});
     } catch (error) {
       console.log('signInWithPhoneNumber -> error', {error});
       dispatch({type: ''});
@@ -64,33 +65,45 @@ const ForgotPassScreen = () => {
         {cancelable: false},
       );
     } else {
-      () => signInWithPhoneNumber();
+      signInWithPhoneNumber();
     }
   };
   //! UseEffect
-
+  useEffect(() => {
+    if (
+      !_.isEmpty(userName?.toString().trim()) &&
+      String(userName)?.length >= 10
+    ) {
+      setError('');
+    } else {
+      setError('Trường này phải ít nhất 10 ký tự');
+    }
+  }, [userName]);
   //! Render
   return (
-    <View style={styles.container}>
+    <>
       <AppHeaderBack title={'Quên mật khẩu'} headerBack />
-      <View style={styles.viewInput}>
-        <AppInput
-          text="Nhập số điện thoại"
-          placeholder="098765431"
-          value={userName}
-          onChangeValue={onChangeUserName}
-          maxLength={20}
-          keyboardType="numeric"
-        />
+      <View style={styles.container}>
+        <View style={{marginBottom: 24}}>
+          <AppInput
+            text="Nhập số điện thoại"
+            placeholder="098765431"
+            value={userName}
+            onChangeValue={onChangeUserName}
+            maxLength={20}
+            keyboardType="numeric"
+          />
+          <AppText style={{color: 'red'}}>{error}</AppText>
+        </View>
+        <View style={styles.btnLogin}>
+          <AppButton
+            text="Lấy mã"
+            onPress={onPress}
+            disabled={_.isEmpty(userName)}
+          />
+        </View>
       </View>
-      <View style={styles.btnLogin}>
-        <AppButton
-          text="Lấy mã"
-          onPress={onPress}
-          disabled={_.isEmpty(userName)}
-        />
-      </View>
-    </View>
+    </>
   );
 };
 

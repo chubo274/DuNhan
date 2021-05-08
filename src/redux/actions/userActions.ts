@@ -38,3 +38,11 @@ export const updateUserData = (data: any, callbacks?: any) => {
     callbacks,
   };
 };
+
+export const forgotPass = (data: any, callbacks?: any) => {
+  return {
+    type: actionTypes.FORGOT_PASS_REQUEST,
+    data,
+    callbacks,
+  };
+};

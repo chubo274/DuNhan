@@ -55,11 +55,11 @@ const LoginAdminScreen = () => {
   useEffect(() => {
     if (
       !_.isEmpty(userName?.toString().trim()) &&
-      String(userName)?.length > 7
+      String(userName)?.length >= 10
     ) {
       setError('');
     } else {
-      setError('Trường này phải ít nhất 8 ký tự');
+      setError('Trường này phải ít nhất 10 ký tự');
     }
   }, [userName]);
 
