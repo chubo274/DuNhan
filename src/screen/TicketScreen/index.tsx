@@ -128,31 +128,35 @@ const TicketScreen = () => {
             navigation.navigate('DetailTourScreen', {id: item.tour._id});
           }}
         />
-        <AppButton
-          text={item.can_dispose ? 'Huỷ vé' : 'Không hỗ trợ huỷ'}
-          onPress={
-            item.can_dispose
-              ? () =>
-                  onCancelTicket(
-                    item.tour._id,
-                    item._id,
-                    item.tour.time_start,
-                    item.total_money,
-                  )
-              : () => {
-                  Alert.alert(
-                    'Thông báo!',
-                    'Số vé đã đặt trong thời điểm siêu ưu đãi, xin vui lòng không hoàn vé!',
-                    [
-                      {
-                        text: 'Ok',
-                      },
-                    ],
-                    {cancelable: false},
-                  );
-                }
-          }
-        />
+        {moment(item.tour.time_start)
+          .startOf('day')
+          .isAfter(moment().startOf('day')) && (
+          <AppButton
+            text={item.can_dispose ? 'Huỷ vé' : 'Không hỗ trợ huỷ'}
+            onPress={
+              item.can_dispose
+                ? () =>
+                    onCancelTicket(
+                      item.tour._id,
+                      item._id,
+                      item.tour.time_start,
+                      item.total_money,
+                    )
+                : () => {
+                    Alert.alert(
+                      'Thông báo!',
+                      'Số vé đã đặt trong thời điểm siêu ưu đãi, xin vui lòng không hoàn vé!',
+                      [
+                        {
+                          text: 'Ok',
+                        },
+                      ],
+                      {cancelable: false},
+                    );
+                  }
+            }
+          />
+        )}
         <Modal
           visible={showModalBooking}
           transparent

@@ -3,6 +3,7 @@ import {IMAGE} from 'assets';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppText from 'components/AppText';
 import TourItem from 'components/TourItem';
+import Communications from 'react-native-communications';
 import React, {useEffect} from 'react';
 import {
   FlatList,
@@ -27,7 +28,6 @@ import {FORMAT_DATE} from 'helpers/constants';
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  //! State
   const isFocused = useIsFocused();
   const listToursData = useSelector(
     (state: RootState) => state.tourReducer.data,
@@ -38,6 +38,10 @@ const HomeScreen = () => {
   const listSale = useSelector(
     (state: RootState) => state.tourReducer.listSale,
   );
+  const userData = useSelector(
+    (state: RootState) => state.userReducer?.data?.phone,
+  );
+  //! State
 
   //! Function
   const renderTourManyDiscount = ({item, index}: any) => {
@@ -63,19 +67,21 @@ const HomeScreen = () => {
   };
 
   const onMesseger = async () => {
-    await Linking.openURL(
-      'https://www.facebook.com/messages/t/100005045582743',
-    );
+    await Linking.openURL('https://www.facebook.com/chubo2704');
   };
   const onMessage = async () => {
     const phoneNumber = '0376686722';
-    const message = 'Tôi cần hỗ trợ!';
-    const separator = Platform.OS === 'ios' ? '&' : '?';
-    await Linking.openURL(`sms:${phoneNumber}${separator}body=${message}`);
+    const message = `Tài khoản: ${userData}, cần hỗ trợ!`;
+    Communications.text(phoneNumber, message);
   };
   const onCallOut = async () => {
     const phoneNumber = '0376686722';
     await Linking.openURL(`tel:${phoneNumber}`);
+  };
+  const onEmail = () => {
+    const toEmail = 'chubo274@gmail.com';
+    const message = `Tài khoản: ${userData}, cần hỗ trợ!`;
+    Communications.email([toEmail], null, null, null, message);
   };
   //! Effect
   useEffect(() => {
@@ -126,15 +132,19 @@ const HomeScreen = () => {
       </View>
       <View style={styles.viewBtnTool}>
         <TouchableOpacity onPress={onMesseger}>
-          <Fontisto name={'messenger'} size={40} color={color.facebook} />
+          <Fontisto name={'messenger'} size={30} color={color.facebook} />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={onEmail}>
+          <Fontisto name={'email'} size={30} color={color.google} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={onMessage}>
-          <Fontisto name={'hipchat'} size={40} color={color.textPri} />
+          <Fontisto name={'hipchat'} size={30} color={color.textPri} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={onCallOut}>
-          <Feather name={'phone-call'} size={40} color={color.geraldine} />
+          <Feather name={'phone-call'} size={30} color={color.porsche} />
         </TouchableOpacity>
       </View>
     </>

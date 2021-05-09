@@ -38,8 +38,6 @@ const AdminDashBoard = () => {
     setend_date(date);
   };
   const onChangeDetailData = (day: any, value: any) => {
-    console.log({day}, {value});
-
     setDetailDataMoney(value);
     setDetailDataDay(day);
   };
