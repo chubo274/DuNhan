@@ -2,13 +2,14 @@ import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
 import React, {useRef} from 'react';
-import {Alert, Text, View} from 'react-native';
+import {Alert, Keyboard, Text, View} from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import _ from 'lodash';
 import * as Yup from 'yup';
 import {useDispatch} from 'react-redux';
+import auth from '@react-native-firebase/auth';
 import {signUpAction} from 'redux/actions/userActions';
 import {useNavigation} from '@react-navigation/native';
 
@@ -58,47 +59,79 @@ const SignUpScreen = () => {
       : navigation.goBack();
   };
 
+  const convertPhoneNumber = (phone: string) => {
+    let result = phone;
+    if (result[0] === '0') {
+      result = '84' + result.substr(1);
+    }
+    return `+${result}`;
+  };
+  const signInWithPhoneNumber = async (data: any) => {
+    Keyboard.dismiss();
+    try {
+      dispatch({type: '_REQUEST'});
+      const confirmation = await auth().signInWithPhoneNumber(
+        convertPhoneNumber(data.phone),
+      );
+      dispatch({type: ''});
+      navigation.navigate('CodeForGetPassScreen', {signupData: data});
+    } catch (error) {
+      console.log('signInWithPhoneNumber -> error', {error});
+      dispatch({type: ''});
+      let message = error.userInfo.message;
+      if (
+        message.includes('incorrect') ||
+        message.includes('TOO_') ||
+        message.includes('format of the phone number')
+      ) {
+        message = 'Số điện thoại không hợp lệ';
+      }
+      Alert.alert('Thông báo!', message);
+    }
+  };
+
   const onSubmit = (values: any) => {
     const data = {...values};
-    dispatch(
-      signUpAction(data, {
-        onSuccess: () => {
-          refFormik?.current?.resetForm();
-          Alert.alert(
-            'Thông báo',
-            'Đăng ký thành công!',
-            [
-              {
-                text: 'Ok',
-                onPress: () => navigation.goBack(),
-              },
-            ],
-            {cancelable: false},
-          );
-        },
-        onFailed: (err: string) => {
-          // refFormik?.current?.resetForm();
-          let errorMessage = err;
+    signInWithPhoneNumber(data);
+    // dispatch(
+    //   signUpAction(data, {
+    //     onSuccess: () => {
+    //       refFormik?.current?.resetForm();
+    //       Alert.alert(
+    //         'Thông báo',
+    //         'Đăng ký thành công!',
+    //         [
+    //           {
+    //             text: 'Ok',
+    //             onPress: () => navigation.goBack(),
+    //           },
+    //         ],
+    //         {cancelable: false},
+    //       );
+    //     },
+    //     onFailed: (err: string) => {
+    //       // refFormik?.current?.resetForm();
+    //       let errorMessage = err;
 
-          if (errorMessage.includes('duplicate key error collection')) {
-            errorMessage =
-              'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.';
-          } else if (errorMessage.includes('is required')) {
-            errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
-          }
-          Alert.alert(
-            'Xảy ra lỗi',
-            errorMessage,
-            [
-              {
-                text: 'Ok',
-              },
-            ],
-            {cancelable: false},
-          );
-        },
-      }),
-    );
+    //       if (errorMessage.includes('duplicate key error collection')) {
+    //         errorMessage =
+    //           'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.';
+    //       } else if (errorMessage.includes('is required')) {
+    //         errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
+    //       }
+    //       Alert.alert(
+    //         'Xảy ra lỗi',
+    //         errorMessage,
+    //         [
+    //           {
+    //             text: 'Ok',
+    //           },
+    //         ],
+    //         {cancelable: false},
+    //       );
+    //     },
+    //   }),
+    // );
   };
 
   //! UseEffect

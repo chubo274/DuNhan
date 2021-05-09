@@ -20,7 +20,7 @@ const AdminDashBoard = () => {
   const isFocused = useIsFocused();
   //! State
   const [start_date, setstart_date] = useState(
-    moment().subtract(7, 'days').toDate(),
+    moment().subtract(6, 'days').toDate(),
   );
   const [end_date, setend_date] = useState(moment().toDate());
   const [showModal, setShowModal] = useState(false);
