@@ -71,7 +71,7 @@ const NewPass = () => {
   const onForgotPass = () => {
     dispatch(
       userActions.forgotPass(
-        {phone: '0987654321', password},
+        {phone, password},
         {
           onSuccess: () => {
             Alert.alert(

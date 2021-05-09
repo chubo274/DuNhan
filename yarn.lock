@@ -1362,6 +1362,11 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-communications@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-communications/-/react-native-communications-2.2.1.tgz#fe067d9d226090cea34a62de8c6ac71f92caeeb9"
+  integrity sha512-eTgJlMjrx825VuO+3y5rT4Xu3it6oH3i7Zck/QhJO3c8RM61nBp9lJ7BBI3Coc8nxweYkS6i1lkrPPmZOnNzNA==
+
 "@types/react-native-snap-carousel@^3.8.2":
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/@types/react-native-snap-carousel/-/react-native-snap-carousel-3.8.3.tgz#f3005e6ac7e84865ea9cfa9210e6056cea2f1041"
@@ -6032,6 +6037,11 @@ react-native-charts-wrapper@^0.5.7:
   dependencies:
     prop-types "^15.5.10"
     react "16.8.3"
+
+react-native-communications@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
+  integrity sha1-eIO1ayCgAu63kMET+GFuqGksp5U=
 
 react-native-fast-image@^8.3.4:
   version "8.3.4"

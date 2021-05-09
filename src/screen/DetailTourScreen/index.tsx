@@ -43,12 +43,40 @@ const DetailTourScreen = () => {
 
   //! Function
   const toggleModalBooking = () => {
-    setShowModalBooking(!showModalBooking);
-    if (showModalBooking) {
-      setTicket(1);
-      setChecked(false);
-      setDisabledMinus(true);
-      setDisabledPlus(false);
+    if (
+      moment(data.time_start).startOf('day').isSame(moment().startOf('day'))
+    ) {
+      Alert.alert(
+        'Thông báo!',
+        'Đã đến ngày khởi hành, không thể đặt thêm.',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        {cancelable: false},
+      );
+    } else {
+      if (data.slots === 0) {
+        Alert.alert(
+          'Thông báo!',
+          'Tour đã hết vé bán ra, không thể đặt thêm.',
+          [
+            {
+              text: 'Ok',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else {
+        setShowModalBooking(!showModalBooking);
+        if (showModalBooking) {
+          setTicket(1);
+          setChecked(false);
+          setDisabledMinus(true);
+          setDisabledPlus(false);
+        }
+      }
     }
   };
   const toggleModalPay = () => {
