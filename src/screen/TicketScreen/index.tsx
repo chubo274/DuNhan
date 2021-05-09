@@ -132,7 +132,7 @@ const TicketScreen = () => {
           .startOf('day')
           .isAfter(moment().startOf('day')) && (
           <AppButton
-            text={item.can_dispose ? 'Huỷ vé' : 'Không hỗ trợ huỷ'}
+            text={item.can_dispose ? 'Hoàn vé' : 'Không hỗ trợ huỷ'}
             onPress={
               item.can_dispose
                 ? () =>

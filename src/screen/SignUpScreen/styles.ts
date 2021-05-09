@@ -14,5 +14,6 @@ export default StyleSheet.create({
   btnLogin: {
     marginTop: padding.p52,
     marginHorizontal: padding.p36,
+    marginBottom: padding.p20,
   },
 });

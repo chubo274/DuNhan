@@ -126,13 +126,7 @@ const NewPass = () => {
   //! Render
   return (
     <>
-      <AppHeaderBack
-        title={'Mật khẩu mới'}
-        headerBack
-        onPressBack={() => {
-          navigation.goBack();
-        }}
-      />
+      <AppHeaderBack title={'Mật khẩu mới'} headerBack />
       <View style={styles.container}>
         <View style={{paddingBottom: 15}}>
           <AppInput

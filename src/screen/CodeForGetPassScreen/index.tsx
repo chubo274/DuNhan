@@ -8,18 +8,70 @@ import styles from './styles';
 import _ from 'lodash';
 import auth from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
+import {signUpAction} from 'redux/actions/userActions';
 
 const CodeForGetPassScreen = () => {
   const route: any = useRoute();
-  const {confirmation, userName} = route.params;
+  const {confirmation, userName, signupData} = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
   //! State
   const [value, setValue] = useState('');
+  const [errorTime, setErrorTime] = useState(3);
 
   //! Function
   const onChangeValue = (data: string) => {
     setValue(data);
+  };
+  const onChangeErrorTime = (data: number) => {
+    setErrorTime(data);
+  };
+
+  const onSignUp = () => {
+    dispatch(
+      signUpAction(signupData, {
+        onSuccess: () => {
+          Alert.alert(
+            'Thông báo',
+            'Đăng ký thành công!',
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  setTimeout(() => navigation.goBack(), 500);
+                  navigation.goBack();
+                },
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+        onFailed: (err: string) => {
+          let errorMessage = err;
+
+          if (errorMessage.includes('duplicate key error collection')) {
+            errorMessage =
+              'Số điện thoại này đã được sử dụng! Vui lòng đổi số để có thể đăng ký.';
+          } else if (errorMessage.includes('is required')) {
+            errorMessage = 'Bạn cần nhập đủ những trường bắt buộc';
+          }
+          Alert.alert(
+            'Xảy ra lỗi',
+            errorMessage,
+            [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  setTimeout(() => navigation.goBack(), 500);
+                  navigation.goBack();
+                },
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+      }),
+    );
   };
 
   const onConfirm = async () => {
@@ -30,13 +82,32 @@ const CodeForGetPassScreen = () => {
       console.log('confirmCode -> res', res);
       const signOut = await auth().signOut();
       dispatch({type: ''});
-      navigation.navigate('NewPass', {phone: userName});
+      signupData
+        ? () => onSignUp()
+        : navigation.navigate('NewPass', {phone: userName});
     } catch (error) {
       dispatch({type: ''});
       console.log('confirmCode -> error', error);
       console.log('Invalid code.');
       setValue('');
-      Alert.alert('Thông báo', 'Mã code không đúng!');
+      if (errorTime > 0) {
+        Alert.alert(
+          'Thông báo',
+          `Mã code không đúng, bạn còn ${errorTime} lần thử.`,
+        );
+        onChangeErrorTime(errorTime - 1);
+      } else
+        Alert.alert(
+          'Thông báo',
+          'Bạn đã nhập sai mã OTP quá nhiều, vui lòng thử lại!',
+          [
+            {
+              text: 'Ok',
+              onPress: () => navigation.goBack(),
+            },
+          ],
+          {cancelable: false},
+        );
     }
   };
 
