@@ -1,7 +1,7 @@
 import AppButton from 'components/AppButton';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Alert, Keyboard, Text, View} from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
@@ -74,7 +74,10 @@ const SignUpScreen = () => {
         convertPhoneNumber(data.phone),
       );
       dispatch({type: ''});
-      navigation.navigate('CodeForGetPassScreen', {signupData: data});
+      navigation.navigate('CodeForGetPassScreen', {
+        confirmation,
+        signupData: data,
+      });
     } catch (error) {
       console.log('signInWithPhoneNumber -> error', {error});
       dispatch({type: ''});
@@ -133,7 +136,6 @@ const SignUpScreen = () => {
     //   }),
     // );
   };
-
   //! UseEffect
 
   //! Render

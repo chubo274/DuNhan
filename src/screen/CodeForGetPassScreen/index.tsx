@@ -78,12 +78,13 @@ const CodeForGetPassScreen = () => {
     Keyboard.dismiss();
     try {
       dispatch({type: '_REQUEST'});
+
       const res = await confirmation.confirm(value);
       console.log('confirmCode -> res', res);
       const signOut = await auth().signOut();
       dispatch({type: ''});
       signupData
-        ? () => onSignUp()
+        ? onSignUp()
         : navigation.navigate('NewPass', {phone: userName});
     } catch (error) {
       dispatch({type: ''});
