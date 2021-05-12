@@ -7,7 +7,8 @@ import {convertObjectToQuery} from 'helpers/function';
 import {getUserData} from './userSaga';
 import {select} from 'redux-saga/effects';
 
-function* getListTours() {
+function* getListTours(payload?: any) {
+  const onFailed = payload?.callbacks?.onFailed;
   const {_id} = yield select((state) => state.userReducer.data);
   const url = serviceBase.url.tour;
   try {
@@ -15,8 +16,9 @@ function* getListTours() {
     if (response.error) {
       yield put({
         type: actionTypes.GET_TOURS_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.GET_TOURS_SUCCESS,
@@ -42,9 +44,9 @@ function* searchTours(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.SEARCH_TOURS_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed();
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.SEARCH_TOURS_SUCCESS,
@@ -72,9 +74,9 @@ function* bookingTour(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.BOOKING_TOURS_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed();
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.BOOKING_TOURS_SUCCESS,
@@ -102,9 +104,9 @@ function* cancelBookingTour(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.CANCEL_BOOKING_TOURS_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed();
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.CANCEL_BOOKING_TOURS_SUCCESS,
@@ -136,22 +138,24 @@ function* listBookingByUserTour(payload?: any) {
     if (response.error) {
       yield put({
         type: actionTypes.LIST_BOOKING_BY_ID_USER_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed();
+
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.LIST_BOOKING_BY_ID_USER_SUCCESS,
         data: response.data,
       });
-      onSuccess && onSuccess(response.data);
+      onSuccess && onSuccess();
     }
   } catch (error) {
     yield put({
       type: actionTypes.LIST_BOOKING_BY_ID_USER_FAILED,
-      error: error.message,
     });
-    onFailed && onFailed();
+    console.log({error});
+
+    onFailed && onFailed(error.message);
   }
 }
 
@@ -165,9 +169,9 @@ function* listBookingAll(payload?: any) {
     if (response.error) {
       yield put({
         type: actionTypes.LIST_BOOKING_ALL_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed();
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.LIST_BOOKING_ALL_SUCCESS,

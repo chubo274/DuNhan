@@ -125,9 +125,24 @@ const SearchScreen = () => {
   //! UseState
   useEffect(() => {
     if (isFocused) {
-      dispatch(placeActions.getListPlace());
+      dispatch(
+        placeActions.getListPlace({
+          onFailed: (err: string) => {
+            Alert.alert(
+              'Cảnh báo!',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
     }
-  }, []);
+  }, [isFocused]);
 
   //! Render
   return (

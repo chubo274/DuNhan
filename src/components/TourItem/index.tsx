@@ -70,11 +70,13 @@ const TourItem = ({
             <View style={{flexDirection: 'row'}}>
               {!!discount && (
                 <AppText numberOfLines={1} style={styles.textStrike}>
-                  {converNumberToPrice(price)}
+                  {converNumberToPrice(Number(Number(price).toFixed(0)))}
                 </AppText>
               )}
               <AppText numberOfLines={1} style={styles.text}>
-                {converNumberToPrice(price * ((100 - discount) / 100))}
+                {converNumberToPrice(
+                  Number(Number(price * ((100 - discount) / 100)).toFixed(0)),
+                )}
               </AppText>
             </View>
           </>
@@ -86,7 +88,8 @@ const TourItem = ({
               Ngày đặt: {bookingDate}
             </AppText>
             <AppText numberOfLines={1} style={styles.text}>
-              Đã đặt {totalTicket} vé với {converNumberToPrice(totalMoney)}
+              Đã đặt {totalTicket} vé với{' '}
+              {converNumberToPrice(Number(Number(totalMoney).toFixed(0)))}
             </AppText>
           </>
         )}

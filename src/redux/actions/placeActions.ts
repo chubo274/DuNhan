@@ -1,8 +1,9 @@
 import actionTypes from 'redux/actionTypes';
 
-const getListPlace = () => {
+const getListPlace = (callbacks?: any) => {
   return {
     type: actionTypes.GET_PLACE_REQUEST,
+    callbacks,
   };
 };
 

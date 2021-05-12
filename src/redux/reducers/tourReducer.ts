@@ -29,6 +29,7 @@ export default (state = initialState, action: any) => {
           newPlacesStart.push(el?.place_start);
         }
       });
+
       return {
         ...state,
         data: [...action.data.Tour],

@@ -219,7 +219,9 @@ const TicketScreen = () => {
                 </View>
                 <MoneyField
                   title={'Đã thanh toán: '}
-                  data={converNumberToPrice(moneyPayed)}
+                  data={converNumberToPrice(
+                    Number(Number(moneyPayed).toFixed(0)),
+                  )}
                 />
                 <View style={styles.titlePay}>
                   <AppText style={styles.textPay}>
@@ -228,7 +230,11 @@ const TicketScreen = () => {
                 </View>
                 <MoneyField
                   title={'Sễ hoàn trả: '}
-                  data={converNumberToPrice(moneyPayed * (percentRefund / 100))}
+                  data={converNumberToPrice(
+                    Number(
+                      Number(moneyPayed * (percentRefund / 100)).toFixed(0),
+                    ),
+                  )}
                 />
               </View>
               <TouchableOpacity
@@ -262,7 +268,22 @@ const TicketScreen = () => {
   //! Effect
   useEffect(() => {
     if (isFocused) {
-      dispatch(tourActions.listBookingByUserTours());
+      dispatch(
+        tourActions.listBookingByUserTours({
+          onFailed: (err: string) => {
+            Alert.alert(
+              'Cảnh báo!',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
     }
   }, [isFocused]);
   //! Render

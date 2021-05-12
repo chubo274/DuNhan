@@ -4,15 +4,17 @@ import serviceBase from 'services/serviceBase';
 import {get} from 'services/serviceHandle';
 import _ from 'lodash';
 
-function* getListPlace() {
+function* getListPlace(payload?: any) {
+  const onFailed = payload?.callbacks?.onFailed;
   const url = serviceBase.url.place;
   try {
     const {response} = yield call(get, url, '');
     if (response.error) {
       yield put({
         type: actionTypes.GET_PLACE_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       yield put({
         type: actionTypes.GET_PLACE_SUCCESS,

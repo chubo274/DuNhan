@@ -42,21 +42,18 @@ const DetailTourScreen = () => {
   });
 
   //! Function
+
+  const listHotels = () => {
+    let list = '';
+    data.hotels.map((el: any) => (list = list + el));
+
+    return list;
+  };
+
   const toggleModalBooking = () => {
     if (
-      moment(data.time_start).startOf('day').isSame(moment().startOf('day'))
+      moment(data.time_start).startOf('day').isAfter(moment().startOf('day'))
     ) {
-      Alert.alert(
-        'Thông báo!',
-        'Đã đến ngày khởi hành, không thể đặt thêm.',
-        [
-          {
-            text: 'Ok',
-          },
-        ],
-        {cancelable: false},
-      );
-    } else {
       if (data.slots === 0) {
         Alert.alert(
           'Thông báo!',
@@ -76,6 +73,32 @@ const DetailTourScreen = () => {
           setDisabledMinus(true);
           setDisabledPlus(false);
         }
+      }
+    } else {
+      if (
+        moment(data.time_start).startOf('day').isSame(moment().startOf('day'))
+      ) {
+        Alert.alert(
+          'Thông báo!',
+          'Đã đến ngày khởi hành, không thể đặt thêm.',
+          [
+            {
+              text: 'Ok',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else {
+        Alert.alert(
+          'Thông báo!',
+          'Tour đã khởi hành, không thể đặt.',
+          [
+            {
+              text: 'Ok',
+            },
+          ],
+          {cancelable: false},
+        );
       }
     }
   };
@@ -234,14 +257,20 @@ const DetailTourScreen = () => {
               />
               <PayField
                 title={'Đơn giá: '}
-                data={converNumberToPrice(data.price)}
+                data={converNumberToPrice(
+                  Number(Number(data.price).toFixed(0)),
+                )}
               />
               <PayField title={'Khuyến mại: '} data={`${data.discount}%`} />
               <PayField title={'Số vé: '} data={ticket} />
               <PayField
                 title={'Thành tiền: '}
                 data={converNumberToPrice(
-                  data.price * (((100 - data.discount) * ticket) / 100),
+                  Number(
+                    Number(
+                      data.price * ((100 - data.discount) / 100) * ticket,
+                    ).toFixed(0),
+                  ),
                 )}
               />
               <View style={styles.titlePay}>
@@ -249,7 +278,9 @@ const DetailTourScreen = () => {
               </View>
               <PayField
                 title={'Só dư khả dụng: '}
-                data={converNumberToPrice(userData.money_available)}
+                data={converNumberToPrice(
+                  Number(Number(userData.money_available).toFixed(0)),
+                )}
               />
               <View style={styles.viewBtnPay}>
                 <AppButton
@@ -326,7 +357,7 @@ const DetailTourScreen = () => {
           />
           <PayField
             title={'Đơn giá vé: '}
-            data={converNumberToPrice(data.price)}
+            data={converNumberToPrice(Number(Number(data.price).toFixed(0)))}
           />
           <PayField title={'Khuyến mại: '} data={data.discount + '%'} />
           <PayField title={'Số vé còn nhận: '} data={data.slots} />
@@ -361,6 +392,10 @@ const DetailTourScreen = () => {
                 />
               );
           })}
+          <AppText style={styles.textTitlePath}>Dịch Vụ</AppText>
+          <PayField title={'Có hướng dẫn viên: '} data={data.tour_guide_info} />
+          <PayField title={'Phương tiện: '} data={data.vehicle} />
+          <PayField title={'Khách sạn: '} data={listHotels()} />
           <AppText style={styles.textTitlePath}>Ghi Chú</AppText>
           {data.notes.map((el: any, index: any) => {
             return (

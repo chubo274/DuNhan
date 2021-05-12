@@ -6,6 +6,7 @@ import TourItem from 'components/TourItem';
 import Communications from 'react-native-communications';
 import React, {useEffect} from 'react';
 import {
+  Alert,
   FlatList,
   Linking,
   Platform,
@@ -29,9 +30,6 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const listToursData = useSelector(
-    (state: RootState) => state.tourReducer.data,
-  );
   const listSuggest = useSelector(
     (state: RootState) => state.tourReducer.listSuggest,
   );
@@ -85,7 +83,23 @@ const HomeScreen = () => {
   };
   //! Effect
   useEffect(() => {
-    if (isFocused) dispatch(tourActions.getListTours());
+    if (isFocused)
+      dispatch(
+        tourActions.getListTours({
+          onFailed: (err: string) => {
+            Alert.alert(
+              'Cảnh báo!',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
   }, [isFocused]);
   //! Render
   return (
