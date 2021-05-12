@@ -82,7 +82,10 @@ const AdminDashBoard = () => {
               ) ?? ''}
             </AppText>
             <AppText style={styles.textTotal}>
-              Tổng thu: {converNumberToPrice(detailDataMoney ?? 0)}
+              Tổng thu:{' '}
+              {converNumberToPrice(
+                Number(Number(detailDataMoney).toFixed(0)) ?? 0,
+              )}
             </AppText>
           </View>
         ) : (

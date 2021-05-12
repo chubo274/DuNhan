@@ -17,9 +17,12 @@ function* login(payload: any) {
   try {
     const {response} = yield call(post, url, data);
     if (response.error) {
-      yield put({type: actionTypes.LOGIN_FAILED, error: response.errorMessage});
+      yield put({
+        type: actionTypes.LOGIN_FAILED,
+        error: response.dataFailed.message,
+      });
 
-      onFailed && onFailed(response.errorMessage);
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       onSuccess && onSuccess();
       setToken(response.data.token);
@@ -51,9 +54,9 @@ function* signUp(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.SIGN_UP_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed(response.errorMessage);
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       //resfesh
       onSuccess && onSuccess();
@@ -76,9 +79,9 @@ export function* getUserData(payload?: any) {
     if (response.error) {
       yield put({
         type: actionTypes.GET_USER_DATA_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed(response.errorMessage);
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       //resfesh
       onSuccess && onSuccess();
@@ -107,9 +110,9 @@ function* updateUserData(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.UPDATE_USER_DATA_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed(response.errorMessage);
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       //resfesh
       yield refetchUser();
@@ -138,9 +141,9 @@ function* forgotPass(payload: any) {
     if (response.error) {
       yield put({
         type: actionTypes.FORGOT_PASS_FAILED,
-        error: response.errorMessage,
+        error: response.dataFailed.message,
       });
-      onFailed && onFailed(response.errorMessage);
+      onFailed && onFailed(response.dataFailed.message);
     } else {
       //resfesh
       yield put({

@@ -168,7 +168,22 @@ const ProfileScreen = () => {
   //! Effect
   useEffect(() => {
     if (isFocused) {
-      dispatch(userActions.getUserData());
+      dispatch(
+        userActions.getUserData({
+          onFailed: (err: string) => {
+            Alert.alert(
+              'Cảnh báo!',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
     }
   }, [isFocused]);
 
@@ -264,7 +279,9 @@ const ProfileScreen = () => {
               />
               <ProfileField
                 icon={'credit'}
-                data={converNumberToPrice(data.money_available)}
+                data={converNumberToPrice(
+                  Number(Number(data.money_available).toFixed(0)),
+                )}
                 textStyle={styles.textBankNumber}
               />
             </View>

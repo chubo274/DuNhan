@@ -1,8 +1,9 @@
 import actionTypes from 'redux/actionTypes';
 
-const getListTours = () => {
+const getListTours = (callbacks?: any) => {
   return {
     type: actionTypes.GET_TOURS_REQUEST,
+    callbacks,
   };
 };
 
