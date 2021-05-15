@@ -56,8 +56,6 @@ const Chart = ({
           .format(ACTUAL_DATE),
       )
     ) {
-      const newLabel =
-        String(newDay).split('-')[2] + '/' + String(newDay).split('-')[1];
       newData.push({
         day: newDay,
         value: 0,
@@ -67,55 +65,19 @@ const Chart = ({
         .format(ACTUAL_DATE);
     }
 
-    //TODO tạo list booking theo listBooking và filter
-    const newListBooking: any[] = [];
-    listBooking.map((el: any) => {
-      if (_.isEmpty(newListBooking)) {
-        newListBooking.push({
-          day: moment(
-            moment(el.booking_date)
-              .startOf(filterByDay ? 'day' : 'month')
-              .toDate(),
-          ).format(ACTUAL_DATE),
-          value: el.total_money,
-        });
-      } else {
+    //TODO list booking total
+    listBooking.map((el: any, index: number) => {
+      newData.find((e: any, i: number) => {
         if (
-          moment(newListBooking[newListBooking.length - 1].day)
+          moment(e.day)
             .startOf(filterByDay ? 'day' : 'month')
             .isSame(
               moment(el.booking_date).startOf(filterByDay ? 'day' : 'month'),
             )
         ) {
-          newListBooking[newListBooking.length - 1].value =
-            newListBooking[newListBooking.length - 1].value + el.total_money;
-        } else {
-          newListBooking.push({
-            day: moment(
-              moment(el.booking_date)
-                .startOf(filterByDay ? 'day' : 'month')
-                .toDate(),
-            ).format(ACTUAL_DATE),
-            value: el.total_money,
-          });
+          newData[i].value += el.total_money;
         }
-      }
-    });
-
-    //TODO đổ dữ liệu vào list
-    newData.map((el: any, idx: any) => {
-      const dataEl = newListBooking.find((e: any, i: any) => {
-        return moment(e.day, ACTUAL_DATE)
-          .startOf(filterByDay ? 'day' : 'month')
-          .isSame(
-            moment(el.day, ACTUAL_DATE).startOf(filterByDay ? 'day' : 'month'),
-          );
       });
-      if (!_.isEmpty(dataEl))
-        newData[idx] = {
-          day: dataEl.day,
-          value: dataEl.value,
-        };
     });
     setNewDataChart(newData);
 
@@ -205,7 +167,7 @@ const Chart = ({
             }}
             ref={barChartRef}
             minOffset={0}
-            gridBackgroundColor={processColor('#ffffff')}
+            gridBackgroundColor={processColor(color.white)}
             chartDescription={{text: ''}}
             visibleRange={{x: {min: 7, max: 7}}}
             drawBarShadow={false}
