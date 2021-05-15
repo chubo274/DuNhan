@@ -27,7 +27,7 @@ const MainApp = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <NavigationContainer fallback={() => <AppText>...Loading</AppText>}>
-        {_.isEmpty(userReducer.data?.phone) ? (
+        {_.isEmpty(userReducer.data?.role) ? (
           <UnAuthNavigation />
         ) : userReducer.data?.role === 'User' ? (
           <AppNavigation />

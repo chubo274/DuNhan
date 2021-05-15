@@ -34,11 +34,10 @@ const LoginScreen = () => {
       userActions.login(
         {user_name: userName, password},
         {
-          onFailed: (err: string) => {
-            let errorMessage = err;
+          onFailed: (err?: string) => {
             Alert.alert(
               'Thông báo',
-              errorMessage,
+              err ? err : 'Sai tài khoản mật khẩu',
               [
                 {
                   text: 'ok',

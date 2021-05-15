@@ -22,7 +22,7 @@ function* login(payload: any) {
         error: response.dataFailed.message,
       });
 
-      onFailed && onFailed(response.dataFailed.message);
+      onFailed && onFailed();
     } else {
       onSuccess && onSuccess();
       setToken(response.data.token);
