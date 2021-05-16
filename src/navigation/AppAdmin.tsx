@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AdminTabBar from './components/AdminTabBar';
 import AdminProfile from 'screen/AdminProfile';
 import AdminDashBoard from 'screen/AdminDashBoard';
+import AdminBookingUser from 'screen/AdminBookingUser';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -11,6 +12,7 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator tabBar={(props) => <AdminTabBar {...props} />}>
       <Tab.Screen name="AdminDashBoard" component={AdminDashBoard} />
+      <Tab.Screen name="AdminBookingUser" component={AdminBookingUser} />
       <Tab.Screen name="AdminProfile" component={AdminProfile} />
     </Tab.Navigator>
   );
