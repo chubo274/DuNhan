@@ -14,7 +14,7 @@ const UserCard = (props: UserCardI) => {
 
   //! Render
   return (
-    <View>
+    <View style={styles.container}>
       <AppText>xxxx</AppText>
     </View>
   );
@@ -22,4 +22,4 @@ const UserCard = (props: UserCardI) => {
 
 export default React.memo(UserCard);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({container: {backgroundColor: 'red'}});

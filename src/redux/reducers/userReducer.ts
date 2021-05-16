@@ -2,7 +2,7 @@ import actionTypes from 'redux/actionTypes';
 
 export interface IUserReducer {
   data?: {};
-  allUserData?: [];
+  allUserData?: any[];
   error: string;
 }
 const initialState: IUserReducer = {
@@ -70,7 +70,7 @@ export default (state = initialState, action: any) => {
     case actionTypes.GET_ALL_USER_DATA_SUCCESS: {
       return {
         ...state,
-        allUserData: {...action.data},
+        allUserData: [...action.data],
         error: '',
       };
     }
