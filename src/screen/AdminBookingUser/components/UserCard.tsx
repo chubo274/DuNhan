@@ -5,10 +5,13 @@ import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import color from 'helpers/color';
+import {converNumberToBankNumber, converNumberToPrice} from 'helpers/function';
 interface UserCardI {
   id: String;
   name: String;
   phone: String;
+  bank_number: String;
+  money_available: Number;
   onPress: () => void;
 }
 const UserCard = (props: UserCardI) => {
@@ -47,16 +50,32 @@ const UserCard = (props: UserCardI) => {
               {props.phone}{' '}
             </AppText>
           </View>
+          <View style={styles.viewRow}>
+            <AppText style={{flex: 4}} numberOfLines={1}>
+              Mã ví:{' '}
+            </AppText>
+            <AppText style={{flex: 6}} numberOfLines={1}>
+              {converNumberToBankNumber(Number(props.bank_number))}{' '}
+            </AppText>
+          </View>
+          <View style={styles.viewRow}>
+            <AppText style={{flex: 4}} numberOfLines={1}>
+              Số dư:{' '}
+            </AppText>
+            <AppText style={{flex: 6}} numberOfLines={1}>
+              {converNumberToPrice(Number(props.money_available.toFixed(0)))}{' '}
+            </AppText>
+          </View>
         </View>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, justifyContent: 'space-around'}}>
           <TouchableOpacity
             onPress={onMessage}
             style={{marginBottom: padding.p8}}>
-            <Fontisto name={'hipchat'} size={25} color={color.textPri} />
+            <Fontisto name={'hipchat'} size={30} color={color.textPri} />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={onCallOut}>
-            <Feather name={'phone-call'} size={25} color={color.porsche} />
+            <Feather name={'phone-call'} size={30} color={color.porsche} />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

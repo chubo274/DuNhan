@@ -7,6 +7,14 @@ const getListTours = (callbacks?: any) => {
   };
 };
 
+const getDetailTour = (id: any, callbacks?: any) => {
+  return {
+    type: actionTypes.GET_DETAIL_TOUR_REQUEST,
+    id,
+    callbacks,
+  };
+};
+
 const searchTours = (body: any, callbacks: any) => {
   return {
     type: actionTypes.SEARCH_TOURS_REQUEST,
@@ -54,4 +62,5 @@ export default {
   cancelBookingTours,
   listBookingAllTours,
   listBookingByUserTours,
+  getDetailTour,
 };

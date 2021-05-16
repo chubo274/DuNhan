@@ -11,7 +11,7 @@ const AdminTabBar = (props: any) => {
   const {routeNames, index} = state;
   const tab = [
     {name: 'Dashboard', icon: 'dashboard'},
-    {name: 'UserData', icon: 'contacts'},
+    {name: 'UsersData', icon: 'contacts'},
     {name: 'Profile', icon: 'user'},
   ];
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);

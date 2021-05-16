@@ -33,6 +33,32 @@ function* getListTours(payload?: any) {
   }
 }
 
+function* getDetailTour(payload?: any) {
+  const id = payload?.id;
+  const onFailed = payload?.callbacks?.onFailed;
+  const url = `${serviceBase.url.tour}${id}`;
+  try {
+    const {response} = yield call(get, url, {});
+    if (response.error) {
+      yield put({
+        type: actionTypes.GET_DETAIL_TOUR_FAILED,
+        error: response.dataFailed.message,
+      });
+      onFailed && onFailed(response.dataFailed.message);
+    } else {
+      yield put({
+        type: actionTypes.GET_DETAIL_TOUR_SUCCESS,
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: actionTypes.GET_DETAIL_TOUR_FAILED,
+      error: error.message,
+    });
+  }
+}
+
 function* searchTours(payload: any) {
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
@@ -82,6 +108,7 @@ function* bookingTour(payload: any) {
         type: actionTypes.BOOKING_TOURS_SUCCESS,
       });
       yield getListTours();
+      yield getDetailTour({id: payload.body.id});
       yield getUserData();
       onSuccess && onSuccess(response.data);
     }
@@ -192,6 +219,7 @@ function* listBookingAll(payload?: any) {
 
 export default function* () {
   yield takeLatest(actionTypes.GET_TOURS_REQUEST, getListTours);
+  yield takeLatest(actionTypes.GET_DETAIL_TOUR_REQUEST, getDetailTour);
   yield takeLatest(actionTypes.SEARCH_TOURS_REQUEST, searchTours);
   yield takeLatest(actionTypes.BOOKING_TOURS_REQUEST, bookingTour);
   yield takeLatest(actionTypes.CANCEL_BOOKING_TOURS_REQUEST, cancelBookingTour);

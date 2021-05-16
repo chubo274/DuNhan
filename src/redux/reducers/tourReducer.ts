@@ -5,6 +5,7 @@ export interface IReducer {
   listSuggest: any[];
   listSale: any[];
   listPlacesStart: any[];
+  detailTour: {};
   error: string;
 }
 const initialState: IReducer = {
@@ -12,6 +13,7 @@ const initialState: IReducer = {
   listSuggest: [],
   listSale: [],
   listPlacesStart: [],
+  detailTour: {},
   error: '',
 };
 
@@ -39,6 +41,23 @@ export default (state = initialState, action: any) => {
         error: '',
       };
     case actionTypes.GET_TOURS_FAILED:
+      return {
+        ...state,
+        error: action.error,
+      };
+
+    case actionTypes.GET_DETAIL_TOUR_REQUEST:
+      return {
+        ...state,
+        error: '',
+      };
+    case actionTypes.GET_DETAIL_TOUR_SUCCESS:
+      return {
+        ...state,
+        detailTour: {...action.data},
+        error: '',
+      };
+    case actionTypes.GET_DETAIL_TOUR_FAILED:
       return {
         ...state,
         error: action.error,
