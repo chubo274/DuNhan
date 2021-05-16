@@ -1,6 +1,6 @@
 export default {
   url: {
-    HOST: 'http://192.168.1.12:5000/',
+    HOST: 'http://192.168.1.8:5000/',
     template: 'template/',
     login: 'user/login/',
     forGotPass: 'user/forGotPass/',

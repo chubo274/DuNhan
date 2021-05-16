@@ -1,5 +1,6 @@
-import {useIsFocused} from '@react-navigation/core';
+import {useIsFocused, useNavigation} from '@react-navigation/core';
 import AppHeaderBack from 'components/AppHeaderBack';
+import styles from './styles';
 import AppText from 'components/AppText';
 import React, {useEffect} from 'react';
 import {FlatList, View} from 'react-native';
@@ -11,6 +12,7 @@ const AdminBookingUser = () => {
   //! Hook, Reducers
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   //! State
   const allUserData = useSelector(
     (state: RootState) => state.userReducer.allUserData,
@@ -18,7 +20,19 @@ const AdminBookingUser = () => {
   //! Function
 
   const renderUserCard = ({item, index}: any) => {
-    return <UserCard />;
+    return (
+      <UserCard
+        id={item._id}
+        name={item.name}
+        phone={item.phone}
+        onPress={() =>
+          navigation.navigate('TicketScreen', {
+            userId: item._id,
+            userName: item.name,
+          })
+        }
+      />
+    );
   };
   //! UseEffects
   useEffect(() => {
@@ -29,14 +43,16 @@ const AdminBookingUser = () => {
 
   //! Render
   return (
-    <View>
+    <>
       <AppHeaderBack title={'Danh sách User'} />
-      <FlatList
-        data={allUserData}
-        keyExtractor={(item) => item._id.toString()}
-        renderItem={renderUserCard}
-      />
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          data={allUserData}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={renderUserCard}
+        />
+      </View>
+    </>
   );
 };
 

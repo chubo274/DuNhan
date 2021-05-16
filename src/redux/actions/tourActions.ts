@@ -39,9 +39,10 @@ const listBookingAllTours = (body?: any, callbacks?: any) => {
   };
 };
 
-const listBookingByUserTours = (callbacks?: any) => {
+const listBookingByUserTours = (id?: any, callbacks?: any) => {
   return {
     type: actionTypes.LIST_BOOKING_BY_ID_USER_REQUEST,
+    id,
     callbacks,
   };
 };

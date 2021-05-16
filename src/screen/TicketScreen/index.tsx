@@ -6,7 +6,7 @@ import moment from 'moment';
 import {FORMAT_DATE, HIT_SLOP} from 'helpers/constants';
 import {IMAGE} from 'assets';
 import TourItem from 'components/TourItem';
-import {useIsFocused, useNavigation} from '@react-navigation/core';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/core';
 import AppButton from 'components/AppButton';
 import AppText from 'components/AppText';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,21 +18,17 @@ import FieldRule from './components/FieldRule';
 import {converNumberToPrice} from 'helpers/function';
 import MoneyField from 'screen/TicketScreen/components/MoneyField';
 const TicketScreen = () => {
+  const route: any = useRoute();
+  const userId = route.params?.userId;
+  const userName = route.params?.userName;
+
   //! State
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const user_id = useSelector(
-    (state: RootState) => state.userReducer.data?._id,
-  );
-  const listTours = useSelector((state: RootState) => state.tourReducer.data);
   const listBookingByUser = useSelector(
     (state: RootState) => state.bookingReducer.data,
   );
-  const data = listBookingByUser.map((el) => {
-    const tour = listTours.find((elTour) => elTour._id === el.tour);
-    return {...el, tour: {...tour}};
-  });
 
   const [checked, setChecked] = useState(false);
   const [showModalBooking, setShowModalBooking] = useState(false);
@@ -78,13 +74,15 @@ const TicketScreen = () => {
     setChecked(!checked);
   };
   const onConfirmCancel = () => {
-    const body = {tour_id: idTour, booking_id: idBooking};
+    const body = {tour_id: idTour, booking_id: idBooking, userId};
     dispatch(
       tourActions.cancelBookingTours(body, {
         onSuccess: () => {
           Alert.alert(
             'Thông báo!',
-            'Huỷ vé và hoàn tiền thành công. Vui lòng kiểm tra tài khoản!',
+            !!userId
+              ? `Huỷ vé và hoàn tiền thành công cho khách hàng ${userName}`
+              : 'Huỷ vé và hoàn tiền thành công. Vui lòng kiểm tra tài khoản!',
             [
               {
                 text: 'Ok',
@@ -114,21 +112,23 @@ const TicketScreen = () => {
       <View style={styles.viewList}>
         <TourItem
           ticketBooked
-          avatar={item.tour.avatar}
-          name={item.tour.name}
-          placeStart={item.tour.place_start}
-          timeStart={moment(item.tour.time_start).format(FORMAT_DATE)}
-          // travelTime={item.tour.travel_time}
-          travelTimeDay={item.tour.travel_time.day}
-          travelTimeNight={item.tour.travel_time.night}
+          avatar={item.tour[0].avatar}
+          name={item.tour[0].name}
+          placeStart={item.tour[0].place_start}
+          timeStart={moment(item.tour[0].time_start).format(FORMAT_DATE)}
+          // travelTime={item.tour[0].travel_time}
+          travelTimeDay={item.tour[0].travel_time.day}
+          travelTimeNight={item.tour[0].travel_time.night}
           bookingDate={moment(item.booking_date).format(FORMAT_DATE)}
           totalTicket={item.total_ticket}
           totalMoney={item.total_money}
           onPress={() => {
-            navigation.navigate('DetailTourScreen', {id: item.tour._id});
+            !!userId
+              ? null
+              : navigation.navigate('DetailTourScreen', {id: item.tour[0]._id});
           }}
         />
-        {moment(item.tour.time_start)
+        {moment(item.tour[0].time_start)
           .startOf('day')
           .isAfter(moment().startOf('day')) && (
           <AppButton
@@ -137,9 +137,9 @@ const TicketScreen = () => {
               item.can_dispose
                 ? () =>
                     onCancelTicket(
-                      item.tour._id,
+                      item.tour[0]._id,
                       item._id,
-                      item.tour.time_start,
+                      item.tour[0].time_start,
                       item.total_money,
                     )
                 : () => {
@@ -269,7 +269,7 @@ const TicketScreen = () => {
   useEffect(() => {
     if (isFocused) {
       dispatch(
-        tourActions.listBookingByUserTours({
+        tourActions.listBookingByUserTours(userId, {
           onFailed: (err: string) => {
             Alert.alert(
               'Cảnh báo!',
@@ -289,10 +289,13 @@ const TicketScreen = () => {
   //! Render
   return (
     <>
-      <AppHeaderBack title="Vé của bạn" />
+      <AppHeaderBack
+        title={!!userId ? `Vé của ${userName}` : 'Vé của bạn'}
+        headerBack={!!userId ? true : false}
+      />
       <View style={styles.container}>
         <FlatList
-          data={data}
+          data={listBookingByUser}
           keyExtractor={(item) =>
             !!item.id ? item.id.toString() : item._id.toString()
           }

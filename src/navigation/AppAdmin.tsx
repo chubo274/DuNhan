@@ -5,6 +5,7 @@ import AdminTabBar from './components/AdminTabBar';
 import AdminProfile from 'screen/AdminProfile';
 import AdminDashBoard from 'screen/AdminDashBoard';
 import AdminBookingUser from 'screen/AdminBookingUser';
+import TicketScreen from 'screen/TicketScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,7 @@ const AppAdmin = () => {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="TicketScreen" component={TicketScreen} />
     </Stack.Navigator>
   );
 };

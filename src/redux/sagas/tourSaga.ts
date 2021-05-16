@@ -95,6 +95,7 @@ function* bookingTour(payload: any) {
 }
 
 function* cancelBookingTour(payload: any) {
+  const userId = payload?.body?.userId;
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
 
@@ -113,7 +114,7 @@ function* cancelBookingTour(payload: any) {
       });
       yield getListTours();
       yield getUserData();
-      yield listBookingByUserTour();
+      yield listBookingByUserTour({id: userId});
       onSuccess && onSuccess(response.data);
     }
   } catch (error) {
@@ -127,9 +128,10 @@ function* cancelBookingTour(payload: any) {
 
 function* listBookingByUserTour(payload?: any) {
   const {_id} = yield select((state) => state.userReducer.data);
+  const userId = payload?.id;
   const onFailed = payload?.callbacks?.onFailed;
   const onSuccess = payload?.callbacks?.onSuccess;
-  const body = {user_id: _id};
+  const body = {user_id: userId ? userId : _id};
   const url = `${serviceBase.url.allBooking}${convertObjectToQuery(body)}`;
 
   try {
