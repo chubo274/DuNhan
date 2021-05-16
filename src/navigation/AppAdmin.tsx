@@ -4,8 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AdminTabBar from './components/AdminTabBar';
 import AdminProfile from 'screen/AdminProfile';
 import AdminDashBoard from 'screen/AdminDashBoard';
-import AdminBookingUser from 'screen/AdminBookingUser';
 import TicketScreen from 'screen/TicketScreen';
+import AdminBookingUser from 'screen/AdminBookingUser';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

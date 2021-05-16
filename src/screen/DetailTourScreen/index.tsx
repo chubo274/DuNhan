@@ -8,7 +8,7 @@ import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppSilder from 'components/AppSilder';
 import AppButton from 'components/AppButton';
-import {useNavigation, useRoute} from '@react-navigation/core';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/core';
 import color from 'helpers/color';
 import {converNumberToPrice} from 'helpers/function';
 import PayField from './components/PayField';
@@ -20,11 +20,16 @@ import tourActions from 'redux/actions/tourActions';
 import {Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {IMAGE} from 'assets';
+import _ from 'lodash';
+
 const DetailTourScreen = () => {
   const navigation = useNavigation();
+  const isFoucsed = useIsFocused();
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer.data);
-  const listTour = useSelector((state: RootState) => state.tourReducer.data);
+  const data: any = useSelector(
+    (state: RootState) => state.tourReducer.detailTour,
+  );
   //! State
   //TODO booking
   const [showModalBooking, setShowModalBooking] = useState(false);
@@ -37,12 +42,8 @@ const DetailTourScreen = () => {
   //TODO getDataDetail
   const route: any = useRoute();
   const id = route.params?.id;
-  const data = listTour.find((el: any) => {
-    if (el._id === id) return el;
-  });
 
   //! Function
-
   const listHotels = () => {
     let list = '';
     data.hotels.map((el: any) => (list = list + el));
@@ -102,10 +103,12 @@ const DetailTourScreen = () => {
       }
     }
   };
+
   const toggleModalPay = () => {
     setShowModalPay(!showModalPay);
     console.log(moment().toDate());
   };
+
   const reListPlaces = (data: any) => {
     let newList = '';
     data.map((el: any, index: any) => {
@@ -145,21 +148,13 @@ const DetailTourScreen = () => {
       toggleModalPay();
     };
 
-    const onPay = (
-      total_ticket: number,
-      total_money: number,
-      discount: number,
-    ) => {
+    const onPay = (total_ticket: number) => {
       toggleModalPay();
       toggleModalBooking();
       const body = {
         id: data._id,
-        tour: data._id,
         user: userData._id,
-        booking_date: moment().toDate(),
-        total_money,
         total_ticket,
-        discount,
       };
       dispatch(
         tourActions.userBookingTour(body, {
@@ -289,11 +284,7 @@ const DetailTourScreen = () => {
                     userData.money_available -
                       data.price * (((100 - data.discount) * ticket) / 100) >
                     0
-                      ? onPay(
-                          ticket,
-                          data.price * (((100 - data.discount) * ticket) / 100),
-                          data.discount,
-                        )
+                      ? onPay(ticket)
                       : Alert.alert(
                           'Thông báo!',
                           'Vui lòng nạp thêm tiền!',
@@ -326,114 +317,149 @@ const DetailTourScreen = () => {
     );
   };
   //----- hết phần modal đặt
+  //! UseEffect
+  useEffect(() => {
+    if (isFoucsed) {
+      dispatch(
+        tourActions.getDetailTour(id, {
+          onFailed: (err: string) => {
+            Alert.alert(
+              'Cảnh báo!',
+              err,
+              [
+                {
+                  text: 'Ok',
+                },
+              ],
+              {cancelable: false},
+            );
+          },
+        }),
+      );
+    }
+  }, [isFoucsed]);
   //! Render
   return (
     <>
       <AppHeaderBack title="Chi Tiết Tour" headerBack />
-      <AppSilder data={data.list_images} />
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.titlePay}>
-            <AppText style={styles.textTourName}>{data.name}</AppText>
-            {data.discount >= 25 && (
-              <FastImage
-                source={IMAGE.superSale}
-                style={styles.imgSuperSale}
-                resizeMode={'contain'}
-              />
-            )}
-          </View>
-          <PayField title={'Điểm xuất phát: '} data={data.place_start} />
-          <PayField title={'Điểm du lịch: '} data={reListPlaces(data.places)} />
-          <PayField
-            title={'Khởi hành: '}
-            data={moment(data.time_start).format(FORMAT_DATE)}
-          />
-          <PayField
-            title={'Thời gian tour: '}
-            data={`${data.travel_time.day} ngày ${
-              data.travel_time.night ?? 0
-            } đêm`}
-          />
-          <PayField
-            title={'Đơn giá vé: '}
-            data={converNumberToPrice(Number(Number(data.price).toFixed(0)))}
-          />
-          <PayField title={'Khuyến mại: '} data={data.discount + '%'} />
-          <PayField title={'Số vé còn nhận: '} data={data.slots} />
-          <AppText style={styles.textTitlePath}>Mô Tả</AppText>
-          <AppReadMore longText={data.description} />
-          <AppText style={styles.textTitlePath}>Lộ Trình</AppText>
-          {data.schedule.map((el: any, index: any) => {
-            if (index === 0)
-              return (
-                <AppTimeLineSchedule
-                  key={index}
-                  title={`${el.day}: ${el.title}`}
-                  longText={el.detail}
-                  firstPoint
-                />
-              );
-            else if (index === data.schedule.length - 1)
-              return (
-                <AppTimeLineSchedule
-                  key={index}
-                  title={`${el.day}: ${el.title}`}
-                  longText={el.detail}
-                  lastPoint
-                />
-              );
-            else
-              return (
-                <AppTimeLineSchedule
-                  key={index}
-                  title={`${el.day}: ${el.title}`}
-                  longText={el.detail}
-                />
-              );
-          })}
-          <AppText style={styles.textTitlePath}>Dịch Vụ</AppText>
-          <PayField title={'Có hướng dẫn viên: '} data={data.tour_guide_info} />
-          <PayField title={'Phương tiện: '} data={data.vehicle} />
-          <PayField title={'Khách sạn: '} data={listHotels()} />
-          <AppText style={styles.textTitlePath}>Ghi Chú</AppText>
-          {data.notes.map((el: any, index: any) => {
-            return (
-              <View style={styles.viewNotes} key={index}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    paddingRight: 8,
-                  }}>
-                  <AntDesign
-                    name={'caretright'}
-                    size={20}
-                    color={color.tulip}
+      {!_.isEmpty(data) ? (
+        <>
+          <AppSilder data={data.list_images} />
+          <View style={styles.container}>
+            <ScrollView>
+              <View style={styles.titlePay}>
+                <AppText style={styles.textTourName}>{data.name}</AppText>
+                {data.discount >= 25 && (
+                  <FastImage
+                    source={IMAGE.superSale}
+                    style={styles.imgSuperSale}
+                    resizeMode={'contain'}
                   />
-                </View>
-                <AppText>{el}</AppText>
+                )}
               </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-      <View style={styles.btnBooking}>
-        <AppButton text={'Đặt vé'} onPress={toggleModalBooking} />
-      </View>
-      <Modal
-        visible={showModalBooking}
-        transparent
-        animationType="fade"
-        onRequestClose={toggleModalBooking}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={styles.viewModal}
-          onPress={toggleModalBooking}>
-          <TouchableOpacity activeOpacity={1} style={styles.viewContent}>
-            {bookingticket()}
-          </TouchableOpacity>
-        </TouchableOpacity>
-      </Modal>
+              <PayField title={'Điểm xuất phát: '} data={data.place_start} />
+              <PayField
+                title={'Điểm du lịch: '}
+                data={reListPlaces(data.places)}
+              />
+              <PayField
+                title={'Khởi hành: '}
+                data={moment(data.time_start).format(FORMAT_DATE)}
+              />
+              <PayField
+                title={'Thời gian tour: '}
+                data={`${data.travel_time.day} ngày ${
+                  data.travel_time.night ?? 0
+                } đêm`}
+              />
+              <PayField
+                title={'Đơn giá vé: '}
+                data={converNumberToPrice(
+                  Number(Number(data.price).toFixed(0)),
+                )}
+              />
+              <PayField title={'Khuyến mại: '} data={data.discount + '%'} />
+              <PayField title={'Số vé còn nhận: '} data={data.slots} />
+              <AppText style={styles.textTitlePath}>Mô Tả</AppText>
+              <AppReadMore longText={data.description} />
+              <AppText style={styles.textTitlePath}>Lộ Trình</AppText>
+              {data.schedule.map((el: any, index: any) => {
+                if (index === 0)
+                  return (
+                    <AppTimeLineSchedule
+                      key={index}
+                      title={`${el.day}: ${el.title}`}
+                      longText={el.detail}
+                      firstPoint
+                    />
+                  );
+                else if (index === data.schedule.length - 1)
+                  return (
+                    <AppTimeLineSchedule
+                      key={index}
+                      title={`${el.day}: ${el.title}`}
+                      longText={el.detail}
+                      lastPoint
+                    />
+                  );
+                else
+                  return (
+                    <AppTimeLineSchedule
+                      key={index}
+                      title={`${el.day}: ${el.title}`}
+                      longText={el.detail}
+                    />
+                  );
+              })}
+              <AppText style={styles.textTitlePath}>Dịch Vụ</AppText>
+              <PayField
+                title={'Có hướng dẫn viên: '}
+                data={data.tour_guide_info}
+              />
+              <PayField title={'Phương tiện: '} data={data.vehicle} />
+              <PayField title={'Khách sạn: '} data={listHotels()} />
+              <AppText style={styles.textTitlePath}>Ghi Chú</AppText>
+              {data.notes.map((el: any, index: any) => {
+                return (
+                  <View style={styles.viewNotes} key={index}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        paddingRight: 8,
+                      }}>
+                      <AntDesign
+                        name={'caretright'}
+                        size={20}
+                        color={color.tulip}
+                      />
+                    </View>
+                    <AppText>{el}</AppText>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+          <View style={styles.btnBooking}>
+            <AppButton text={'Đặt vé'} onPress={toggleModalBooking} />
+          </View>
+          <Modal
+            visible={showModalBooking}
+            transparent
+            animationType="fade"
+            onRequestClose={toggleModalBooking}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.viewModal}
+              onPress={toggleModalBooking}>
+              <TouchableOpacity activeOpacity={1} style={styles.viewContent}>
+                {bookingticket()}
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </Modal>
+        </>
+      ) : (
+        <AppText>Đang load dữ liệu...</AppText>
+      )}
     </>
   );
 };

@@ -1,24 +1,24 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import AppButton from 'components/AppButton';
+import AppButtonCircle from 'components/AppButtonCircle';
 import AppHeaderBack from 'components/AppHeaderBack';
 import AppInput from 'components/AppInput';
-import {FORMAT_DATE, ACTUAL_DATE} from 'helpers/constants';
-import React, {useEffect, useRef, useState} from 'react';
-import {Alert, View} from 'react-native';
-import styles from './styles';
-import moment from 'moment';
-import padding from 'helpers/padding';
-import color from 'helpers/color';
-import {converNumberToPrice} from 'helpers/function';
-import {Formik} from 'formik';
-import AppButtonCircle from 'components/AppButtonCircle';
 import AppText from 'components/AppText';
+import {Formik} from 'formik';
+import {ACTUAL_DATE} from 'helpers/constants';
+import {converNumberToPrice} from 'helpers/function';
+import padding from 'helpers/padding';
+import _ from 'lodash';
+import moment from 'moment';
+import React, {useEffect, useRef} from 'react';
+import {Alert, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import placeActions from 'redux/actions/placeActions';
-import {RootState} from 'redux/reducers';
-import _ from 'lodash';
 import tourActions from 'redux/actions/tourActions';
+import {RootState} from 'redux/reducers';
+import styles from './styles';
 const SearchScreen = () => {
+  let isAllDay = false;
   const innerRef = useRef<any>(null);
   const dispatch = useDispatch();
   const listPlaceData = useSelector(
@@ -89,8 +89,6 @@ const SearchScreen = () => {
     priceToKey: priceData[priceData.length - 1].key,
   };
 
-  const [isAllDay, setIsAllDay] = useState(false);
-
   //! Function
   const onSearch = (value: any) => {
     value.place_start = listPlacesStart.find(
@@ -104,7 +102,7 @@ const SearchScreen = () => {
           const title = 'Kết quả tìm kiếm';
           navigation.navigate('ListTour', {title, listTour});
           innerRef?.current?.resetForm();
-          setIsAllDay(false);
+          isAllDay = false;
         },
         onFailed: () => {
           Alert.alert(
@@ -172,10 +170,10 @@ const SearchScreen = () => {
             };
 
             const onAllDay = () => {
-              setIsAllDay(!isAllDay);
               if (isAllDay)
                 setFieldValue('time_start', moment(data).format(ACTUAL_DATE));
               else setFieldValue('time_start', null);
+              isAllDay = !isAllDay;
             };
 
             return (

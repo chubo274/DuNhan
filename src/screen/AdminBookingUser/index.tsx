@@ -1,7 +1,6 @@
 import {useIsFocused, useNavigation} from '@react-navigation/core';
 import AppHeaderBack from 'components/AppHeaderBack';
 import styles from './styles';
-import AppText from 'components/AppText';
 import React, {useEffect} from 'react';
 import {FlatList, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -25,6 +24,8 @@ const AdminBookingUser = () => {
         id={item._id}
         name={item.name}
         phone={item.phone}
+        bank_number={item.bank_number}
+        money_available={item.money_available}
         onPress={() =>
           navigation.navigate('TicketScreen', {
             userId: item._id,
@@ -44,7 +45,7 @@ const AdminBookingUser = () => {
   //! Render
   return (
     <>
-      <AppHeaderBack title={'Danh sách User'} />
+      <AppHeaderBack title={'Danh sách khách hàng'} />
       <View style={styles.container}>
         <FlatList
           data={allUserData}
