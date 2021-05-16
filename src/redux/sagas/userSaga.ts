@@ -129,6 +129,7 @@ function* updateUserData(payload: any) {
     onFailed && onFailed(error.message);
   }
 }
+
 function* forgotPass(payload: any) {
   const {data} = payload;
   const onSuccess = payload?.callbacks?.onSuccess;
@@ -160,10 +161,41 @@ function* forgotPass(payload: any) {
   }
 }
 
+//* GET ALL USER DATA
+export function* getAllUserData(payload?: any) {
+  const url = serviceBase.url.user;
+  const onSuccess = payload?.callbacks?.onSuccess;
+  const onFailed = payload?.callbacks?.onFailed;
+  try {
+    const {response} = yield call(get, url, {role: 'User'});
+    if (response.error) {
+      yield put({
+        type: actionTypes.GET_ALL_USER_DATA_FAILED,
+        error: response.dataFailed.message,
+      });
+      onFailed && onFailed(response.dataFailed.message);
+    } else {
+      //resfesh
+      onSuccess && onSuccess();
+      yield put({
+        type: actionTypes.GET_ALL_USER_DATA_SUCCESS,
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: actionTypes.GET_ALL_USER_DATA_FAILED,
+      error: error.message,
+    });
+    onFailed && onFailed(error.message);
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.LOGIN_REQUEST, login);
   yield takeLatest(actionTypes.SIGN_UP_REQUEST, signUp);
   yield takeLatest(actionTypes.GET_USER_DATA_REQUEST, getUserData);
   yield takeLatest(actionTypes.UPDATE_USER_DATA_REQUEST, updateUserData);
   yield takeLatest(actionTypes.FORGOT_PASS_REQUEST, forgotPass);
+  yield takeLatest(actionTypes.GET_ALL_USER_DATA_REQUEST, getAllUserData);
 }

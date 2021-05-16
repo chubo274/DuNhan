@@ -46,3 +46,10 @@ export const forgotPass = (data: any, callbacks?: any) => {
     callbacks,
   };
 };
+
+export const getAllUserData = (callbacks?: any) => {
+  return {
+    type: actionTypes.GET_ALL_USER_DATA_REQUEST,
+    callbacks,
+  };
+};
