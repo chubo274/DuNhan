@@ -57,13 +57,29 @@ const TicketScreen = () => {
     setTimeStartTour(timeStart);
     setMoneyPayed(Number(bookingMoneyPayed));
 
-    if (moment(timeStart).diff(moment().toDate(), 'days') > 9) {
+    if (
+      moment(timeStart)
+        .startOf('day')
+        .diff(moment().startOf('day').toDate(), 'days') > 9
+    ) {
       setPercentRefund(100);
-    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 7) {
+    } else if (
+      moment(timeStart)
+        .startOf('day')
+        .diff(moment().startOf('day').toDate(), 'days') > 7
+    ) {
       setPercentRefund(75);
-    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 5) {
+    } else if (
+      moment(timeStart)
+        .startOf('day')
+        .diff(moment().startOf('day').toDate(), 'days') > 5
+    ) {
       setPercentRefund(50);
-    } else if (moment(timeStart).diff(moment().toDate(), 'days') > 3) {
+    } else if (
+      moment(timeStart)
+        .startOf('day')
+        .diff(moment().startOf('day').toDate(), 'days') > 3
+    ) {
       setPercentRefund(25);
     } else setPercentRefund(0);
 
@@ -178,38 +194,54 @@ const TicketScreen = () => {
                   title={'nhiều hơn 9 ngày hoàn: '}
                   data={'100%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') > 9
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') > 9
                   }
                 />
                 <FieldRule
                   title={'nhiều hơn 7 ngày hoàn: '}
                   data={'75%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') > 7 &&
-                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 9
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') > 7 &&
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') <= 9
                   }
                 />
                 <FieldRule
                   title={'nhiều hơn 5 ngày hoàn: '}
                   data={'50%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') > 5 &&
-                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 7
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') > 5 &&
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') <= 7
                   }
                 />
                 <FieldRule
                   title={'nhiều hơn 3 ngày hoàn: '}
                   data={'25%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') > 3 &&
-                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 5
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') > 3 &&
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') <= 5
                   }
                 />
                 <FieldRule
                   title={'bằng hay ít hơn 3 ngày hoàn: '}
                   data={'0%'}
                   active={
-                    moment(timeStartTour).diff(moment().toDate(), 'days') <= 3
+                    moment(timeStartTour)
+                      .startOf('day')
+                      .diff(moment().startOf('day').toDate(), 'days') <= 3
                   }
                 />
                 <View style={styles.titlePay}>
